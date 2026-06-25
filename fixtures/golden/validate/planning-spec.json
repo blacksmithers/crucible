@@ -1,0 +1,158 @@
+{
+  "phase": "planning_spec",
+  "passed": true,
+  "structural": {
+    "missingFields": [],
+    "invalidFields": [],
+    "findings": []
+  },
+  "scoring": {
+    "skipped": false,
+    "localScore": 86.11111111111111,
+    "globalScore": 17.222222222222225,
+    "perField": {
+      "spec.goals.v1": {
+        "earned": 3,
+        "possible": 3,
+        "tier": "critical"
+      },
+      "spec.requirements.v1": {
+        "earned": 3,
+        "possible": 3,
+        "tier": "critical"
+      },
+      "spec.architecture.v1": {
+        "earned": 3,
+        "possible": 3,
+        "tier": "critical"
+      },
+      "spec.scope.inScope.v1": {
+        "earned": 3,
+        "possible": 3,
+        "tier": "critical"
+      },
+      "spec.scope.outOfScope.v1": {
+        "earned": 3,
+        "possible": 3,
+        "tier": "critical"
+      },
+      "spec.scope.assumptions.v1": {
+        "earned": 1,
+        "possible": 1,
+        "tier": "enrichment"
+      },
+      "spec.scope.externalDependencies.v1": {
+        "earned": 0,
+        "possible": 1,
+        "tier": "enrichment"
+      },
+      "spec.techStack.v1": {
+        "earned": 3,
+        "possible": 3,
+        "tier": "critical"
+      },
+      "spec.folderStructures.v1": {
+        "earned": 3,
+        "possible": 3,
+        "tier": "critical"
+      },
+      "spec.acceptanceCriteria.v1": {
+        "earned": 2,
+        "possible": 2,
+        "tier": "recommended"
+      },
+      "spec.nonFunctionalRequirements.v1": {
+        "earned": 2,
+        "possible": 2,
+        "tier": "recommended"
+      },
+      "spec.guardrails.v1": {
+        "earned": 0,
+        "possible": 2,
+        "tier": "recommended"
+      },
+      "spec.sharedPatterns.v1": {
+        "earned": 0,
+        "possible": 2,
+        "tier": "recommended"
+      },
+      "spec.goals.leaf.v1": {
+        "earned": 2,
+        "possible": 2,
+        "tier": "recommended"
+      },
+      "spec.requirements.leaf.v1": {
+        "earned": 2,
+        "possible": 2,
+        "tier": "recommended"
+      },
+      "spec.background.v1": {
+        "earned": 1,
+        "possible": 1,
+        "tier": "enrichment"
+      }
+    },
+    "topologyPenalties": 0,
+    "gateResult": "pass",
+    "threshold": 80,
+    "globalScoreBreakdown": {
+      "specBlock": 17.222222222222225,
+      "epicBlock": 0,
+      "ticketBlock": 0,
+      "epicAvg": null,
+      "ticketAvg": null,
+      "weights": {
+        "spec": 0.2,
+        "epics": 0.3,
+        "tickets": 0.5
+      }
+    },
+    "cascadeFloors": {
+      "specOnly": 0,
+      "specPlusEpics": 30,
+      "total": 80
+    },
+    "cascadeFailures": []
+  },
+  "guidance": {
+    "perEntity": {
+      "spec-planning": [
+        {
+          "patternId": "individual",
+          "entityId": "spec-planning",
+          "entityType": "specification",
+          "message": "Specification \"TaskFlow — Collaborative Task Management Platform\" — missing \"guardrails\". Declare at least 2 guardrail(s) with rationale and consequence. Guardrails communicate what must never be done and why, preventing costly mistakes during implementation.",
+          "operations": [
+            "set_metadata"
+          ],
+          "pointsLost": 5.555555555555555,
+          "globalImpactOnFix": 1.1111111111111112
+        },
+        {
+          "patternId": "individual",
+          "entityId": "spec-planning",
+          "entityType": "specification",
+          "message": "Specification \"TaskFlow — Collaborative Task Management Platform\" — missing \"sharedPatterns\". Declare at least 1 shared pattern(s) at the spec level. These act as the BASE inheritance set — each Epic can override or extend via its own sharedPatterns. Use this to communicate codeStandards, commonImports, returnTypes, additionalImports, commonFiles that apply across the whole spec.",
+          "operations": [
+            "set_metadata"
+          ],
+          "pointsLost": 5.555555555555555,
+          "globalImpactOnFix": 1.1111111111111112
+        },
+        {
+          "patternId": "individual",
+          "entityId": "spec-planning",
+          "entityType": "specification",
+          "message": "Specification \"TaskFlow — Collaborative Task Management Platform\" — missing \"scope.externalDependencies\". Declare at least 1 external dependency. External dependencies (third-party APIs, infra, vendor services) shape failure modes the implementation must defend against.",
+          "operations": [
+            "set_metadata"
+          ],
+          "pointsLost": 2.7777777777777777,
+          "globalImpactOnFix": 0.5555555555555556
+        }
+      ]
+    },
+    "truncated": false
+  },
+  "meta": {}
+}

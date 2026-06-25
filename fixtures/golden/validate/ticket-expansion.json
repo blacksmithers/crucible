@@ -1,0 +1,79 @@
+{
+  "phase": "ticket_expansion",
+  "passed": false,
+  "structural": {
+    "missingFields": [],
+    "invalidFields": [],
+    "findings": []
+  },
+  "scoring": {
+    "skipped": false,
+    "localScore": 80,
+    "globalScore": 26.83956916099774,
+    "perField": {},
+    "perEntityScore": {
+      "tkt-1-1": 80
+    },
+    "topologyPenalties": -60,
+    "gateResult": "fail",
+    "threshold": 70,
+    "globalScoreBreakdown": {
+      "specBlock": 17.222222222222225,
+      "epicBlock": 28.5,
+      "ticketBlock": 41.11734693877551,
+      "epicAvg": 95,
+      "ticketAvg": 82.23469387755102,
+      "weights": {
+        "spec": 0.2,
+        "epics": 0.3,
+        "tickets": 0.5
+      }
+    },
+    "cascadeFloors": {
+      "specOnly": 0,
+      "specPlusEpics": 30,
+      "total": 80
+    },
+    "cascadeFailures": [
+      {
+        "level": "total",
+        "expected": 80,
+        "actual": 26.84,
+        "message": "Global score 26.84 below threshold 80."
+      }
+    ]
+  },
+  "guidance": {
+    "perEntity": {
+      "tkt-1-1": [
+        {
+          "patternId": "foundation-gap",
+          "entityId": "tkt-1-1",
+          "entityType": "ticket",
+          "message": "Ticket \"Define Task domain type and DynamoDB schema\" — ticket_expansion has critical gaps:\n  - acceptanceCriteria\n  - implementationSteps\n\nDECLARE all together. Files determine scope, AC determines verifiability, steps determine execution sequence, ticketType determines whether testSpecification is required.\n\nOperation available: action_planning_session({\n  operation: { type: 'update_ticket', ticketId: \"tkt-1-1\", ... }\n})",
+          "operations": [
+            "update_ticket"
+          ],
+          "pointsLost": 15,
+          "globalImpactOnFix": 1.5
+        },
+        {
+          "patternId": "individual",
+          "entityId": "tkt-1-1",
+          "entityType": "ticket",
+          "message": "Ticket \"Define Task domain type and DynamoDB schema\" — missing \"filesToBeDeleted\". Declare files this ticket deletes. Deletion declarations participate in wave analysis to detect deletion-after-modification and deletion-after-creation conflicts.",
+          "operations": [
+            "update_ticket"
+          ],
+          "pointsLost": 5,
+          "globalImpactOnFix": 0.5
+        }
+      ]
+    },
+    "truncated": false
+  },
+  "meta": {
+    "activeEntityId": "tkt-1-1",
+    "resolution": "by-ticket"
+  }
+}

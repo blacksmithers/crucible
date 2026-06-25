@@ -73,22 +73,19 @@ def validate_ticket_expansion(
         and not na_findings
     )
 
-    cross_validation = (
-        CrossValidationResult(
+    kwargs: dict[str, Any] = {
+        "phase": "ticket_expansion",
+        "passed": passed,
+        "structural": structural,
+        "scoring": scoring,
+        "meta": build_meta(active_entity_id=active_entity_id, resolution=scope.resolution),
+    }
+    if na_findings:
+        kwargs["cross_validation"] = CrossValidationResult(
             skipped=False,
             findings=na_findings,
             ran_checks=["na-validation"],
             skipped_checks=[],
         )
-        if na_findings
-        else None
-    )
 
-    return ValidationResult(
-        phase="ticket_expansion",
-        passed=passed,
-        structural=structural,
-        scoring=scoring,
-        cross_validation=cross_validation,
-        meta=build_meta(active_entity_id=active_entity_id, resolution=scope.resolution),
-    )
+    return ValidationResult(**kwargs)

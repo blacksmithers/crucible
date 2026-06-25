@@ -1,0 +1,75 @@
+{
+  "phase": "epic_expansion",
+  "passed": true,
+  "structural": {
+    "missingFields": [
+      "ticket[id=tkt-1-1].acceptanceCriteria",
+      "ticket[id=tkt-1-1].implementationSteps",
+      "ticket[id=tkt-1-2].acceptanceCriteria",
+      "ticket[id=tkt-1-2].implementationSteps"
+    ],
+    "invalidFields": [],
+    "findings": []
+  },
+  "scoring": {
+    "skipped": false,
+    "localScore": 95,
+    "globalScore": 29.061507936507944,
+    "perField": {},
+    "perEntityScore": {
+      "ep-1": 95
+    },
+    "topologyPenalties": -24,
+    "gateResult": "pass",
+    "threshold": 70,
+    "globalScoreBreakdown": {
+      "specBlock": 17.222222222222225,
+      "epicBlock": 17.625,
+      "ticketBlock": 18.214285714285715,
+      "epicAvg": 58.75,
+      "ticketAvg": 36.42857142857143,
+      "weights": {
+        "spec": 0.2,
+        "epics": 0.3,
+        "tickets": 0.5
+      }
+    },
+    "cascadeFloors": {
+      "specOnly": 0,
+      "specPlusEpics": 30,
+      "total": 80
+    },
+    "cascadeFailures": []
+  },
+  "crossValidation": {
+    "skipped": false,
+    "findings": [],
+    "ranChecks": [
+      "na-validation",
+      "requirement-coverage",
+      "nfr-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "guidance": {
+    "perEntity": {
+      "ep-1": [
+        {
+          "patternId": "tactical-gap",
+          "entityId": "ep-1",
+          "entityType": "epic",
+          "message": "Epic \"Core Task Management Domain\" has the following recommended fields incomplete:\n  - scope.assumptions\n  - scope.externalDependencies\n\nEVALUATE what is needed, then DECLARE these fields in a single update.\n\nOperation available: action_planning_session({\n  operation: { type: 'update_epic', epicId: \"ep-1\", ... }\n})",
+          "operations": [
+            "update_epic"
+          ],
+          "pointsLost": 5,
+          "globalImpactOnFix": 0.75
+        }
+      ]
+    },
+    "truncated": false
+  },
+  "meta": {
+    "activeEntityId": "ep-1"
+  }
+}

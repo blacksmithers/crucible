@@ -69,6 +69,7 @@ def build_active_scoring(
     per_entity_score: dict[str, float] | None = None,
 ) -> ScoringResultActive:
     kwargs: dict[str, object] = {
+        "skipped": False,
         "local_score": local_score,
         "global_score": breakdown.global_score,
         "per_field": per_field,

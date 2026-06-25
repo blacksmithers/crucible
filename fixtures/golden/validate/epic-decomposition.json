@@ -1,0 +1,47 @@
+{
+  "phase": "epic_decomposition",
+  "passed": true,
+  "structural": {
+    "missingFields": [],
+    "invalidFields": [],
+    "findings": []
+  },
+  "scoring": {
+    "skipped": true,
+    "reason": "no-rubric-for-phase",
+    "localScore": null,
+    "globalScore": null,
+    "perField": {},
+    "gateResult": "n/a",
+    "threshold": null
+  },
+  "crossValidation": {
+    "skipped": false,
+    "findings": [],
+    "ranChecks": [
+      "blueprint-epic-ratio"
+    ],
+    "skippedChecks": []
+  },
+  "guidance": {
+    "perEntity": {
+      "spec-epic-decomp": [
+        {
+          "patternId": "individual",
+          "entityId": "spec-epic-decomp",
+          "entityType": "specification",
+          "message": "Decomposition phase. Review the current set of epics and decide whether the decomposition is sufficient. Available operations: create_epic, update_epic, delete_epic. To advance to the next phase, invoke complete_decomposition_phase explicitly.",
+          "operations": [
+            "create_epic",
+            "update_epic",
+            "delete_epic"
+          ],
+          "pointsLost": 0,
+          "globalImpactOnFix": 0
+        }
+      ]
+    },
+    "truncated": false
+  },
+  "meta": {}
+}

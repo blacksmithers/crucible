@@ -1,0 +1,60 @@
+{
+  "phase": "ticket_decomposition",
+  "passed": true,
+  "structural": {
+    "missingFields": [
+      "ticket[id=tkt-1-1].acceptanceCriteria",
+      "ticket[id=tkt-1-1].implementationSteps",
+      "ticket[id=tkt-1-2].acceptanceCriteria",
+      "ticket[id=tkt-1-2].implementationSteps",
+      "ticket[id=tkt-1-3].acceptanceCriteria",
+      "ticket[id=tkt-1-3].implementationSteps",
+      "ticket[id=tkt-1-4].acceptanceCriteria",
+      "ticket[id=tkt-1-4].implementationSteps",
+      "ticket[id=tkt-1-5].acceptanceCriteria",
+      "ticket[id=tkt-1-5].implementationSteps"
+    ],
+    "invalidFields": [],
+    "findings": []
+  },
+  "scoring": {
+    "skipped": true,
+    "reason": "no-rubric-for-phase",
+    "localScore": null,
+    "globalScore": null,
+    "perField": {},
+    "gateResult": "n/a",
+    "threshold": null
+  },
+  "crossValidation": {
+    "skipped": false,
+    "findings": [],
+    "ranChecks": [
+      "impl-verification-ratio"
+    ],
+    "skippedChecks": []
+  },
+  "guidance": {
+    "perEntity": {
+      "ep-1": [
+        {
+          "patternId": "individual",
+          "entityId": "ep-1",
+          "entityType": "epic",
+          "message": "Decomposition phase. Review the current set of tickets in this epic and decide whether the decomposition is sufficient. Available operations: create_ticket, update_ticket, delete_ticket. To advance to the next phase, invoke complete_decomposition_phase explicitly.",
+          "operations": [
+            "create_ticket",
+            "update_ticket",
+            "delete_ticket"
+          ],
+          "pointsLost": 0,
+          "globalImpactOnFix": 0
+        }
+      ]
+    },
+    "truncated": false
+  },
+  "meta": {
+    "activeEntityId": "ep-1"
+  }
+}
