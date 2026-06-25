@@ -13,7 +13,7 @@ from . import models, types
 from .api import validate
 from .api.input_validation import ValidatorInputError
 from .config import (
-    HARDCODED_DEFAULTS,
+    CONFIG_DEFAULTS,
     PLANNING_CONFIG_DOMAIN,
     PLANNING_CONFIG_SCHEMA_VERSION,
     ConfigValidationError,
@@ -30,7 +30,7 @@ from .models import Blueprint, Epic, Specification, Ticket
 from .structural import validate_structural
 
 __all__ = [
-    "HARDCODED_DEFAULTS",
+    "CONFIG_DEFAULTS",
     "PLANNING_CONFIG_DOMAIN",
     "PLANNING_CONFIG_SCHEMA_VERSION",
     "Blueprint",

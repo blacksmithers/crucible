@@ -1,10 +1,10 @@
-"""Hardcoded default validator config (verbatim port of ``config/defaults.ts``).
+"""Built-in default validator config (verbatim port of ``config/defaults.ts``).
 
-This mirrors the TS ``HARDCODED_DEFAULTS`` literal exactly — including the
-points where it intentionally diverges from the shipped ``defaults.yml`` (e.g.
-``arrayMaxCounts`` caps and ``epic.tickets``/``guardrails`` minimums). It is the
-fallback used by :func:`crucible.config.load.load_defaults` when the packaged
-YAML is unreadable, and the canonical ``HARDCODED_DEFAULTS`` export.
+Mirrors the TS ``HARDCODED_DEFAULTS`` literal exactly — including the points
+where it intentionally diverges from the shipped ``defaults.yml`` (e.g.
+``arrayMaxCounts`` caps and ``epic.tickets``/``guardrails`` minimums). Exposed
+here as ``CONFIG_DEFAULTS``: the fallback used by
+:func:`crucible.config.load.load_defaults` when the packaged YAML is unreadable.
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ def _check(extra: dict[str, object] | None = None) -> dict[str, object]:
     return base
 
 
-_HARDCODED_DEFAULTS: ValidatorConfig = {
+_CONFIG_DEFAULTS: ValidatorConfig = {
     "thresholds": {"global": 80, "specification": 80, "epic": 70, "ticket": 70},
     "tiers": {"critical": 3, "recommended": 2, "enrichment": 1, "contextual": 0.5},
     "topology": {
@@ -175,11 +175,11 @@ _HARDCODED_DEFAULTS: ValidatorConfig = {
 }
 
 
-def hardcoded_defaults() -> ValidatorConfig:
-    """A fresh deep copy of the hardcoded defaults (callers may mutate)."""
-    return deepcopy(_HARDCODED_DEFAULTS)
+def config_defaults() -> ValidatorConfig:
+    """A fresh deep copy of the built-in defaults (callers may mutate)."""
+    return deepcopy(_CONFIG_DEFAULTS)
 
 
-# Public constant mirroring the TS ``HARDCODED_DEFAULTS`` export. Treated as
-# read-only; use :func:`hardcoded_defaults` when a mutable copy is needed.
-HARDCODED_DEFAULTS: ValidatorConfig = _HARDCODED_DEFAULTS
+# Public constant (the TS engine's ``HARDCODED_DEFAULTS``). Treated as
+# read-only; use :func:`config_defaults` when a mutable copy is needed.
+CONFIG_DEFAULTS: ValidatorConfig = _CONFIG_DEFAULTS

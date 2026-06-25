@@ -11,7 +11,7 @@ from copy import deepcopy
 from typing import Any, Protocol
 
 from ..types.config import ValidatorConfig
-from .defaults import HARDCODED_DEFAULTS
+from .defaults import CONFIG_DEFAULTS
 
 PLANNING_CONFIG_SCHEMA_VERSION = 1
 PLANNING_CONFIG_DOMAIN = "planning"
@@ -53,11 +53,11 @@ class PlanningConfigResolver:
 
     async def resolve_for_project(self, project_id: str) -> ValidatorConfig:
         overrides = await self._store.get_project_overrides(project_id, PLANNING_CONFIG_DOMAIN)
-        return _deep_merge(deepcopy(HARDCODED_DEFAULTS), overrides or {})
+        return _deep_merge(deepcopy(CONFIG_DEFAULTS), overrides or {})
 
     async def resolve_for_spec(self, spec_id: str) -> ValidatorConfig:
         snapshot = await self._store.get_spec_snapshot(spec_id, PLANNING_CONFIG_DOMAIN)
-        return _deep_merge(deepcopy(HARDCODED_DEFAULTS), snapshot or {})
+        return _deep_merge(deepcopy(CONFIG_DEFAULTS), snapshot or {})
 
     async def build_snapshot_from_project(
         self, project_id: str

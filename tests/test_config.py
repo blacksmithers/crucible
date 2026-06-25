@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 from crucible.config import (
-    HARDCODED_DEFAULTS,
+    CONFIG_DEFAULTS,
     ConfigValidationError,
     load_defaults,
     load_from_file,
@@ -29,10 +29,10 @@ def test_load_defaults_core_values() -> None:
     assert bp["minTicketsPerBlueprint"] == 2
 
 
-def test_hardcoded_defaults_diverge_from_yaml_faithfully() -> None:
-    # defaults.ts (HARDCODED_DEFAULTS) and defaults.yml (load_defaults) are
+def test_config_defaults_diverge_from_yaml_faithfully() -> None:
+    # defaults.ts (CONFIG_DEFAULTS) and defaults.yml (load_defaults) are
     # intentionally out of sync in the TS source — the port preserves that.
-    sr_hc = HARDCODED_DEFAULTS["structuralRequirements"]
+    sr_hc = CONFIG_DEFAULTS["structuralRequirements"]
     assert sr_hc["arrayMinCounts"]["epic"]["tickets"]["default"] == 2
     assert sr_hc["arrayMaxCounts"]["specification"]["epics"]["default"] == 15
 
@@ -70,14 +70,14 @@ def test_apply_defaults_injects_optionals() -> None:
 
 
 def test_validate_config_rejects_bad_weights() -> None:
-    bad = deepcopy(HARDCODED_DEFAULTS)
+    bad = deepcopy(CONFIG_DEFAULTS)
     bad["scoring"]["weights"] = {"spec": 0.5, "epics": 0.3, "tickets": 0.5}
     with pytest.raises(ConfigValidationError):
         validate_config(bad)
 
 
 def test_validate_config_rejects_bad_threshold_entry() -> None:
-    bad = deepcopy(HARDCODED_DEFAULTS)
+    bad = deepcopy(CONFIG_DEFAULTS)
     bad["structuralRequirements"]["arrayMinCounts"]["specification"]["goals"] = {
         "default": 99,
         "min": 1,

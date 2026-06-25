@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .defaults import HARDCODED_DEFAULTS, hardcoded_defaults
+from .defaults import CONFIG_DEFAULTS, config_defaults
 from .load import load_defaults, load_from_file, load_partial_from_file
 from .merge import merge_config
 from .overrides import PlanningConfigOverridesSchema, validate_overrides
@@ -16,7 +16,7 @@ from .schema import ConfigValidationError, ValidatorConfigSchema, validate_confi
 from .snapshot import ValidatorConfigSnapshotSchema
 
 __all__ = [
-    "HARDCODED_DEFAULTS",
+    "CONFIG_DEFAULTS",
     "PLANNING_CONFIG_DOMAIN",
     "PLANNING_CONFIG_SCHEMA_VERSION",
     "ConfigValidationError",
@@ -25,7 +25,7 @@ __all__ = [
     "PlanningConfigResolver",
     "ValidatorConfigSchema",
     "ValidatorConfigSnapshotSchema",
-    "hardcoded_defaults",
+    "config_defaults",
     "load_defaults",
     "load_from_file",
     "load_partial_from_file",

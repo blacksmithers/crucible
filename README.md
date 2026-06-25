@@ -147,7 +147,7 @@ from crucible import (
     validate, validate_structural,            # entry points
     load_defaults, load_from_file,            # config loading
     load_partial_from_file, merge_config,
-    HARDCODED_DEFAULTS, ValidatorConfigSchema,
+    CONFIG_DEFAULTS, ValidatorConfigSchema,
     PlanningConfigResolver,                    # project/spec config resolution
     ValidatorInputError,                      # raised on bad context
     Specification, Epic, Ticket, Blueprint,   # OpenSpec models

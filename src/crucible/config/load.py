@@ -9,14 +9,14 @@ from typing import Any, cast
 import yaml
 
 from ..types.config import ValidatorConfig
-from .defaults import HARDCODED_DEFAULTS
+from .defaults import CONFIG_DEFAULTS
 from .schema import validate_config
 
 
 def load_defaults() -> ValidatorConfig:
     """Load the canonical default config from the packaged ``defaults.yml``.
 
-    Validated through the schema; falls back to :data:`HARDCODED_DEFAULTS` if the
+    Validated through the schema; falls back to :data:`CONFIG_DEFAULTS` if the
     packaged YAML is missing or fails to parse, so callers always get a usable
     config.
     """
@@ -29,7 +29,7 @@ def load_defaults() -> ValidatorConfig:
         parsed = cast(ValidatorConfig, yaml.safe_load(raw))
         return validate_config(parsed)
     except Exception:
-        return deepcopy(HARDCODED_DEFAULTS)
+        return deepcopy(CONFIG_DEFAULTS)
 
 
 def load_from_file(file_path: str) -> ValidatorConfig:
