@@ -9,7 +9,8 @@ The public ``validate(spec, context)`` accepts a ``dict`` shaped like
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TypedDict
+
+from typing_extensions import TypedDict
 
 from .config import ValidatorConfig
 from .phase import ReturnLayer, SinglePhase, ValidationPhase

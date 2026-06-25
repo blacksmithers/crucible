@@ -6,7 +6,9 @@ Internal helper types for the API scope resolver (not part of the public
 
 from __future__ import annotations
 
-from typing import Literal, TypedDict
+from typing import Literal
+
+from typing_extensions import TypedDict
 
 
 class ScopeAll(TypedDict):

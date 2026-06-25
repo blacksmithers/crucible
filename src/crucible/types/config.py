@@ -9,7 +9,9 @@ rather than being over-modelled. The well-defined leaf types that surface in
 
 from __future__ import annotations
 
-from typing import Any, Literal, TypedDict
+from typing import Any, Literal
+
+from typing_extensions import TypedDict
 
 # Ticket complexity buckets (config-level mirror of models.Complexity).
 ConfigComplexity = Literal["small", "medium", "large", "xlarge"]
