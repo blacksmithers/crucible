@@ -1,0 +1,4432 @@
+{
+  "seed-cross-validation": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-2-1].dependencies",
+        "message": "Ticket \"tkt-2-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-2-1"
+        ],
+        "primaryEntityId": "tkt-2-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-2-2].dependencies",
+        "message": "Ticket \"tkt-2-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-2-2"
+        ],
+        "primaryEntityId": "tkt-2-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-2-3].dependencies",
+        "message": "Ticket \"tkt-2-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-2-3"
+        ],
+        "primaryEntityId": "tkt-2-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "8 root tickets exceed maximum 2 (8 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5",
+          "tkt-2-1",
+          "tkt-2-2",
+          "tkt-2-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 8,
+          "totalTickets": 8,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5",
+            "tkt-2-1",
+            "tkt-2-2",
+            "tkt-2-3"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "8 leaf tickets exceed maximum 2 (8 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5",
+          "tkt-2-1",
+          "tkt-2-2",
+          "tkt-2-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 8,
+          "totalTickets": 8,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5",
+            "tkt-2-1",
+            "tkt-2-2",
+            "tkt-2-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-size-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "Wave 1 has 8 tickets, max allowed 5",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5",
+          "tkt-2-1",
+          "tkt-2-2",
+          "tkt-2-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "currentSize": 8,
+          "maxAllowed": 5,
+          "splitProposal": {
+            "baseWaveTicketIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4"
+            ],
+            "intermediateWaveTicketIds": [
+              "tkt-1-5",
+              "tkt-2-1",
+              "tkt-2-2",
+              "tkt-2-3"
+            ],
+            "suggestedAnchor": "tkt-1-1",
+            "instruction": "For each ticket in intermediateWaveTicketIds, add \"tkt-1-1\" to its dependencies"
+          }
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4, tkt-2-2] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4",
+          "tkt-2-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4",
+            "tkt-2-2"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-2-2].filesToBeReferenced:infrastructure/lib/notifications-stack.ts",
+        "message": "Ticket \"tkt-2-2\" references \"infrastructure/lib/notifications-stack.ts\" but does not declare dependencies on creator \"tkt-2-1\"",
+        "entityIds": [
+          "tkt-2-2"
+        ],
+        "primaryEntityId": "tkt-2-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-2-3].filesToBeReferenced:apps/api/src/notifications/fan-out.ts",
+        "message": "Ticket \"tkt-2-3\" references \"apps/api/src/notifications/fan-out.ts\" but does not declare dependencies on creator \"tkt-2-2\"",
+        "entityIds": [
+          "tkt-2-3"
+        ],
+        "primaryEntityId": "tkt-2-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-blueprint-coverage.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 root tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 leaf tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "blueprint-coverage",
+        "severity": "error",
+        "field": "blueprints[id=bp-1]",
+        "message": "Blueprint \"Task Entity State Machine\" has 1 linked tickets; minimum 2",
+        "entityIds": [
+          "bp-1",
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "bp-1",
+        "operations": [
+          "update_ticket",
+          "update_blueprint",
+          "delete_blueprint"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-broken-reference.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 root tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 leaf tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-circular-dependency.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 root tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 leaf tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-file-conflict.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 root tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 leaf tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "file-conflict",
+        "severity": "error",
+        "field": "filesToBeCreated:packages/core/src/conflict/shared-file.ts",
+        "message": "File \"packages/core/src/conflict/shared-file.ts\" is in filesToBeCreated of multiple tickets: tkt-1-1, tkt-1-2",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-files-to-be-referenced.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 root tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 leaf tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].filesToBeReferenced:packages/shared/src/nonexistent.ts",
+        "message": "Ticket \"tkt-1-1\" references \"packages/shared/src/nonexistent.ts\" but no ticket creates/modifies it",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-island-ticket-justified-na.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-island].dependencies",
+        "message": "Ticket \"tkt-1-island\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-island"
+        ],
+        "primaryEntityId": "tkt-1-island",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "6 root tickets exceed maximum 2 (6 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5",
+          "tkt-1-island"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 6,
+          "totalTickets": 6,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5",
+            "tkt-1-island"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "6 leaf tickets exceed maximum 2 (6 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5",
+          "tkt-1-island"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 6,
+          "totalTickets": 6,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5",
+            "tkt-1-island"
+          ]
+        }
+      },
+      {
+        "category": "wave-size-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "Wave 1 has 6 tickets, max allowed 5",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5",
+          "tkt-1-island"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "currentSize": 6,
+          "maxAllowed": 5,
+          "splitProposal": {
+            "baseWaveTicketIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3"
+            ],
+            "intermediateWaveTicketIds": [
+              "tkt-1-4",
+              "tkt-1-5",
+              "tkt-1-island"
+            ],
+            "suggestedAnchor": "tkt-1-1",
+            "instruction": "For each ticket in intermediateWaveTicketIds, add \"tkt-1-1\" to its dependencies"
+          }
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-island-ticket.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-island].dependencies",
+        "message": "Ticket \"tkt-1-island\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-island"
+        ],
+        "primaryEntityId": "tkt-1-island",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "6 root tickets exceed maximum 2 (6 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5",
+          "tkt-1-island"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 6,
+          "totalTickets": 6,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5",
+            "tkt-1-island"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "6 leaf tickets exceed maximum 2 (6 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5",
+          "tkt-1-island"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 6,
+          "totalTickets": 6,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5",
+            "tkt-1-island"
+          ]
+        }
+      },
+      {
+        "category": "wave-size-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "Wave 1 has 6 tickets, max allowed 5",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5",
+          "tkt-1-island"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "currentSize": 6,
+          "maxAllowed": 5,
+          "splitProposal": {
+            "baseWaveTicketIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3"
+            ],
+            "intermediateWaveTicketIds": [
+              "tkt-1-4",
+              "tkt-1-5",
+              "tkt-1-island"
+            ],
+            "suggestedAnchor": "tkt-1-1",
+            "instruction": "For each ticket in intermediateWaveTicketIds, add \"tkt-1-1\" to its dependencies"
+          }
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-orphan-reference-justified-na.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 root tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 leaf tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-orphan-reference.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 root tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 leaf tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-topology-leaves-exceed.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 root tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 leaf tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-topology-roots-exceed.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 root tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 leaf tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-wave-concurrent-modification.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 root tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 leaf tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/shared.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-3] modify same file \"packages/core/src/shared.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/shared.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-wave-deletion-after-creation.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 root tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 leaf tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-wave-deletion-after-modification.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].dependencies",
+        "message": "Ticket \"tkt-1-2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].dependencies",
+        "message": "Ticket \"tkt-1-3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].dependencies",
+        "message": "Ticket \"tkt-1-4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].dependencies",
+        "message": "Ticket \"tkt-1-5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 root tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "5 leaf tickets exceed maximum 2 (5 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-2",
+          "tkt-1-3",
+          "tkt-1-4",
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 5,
+          "totalTickets": 5,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:packages/core/src/index.ts",
+        "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "packages/core/src/index.ts",
+          "ticketIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ]
+        }
+      },
+      {
+        "category": "wave-concurrent-modification",
+        "severity": "error",
+        "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+        "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+        "entityIds": [
+          "tkt-1-2",
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "path": "apps/api/src/resolvers/index.ts",
+          "ticketIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ]
+        }
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-2"
+        ],
+        "primaryEntityId": "tkt-1-2",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-3"
+        ],
+        "primaryEntityId": "tkt-1-3",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-4"
+        ],
+        "primaryEntityId": "tkt-1-4",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependencies on creator \"tkt-1-1\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      },
+      {
+        "category": "files-to-be-referenced",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+        "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependencies on creator \"tkt-1-3\"",
+        "entityIds": [
+          "tkt-1-5"
+        ],
+        "primaryEntityId": "tkt-1-5",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  },
+  "violations/seed-violation-wave-size-exceed.json": {
+    "skipped": false,
+    "findings": [
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-1].dependencies",
+        "message": "Ticket \"tkt-1-1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-w1].dependencies",
+        "message": "Ticket \"tkt-1-w1\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-w1"
+        ],
+        "primaryEntityId": "tkt-1-w1",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-w2].dependencies",
+        "message": "Ticket \"tkt-1-w2\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-w2"
+        ],
+        "primaryEntityId": "tkt-1-w2",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-w3].dependencies",
+        "message": "Ticket \"tkt-1-w3\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-w3"
+        ],
+        "primaryEntityId": "tkt-1-w3",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-w4].dependencies",
+        "message": "Ticket \"tkt-1-w4\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-w4"
+        ],
+        "primaryEntityId": "tkt-1-w4",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-w5].dependencies",
+        "message": "Ticket \"tkt-1-w5\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-w5"
+        ],
+        "primaryEntityId": "tkt-1-w5",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "island-ticket",
+        "severity": "error",
+        "field": "tickets[id=tkt-1-w6].dependencies",
+        "message": "Ticket \"tkt-1-w6\" is isolated — no dependencies and no dependents",
+        "entityIds": [
+          "tkt-1-w6"
+        ],
+        "primaryEntityId": "tkt-1-w6",
+        "operations": [
+          "update_ticket"
+        ]
+      },
+      {
+        "category": "topology-roots-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "7 root tickets exceed maximum 2 (7 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-w1",
+          "tkt-1-w2",
+          "tkt-1-w3",
+          "tkt-1-w4",
+          "tkt-1-w5",
+          "tkt-1-w6"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "rootCount": 7,
+          "totalTickets": 7,
+          "maxAllowed": 2,
+          "rootIds": [
+            "tkt-1-1",
+            "tkt-1-w1",
+            "tkt-1-w2",
+            "tkt-1-w3",
+            "tkt-1-w4",
+            "tkt-1-w5",
+            "tkt-1-w6"
+          ]
+        }
+      },
+      {
+        "category": "topology-leaves-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "7 leaf tickets exceed maximum 2 (7 total)",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-w1",
+          "tkt-1-w2",
+          "tkt-1-w3",
+          "tkt-1-w4",
+          "tkt-1-w5",
+          "tkt-1-w6"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket",
+          "create_ticket"
+        ],
+        "context": {
+          "leafCount": 7,
+          "totalTickets": 7,
+          "maxAllowed": 2,
+          "leafIds": [
+            "tkt-1-1",
+            "tkt-1-w1",
+            "tkt-1-w2",
+            "tkt-1-w3",
+            "tkt-1-w4",
+            "tkt-1-w5",
+            "tkt-1-w6"
+          ]
+        }
+      },
+      {
+        "category": "wave-size-exceed",
+        "severity": "error",
+        "field": "specification.tickets",
+        "message": "Wave 1 has 7 tickets, max allowed 5",
+        "entityIds": [
+          "tkt-1-1",
+          "tkt-1-w1",
+          "tkt-1-w2",
+          "tkt-1-w3",
+          "tkt-1-w4",
+          "tkt-1-w5",
+          "tkt-1-w6"
+        ],
+        "primaryEntityId": "tkt-1-1",
+        "operations": [
+          "update_ticket"
+        ],
+        "context": {
+          "wave": 1,
+          "currentSize": 7,
+          "maxAllowed": 5,
+          "splitProposal": {
+            "baseWaveTicketIds": [
+              "tkt-1-1",
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3"
+            ],
+            "intermediateWaveTicketIds": [
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "suggestedAnchor": "tkt-1-1",
+            "instruction": "For each ticket in intermediateWaveTicketIds, add \"tkt-1-1\" to its dependencies"
+          }
+        }
+      },
+      {
+        "category": "blueprint-coverage",
+        "severity": "error",
+        "field": "blueprints[id=bp-1]",
+        "message": "Blueprint \"Task Entity State Machine\" has 1 linked tickets; minimum 2",
+        "entityIds": [
+          "bp-1",
+          "tkt-1-1"
+        ],
+        "primaryEntityId": "bp-1",
+        "operations": [
+          "update_ticket",
+          "update_blueprint",
+          "delete_blueprint"
+        ]
+      },
+      {
+        "category": "blueprint-coverage",
+        "severity": "error",
+        "field": "blueprints[id=bp-2]",
+        "message": "Blueprint \"System Architecture Overview\" has 0 linked tickets; minimum 2",
+        "entityIds": [
+          "bp-2"
+        ],
+        "primaryEntityId": "bp-2",
+        "operations": [
+          "update_ticket",
+          "update_blueprint",
+          "delete_blueprint"
+        ]
+      }
+    ],
+    "ranChecks": [
+      "circular-dependency",
+      "broken-reference",
+      "orphan-reference",
+      "island-ticket",
+      "topology-roots-exceed",
+      "topology-leaves-exceed",
+      "wave-size-exceed",
+      "wave-concurrent-modification",
+      "wave-deletion-after-modification",
+      "wave-deletion-after-creation",
+      "file-conflict",
+      "files-to-be-referenced",
+      "blueprint-coverage"
+    ],
+    "skippedChecks": []
+  }
+}
