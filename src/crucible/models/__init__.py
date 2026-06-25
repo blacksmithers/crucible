@@ -1,0 +1,91 @@
+"""OpenSpec v1.1 entity models (Python port of ``@specforge/spec-types``)."""
+
+from __future__ import annotations
+
+from .auxiliary import (
+    AcceptanceCriterion,
+    BlueprintReference,
+    CodeReference,
+    CodeSnippet,
+    DependencyLink,
+    FieldDeclaration,
+    ImplementationStep,
+    TestSpecification,
+    TypeReference,
+    TypeSnippet,
+)
+from .blueprint import Blueprint
+from .enums import (
+    ApiContractType,
+    BlueprintCategory,
+    BlueprintCoverageType,
+    BlueprintFormat,
+    Complexity,
+    DependencyType,
+    EpicCategory,
+    GoalType,
+    GuardrailCategory,
+    GuardrailScope,
+    NfrCategory,
+    RequirementType,
+    TechLayer,
+    TestType,
+    TicketType,
+)
+from .epic import Epic
+from .planning import (
+    ApiContract,
+    EpicTargets,
+    Goal,
+    Guardrail,
+    NonFunctionalRequirement,
+    Requirement,
+    Scope,
+    SharedPattern,
+    StructureItem,
+    TechStackItem,
+)
+from .specification import Specification
+from .ticket import Ticket
+
+__all__ = [
+    "AcceptanceCriterion",
+    "ApiContract",
+    "ApiContractType",
+    "Blueprint",
+    "BlueprintCategory",
+    "BlueprintCoverageType",
+    "BlueprintFormat",
+    "BlueprintReference",
+    "CodeReference",
+    "CodeSnippet",
+    "Complexity",
+    "DependencyLink",
+    "DependencyType",
+    "Epic",
+    "EpicCategory",
+    "EpicTargets",
+    "FieldDeclaration",
+    "Goal",
+    "GoalType",
+    "Guardrail",
+    "GuardrailCategory",
+    "GuardrailScope",
+    "ImplementationStep",
+    "NfrCategory",
+    "NonFunctionalRequirement",
+    "Requirement",
+    "RequirementType",
+    "Scope",
+    "SharedPattern",
+    "Specification",
+    "StructureItem",
+    "TechLayer",
+    "TechStackItem",
+    "TestSpecification",
+    "TestType",
+    "Ticket",
+    "TicketType",
+    "TypeReference",
+    "TypeSnippet",
+]
