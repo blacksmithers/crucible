@@ -1,8 +1,7 @@
 """Public ``validate`` entry point (port of ``api/validate.ts``).
 
-NOTE: the guidance layer is not yet assembled (C7), so single-phase results do
-not carry a ``guidance`` field, and ``returns=['guidance']`` yields nothing.
-The structural, scoring, and crossValidation layers are complete.
+All four output layers (structural, scoring, crossValidation, guidance) are
+assembled per phase, matching the reference engine.
 """
 
 from __future__ import annotations

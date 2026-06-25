@@ -46,5 +46,5 @@ def _load_normalized(path: Path) -> dict[str, Any]:
 @pytest.mark.parametrize("key", list(GOLDEN.keys()))
 def test_cross_validation_matches_golden(key: str) -> None:
     seed = _load_normalized(_seed_path(key))
-    actual = run_cross_validation(seed, _CONFIG, "cross_validation").to_json_dict()
+    actual = run_cross_validation(seed, _CONFIG, "cross_validation").result.to_json_dict()
     assert actual == GOLDEN[key]

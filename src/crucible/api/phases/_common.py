@@ -3,10 +3,16 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from typing import Any
 
+from ...guidance.composer import compose_findings
+from ...guidance.engine import execute_rubric
+from ...guidance.format import format_guidance
 from ...scoring.global_ import GlobalScoreBreakdown as _InternalBreakdown
 from ...scoring.per_field import PerFieldResult
 from ...types.cascade import CascadeFailure, CascadeFloors
+from ...types.context import PhaseContext
+from ...types.guidance import GuidanceResult
 from ...types.result import (
     GlobalScoreBreakdown,
     PerFieldScore,
@@ -14,6 +20,18 @@ from ...types.result import (
     ValidationResultMeta,
 )
 from ..version import get_validator_version
+
+
+def build_guidance(spec: dict[str, Any], context: PhaseContext) -> GuidanceResult:
+    findings = execute_rubric(spec, context)
+    composites = compose_findings(findings, context, spec)
+    composed_ids = {f.rubric_entry_id for c in composites for f in c.grouped_findings}
+    individuals = [
+        f
+        for f in findings
+        if f.rubric_entry_id not in composed_ids and f.status != "fulfilled"
+    ]
+    return format_guidance(composites, individuals, context, spec)
 
 
 def now_iso() -> str:

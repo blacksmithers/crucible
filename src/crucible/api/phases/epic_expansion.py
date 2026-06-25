@@ -16,9 +16,10 @@ from ...scoring import (
 )
 from ...structural import validate_structural
 from ...types.config import ValidatorConfig
+from ...types.context import PhaseContext
 from ...types.result import CrossValidationResult, ValidationResult
 from ..scope_resolver import resolve_epic_scope
-from ._common import build_active_scoring, build_meta
+from ._common import build_active_scoring, build_guidance, build_meta
 
 
 def validate_epic_expansion(
@@ -78,6 +79,10 @@ def validate_epic_expansion(
         and not all_local
     )
 
+    guidance = build_guidance(
+        spec, PhaseContext(phase="epic_expansion", config=config, active_entity_id=active_entity_id)
+    )
+
     return ValidationResult(
         phase="epic_expansion",
         passed=passed,
@@ -89,5 +94,6 @@ def validate_epic_expansion(
             ran_checks=["na-validation", "requirement-coverage", "nfr-coverage"],
             skipped_checks=[],
         ),
+        guidance=guidance,
         meta=build_meta(active_entity_id=active_entity_id),
     )

@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from ...engines.ratios import check_impl_verification_ratio
+from ...guidance.fixed_prompts import build_ticket_decomposition_guidance
 from ...structural import validate_structural
 from ...types.config import ValidatorConfig
 from ...types.result import CrossValidationResult, ScoringResultSkipped, ValidationResult
@@ -25,16 +26,22 @@ def validate_ticket_decomposition(
         and not any(f.severity == "error" for f in structural.findings)
     )
 
-    return ValidationResult(
-        phase="ticket_decomposition",
-        passed=passed,
-        structural=structural,
-        scoring=ScoringResultSkipped(),
-        cross_validation=CrossValidationResult(
+    epic_id = active_entity_id[0] if isinstance(active_entity_id, list) else active_entity_id
+
+    kwargs: dict[str, Any] = {
+        "phase": "ticket_decomposition",
+        "passed": passed,
+        "structural": structural,
+        "scoring": ScoringResultSkipped(),
+        "cross_validation": CrossValidationResult(
             skipped=False,
             findings=ratio_findings,
             ran_checks=["impl-verification-ratio"],
             skipped_checks=[],
         ),
-        meta=build_meta(active_entity_id=active_entity_id),
-    )
+        "meta": build_meta(active_entity_id=active_entity_id),
+    }
+    if epic_id:
+        kwargs["guidance"] = build_ticket_decomposition_guidance(spec, epic_id)
+
+    return ValidationResult(**kwargs)

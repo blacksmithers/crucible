@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from ...engines.ratios import check_blueprint_epic_ratio
+from ...guidance.fixed_prompts import build_epic_decomposition_guidance
 from ...structural import validate_structural
 from ...types.config import ValidatorConfig
 from ...types.result import CrossValidationResult, ScoringResultSkipped, ValidationResult
@@ -34,5 +35,6 @@ def validate_epic_decomposition(
             ran_checks=["blueprint-epic-ratio"],
             skipped_checks=[],
         ),
+        guidance=build_epic_decomposition_guidance(spec),
         meta=build_meta(),
     )

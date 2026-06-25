@@ -58,8 +58,8 @@ if result.scoring and not result.scoring.skipped:
 
 ## Status
 
-Early development (`0.1.0.dev`). The gate-relevant engine is complete and
-**verified byte-for-byte against the current TS validator**:
+`0.1.0.dev` — a **complete** port, **verified byte-for-byte against the current
+TS validator** across every phase and output layer:
 
 | Layer | Status |
 |---|---|
@@ -67,13 +67,13 @@ Early development (`0.1.0.dev`). The gate-relevant engine is complete and
 | structural (presence, schema/format, duplicate-order, entity-count) | ✅ differential-verified |
 | scoring (53-entry rubric, tiers, topology, cascade) | ✅ differential-verified |
 | cross-validation (13 checks) | ✅ differential-verified |
-| `validate()` API (6 phases + dispatcher) | ✅ differential-verified |
-| guidance (advisory prose composition) | ⏳ not yet ported |
+| guidance (composer patterns + prose templates) | ✅ differential-verified |
+| `validate()` API (6 phases + dispatcher, all 4 return layers) | ✅ differential-verified |
 
-So `validate(..., returns=["structural", "scoring", "crossValidation"])` is
-faithful; the `guidance` layer (advisory messages — not part of the gate
-decision) is pending. See [`docs/VALIDATOR-PORT-NOTES.md`](docs/VALIDATOR-PORT-NOTES.md)
-for the fidelity strategy.
+All four return layers — `structural`, `scoring`, `crossValidation`, and
+`guidance` — match the reference engine. See
+[`docs/VALIDATOR-PORT-NOTES.md`](docs/VALIDATOR-PORT-NOTES.md) for the fidelity
+strategy.
 
 ## License
 

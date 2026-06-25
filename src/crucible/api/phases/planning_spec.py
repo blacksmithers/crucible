@@ -18,8 +18,9 @@ from ...scoring import (
 )
 from ...structural import validate_structural
 from ...types.config import ValidatorConfig
+from ...types.context import PhaseContext
 from ...types.result import ValidationResult
-from ._common import build_active_scoring, build_meta, per_field_to_scores
+from ._common import build_active_scoring, build_guidance, build_meta, per_field_to_scores
 
 
 def validate_planning_spec(
@@ -67,10 +68,15 @@ def validate_planning_spec(
         and not na_findings
     )
 
+    guidance = build_guidance(
+        spec, PhaseContext(phase="planning_spec", config=config, active_entity_id=active_entity_id)
+    )
+
     return ValidationResult(
         phase="planning_spec",
         passed=passed,
         structural=structural,
         scoring=scoring,
+        guidance=guidance,
         meta=build_meta(active_entity_id=active_entity_id),
     )

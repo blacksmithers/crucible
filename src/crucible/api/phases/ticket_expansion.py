@@ -15,9 +15,10 @@ from ...scoring import (
 )
 from ...structural import validate_structural
 from ...types.config import ValidatorConfig
+from ...types.context import PhaseContext
 from ...types.result import CrossValidationResult, ValidationResult
 from ..scope_resolver import resolve_ticket_scope
-from ._common import build_active_scoring, build_meta
+from ._common import build_active_scoring, build_guidance, build_meta
 
 
 def validate_ticket_expansion(
@@ -73,11 +74,17 @@ def validate_ticket_expansion(
         and not na_findings
     )
 
+    guidance = build_guidance(
+        spec,
+        PhaseContext(phase="ticket_expansion", config=config, active_entity_id=active_entity_id),
+    )
+
     kwargs: dict[str, Any] = {
         "phase": "ticket_expansion",
         "passed": passed,
         "structural": structural,
         "scoring": scoring,
+        "guidance": guidance,
         "meta": build_meta(active_entity_id=active_entity_id, resolution=scope.resolution),
     }
     if na_findings:

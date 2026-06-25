@@ -2,9 +2,9 @@
 
 Faithful Python port of the SpecForge ``@specforge/validator`` engine.
 
-``validate(spec, context)`` is the single entry point. The structural, scoring,
-and cross-validation layers are complete; the guidance prose layer is not yet
-assembled (so ``returns=['guidance']`` yields nothing yet).
+``validate(spec, context)`` is the single entry point. All four return layers
+(``structural``, ``scoring``, ``crossValidation``, ``guidance``) are complete
+and verified byte-for-byte against the reference engine.
 """
 
 from __future__ import annotations
@@ -54,4 +54,4 @@ __all__ = [
     "validate_structural",
 ]
 
-__version__ = "0.1.0.dev0"
+__version__ = "0.1.0"

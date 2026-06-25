@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "crucible-forge"
-version = "0.1.0.dev0"
+version = "0.1.0"
 description = "Self-contained, deterministic validation engine for OpenSpec v1.1 specifications (Python port of the SpecForge validator)."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -52,7 +52,9 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
-ignore = ["E501"]
+# RUF001/2/3: ambiguous-unicode — guidance prose is ported verbatim and
+# intentionally contains × – → ≥ etc.; preserving them is required for fidelity.
+ignore = ["E501", "RUF001", "RUF002", "RUF003"]
 
 [tool.mypy]
 python_version = "3.11"

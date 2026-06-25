@@ -1,13 +1,15 @@
 """Cross-validation layer (port of ``@specforge/validator`` ``src/cross-validation``).
 
-Findings only — the per-finding guidance prose is produced by the guidance
-layer. Runs the 13-check registry (insertion order preserved), honoring each
-check's ``enabled`` flag and ``enabledPhases``.
+Runs the 13-check registry (insertion order preserved), honoring each check's
+``enabled`` flag and ``enabledPhases``. Each check yields emissions (finding +
+guidance prose); the layer result carries findings, the guidance layer consumes
+the prose.
 """
 
 from __future__ import annotations
 
 from collections.abc import Callable
+from dataclasses import dataclass
 from typing import Any
 
 from ..types.config import ValidatorConfig
@@ -20,6 +22,7 @@ from .dependency_graph import (
     check_orphan_reference,
     detect_cycles,
 )
+from .emission import CVEmission
 from .files import check_file_consistency, check_files_to_be_referenced
 from .topology import check_topology_leaves_exceed, check_topology_roots_exceed
 from .waves import (
@@ -29,7 +32,7 @@ from .waves import (
     check_wave_size_exceed,
 )
 
-CheckFn = Callable[[dict[str, Any], ValidatorConfig], list[CrossValidationFinding]]
+CheckFn = Callable[[dict[str, Any], ValidatorConfig], list[CVEmission]]
 
 # Insertion order is the finding order — mirrors the TS CHECK_REGISTRY.
 CHECK_REGISTRY: dict[str, CheckFn] = {
@@ -50,16 +53,23 @@ CHECK_REGISTRY: dict[str, CheckFn] = {
     "blueprint-coverage": check_blueprint_ticket_coverage,
 }
 
-__all__ = ["CHECK_REGISTRY", "run_cross_validation"]
+__all__ = ["CHECK_REGISTRY", "CrossValidationRunOutput", "run_cross_validation"]
+
+
+@dataclass(frozen=True)
+class CrossValidationRunOutput:
+    result: CrossValidationResult
+    emissions: list[CVEmission]
 
 
 def run_cross_validation(
     spec: dict[str, Any],
     config: ValidatorConfig,
     phase: ValidationPhase,
-) -> CrossValidationResult:
+) -> CrossValidationRunOutput:
     checks_config = config["crossValidation"]["checks"]
 
+    emissions: list[CVEmission] = []
     findings: list[CrossValidationFinding] = []
     ran_checks: list[str] = []
     skipped_checks: list[SkippedCheck] = []
@@ -74,17 +84,25 @@ def run_cross_validation(
                 SkippedCheck(name=check_name, reason=f"phase-not-enabled ({phase})")
             )
             continue
-        findings.extend(check_fn(spec, config))
+        check_emissions = check_fn(spec, config)
+        emissions.extend(check_emissions)
+        findings.extend(e.finding for e in check_emissions)
         ran_checks.append(check_name)
 
     if not ran_checks:
-        return CrossValidationResult(
-            skipped=True, reason="no-checks-active-for-phase", findings=[]
+        return CrossValidationRunOutput(
+            result=CrossValidationResult(
+                skipped=True, reason="no-checks-active-for-phase", findings=[]
+            ),
+            emissions=[],
         )
 
-    return CrossValidationResult(
-        skipped=False,
-        findings=findings,
-        ran_checks=ran_checks,
-        skipped_checks=skipped_checks,
+    return CrossValidationRunOutput(
+        result=CrossValidationResult(
+            skipped=False,
+            findings=findings,
+            ran_checks=ran_checks,
+            skipped_checks=skipped_checks,
+        ),
+        emissions=emissions,
     )
