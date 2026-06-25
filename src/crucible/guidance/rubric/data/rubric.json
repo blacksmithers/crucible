@@ -1,0 +1,1414 @@
+[
+  {
+    "id": "spec.goals.v1",
+    "fieldPath": "specification.goals",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 1,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.specification.goals"
+      },
+      {
+        "type": "goal-has-success-criteria"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Specification needs at least {minCount} goals (currently {actualCount}). Goals scope what the architecture must achieve and are interdependent with requirements and scope. Each goal requires measurable success criteria.",
+    "availableOperations": [
+      "set_metadata"
+    ],
+    "composesWith": [
+      "specification.goals",
+      "specification.requirements",
+      "specification.architecture",
+      "specification.scope.inScope",
+      "specification.scope.outOfScope",
+      "specification.folderStructures",
+      "specification.techStack"
+    ]
+  },
+  {
+    "id": "spec.requirements.v1",
+    "fieldPath": "specification.requirements",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 2,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.specification.requirements"
+      },
+      {
+        "type": "requirement-has-acceptance-criteria"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Specification needs at least {minCount} requirements (currently {actualCount}), each with acceptance criteria. Requirements define what the system must do within the declared scope.",
+    "availableOperations": [
+      "set_metadata"
+    ],
+    "composesWith": [
+      "specification.goals",
+      "specification.requirements",
+      "specification.architecture",
+      "specification.scope.inScope",
+      "specification.scope.outOfScope",
+      "specification.folderStructures",
+      "specification.techStack"
+    ]
+  },
+  {
+    "id": "spec.architecture.v1",
+    "fieldPath": "specification.architecture",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 3,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minLength",
+        "source": "config:structuralRequirements.stringMinLengths.specification.architecture",
+        "appliesTo": "field"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Architecture needs at least {minLength} characters (currently {actualLength}). Describe the structural approach, key components, and technology decisions that constrain the implementation.",
+    "availableOperations": [
+      "set_metadata"
+    ],
+    "composesWith": [
+      "specification.goals",
+      "specification.requirements",
+      "specification.architecture",
+      "specification.scope.inScope",
+      "specification.scope.outOfScope",
+      "specification.folderStructures",
+      "specification.techStack"
+    ]
+  },
+  {
+    "id": "spec.scope.inScope.v1",
+    "fieldPath": "specification.scope.inScope",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 4,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.specification.scope.inScope"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} in-scope item(s). In-scope items state what this specification covers; they constrain requirements and prevent ticket drift.",
+    "availableOperations": [
+      "set_metadata"
+    ],
+    "composesWith": [
+      "specification.goals",
+      "specification.requirements",
+      "specification.architecture",
+      "specification.scope.inScope",
+      "specification.scope.outOfScope",
+      "specification.folderStructures",
+      "specification.techStack"
+    ]
+  },
+  {
+    "id": "spec.scope.outOfScope.v1",
+    "fieldPath": "specification.scope.outOfScope",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 4,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.specification.scope.outOfScope"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} out-of-scope item(s). Out-of-scope items state what this specification will NOT do — explicit non-goals prevent scope creep during epic and ticket expansion.",
+    "availableOperations": [
+      "set_metadata"
+    ],
+    "composesWith": [
+      "specification.goals",
+      "specification.requirements",
+      "specification.architecture",
+      "specification.scope.inScope",
+      "specification.scope.outOfScope",
+      "specification.folderStructures",
+      "specification.techStack"
+    ]
+  },
+  {
+    "id": "spec.scope.assumptions.v1",
+    "fieldPath": "specification.scope.assumptions",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 4,
+    "tier": "enrichment",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.specification.scope.assumptions"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate scope.assumptions, or add naReason explaining why this Spec has no architectural assumptions worth recording.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} assumption(s) the architecture rests on. Assumptions surface implicit beliefs (about traffic, data shape, team size) so they can be challenged.",
+    "availableOperations": [
+      "set_metadata"
+    ]
+  },
+  {
+    "id": "spec.scope.externalDependencies.v1",
+    "fieldPath": "specification.scope.externalDependencies",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 4,
+    "tier": "enrichment",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.specification.scope.externalDependencies"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate scope.externalDependencies, or add naReason explaining why this Spec has no external service / system dependencies.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} external dependency. External dependencies (third-party APIs, infra, vendor services) shape failure modes the implementation must defend against.",
+    "availableOperations": [
+      "set_metadata"
+    ]
+  },
+  {
+    "id": "spec.techStack.v1",
+    "fieldPath": "specification.techStack",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 5,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.specification.techStack"
+      },
+      {
+        "type": "tech-has-layer"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} tech stack item(s) with layer (frontend/backend/database/infra/etc). Technology choices constrain what patterns are available.",
+    "availableOperations": [
+      "set_metadata"
+    ],
+    "composesWith": [
+      "specification.goals",
+      "specification.requirements",
+      "specification.architecture",
+      "specification.scope.inScope",
+      "specification.scope.outOfScope",
+      "specification.folderStructures",
+      "specification.techStack"
+    ]
+  },
+  {
+    "id": "spec.folderStructures.v1",
+    "fieldPath": "specification.folderStructures",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 6,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.specification.folderStructures"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} folder structure(s) — the macro topology of packages and directories. Detail individual files inside each epic's fileStructures, not here.",
+    "availableOperations": [
+      "set_metadata"
+    ],
+    "composesWith": [
+      "specification.goals",
+      "specification.requirements",
+      "specification.architecture",
+      "specification.scope.inScope",
+      "specification.scope.outOfScope",
+      "specification.folderStructures",
+      "specification.techStack"
+    ]
+  },
+  {
+    "id": "spec.acceptanceCriteria.v1",
+    "fieldPath": "specification.acceptanceCriteria",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 7,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.specification.acceptanceCriteria"
+      },
+      {
+        "type": "given-when-then"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate acceptanceCriteria, or add naReason explaining why this field doesn't apply to this Spec.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} spec-level acceptance criterion in given/when/then format. These define when the specification as a whole is considered complete.",
+    "availableOperations": [
+      "set_metadata"
+    ]
+  },
+  {
+    "id": "spec.nonFunctionalRequirements.v1",
+    "fieldPath": "specification.nonFunctionalRequirements",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 8,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.specification.nonFunctionalRequirements"
+      },
+      {
+        "type": "nfr-has-metric-and-target"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate nonFunctionalRequirements, or add naReason explaining why this field doesn't apply to this Spec.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} non-functional requirement(s) with measurable metrics and targets (e.g. latency < 200ms at p99). NFRs constrain how the system must behave beyond functional requirements.",
+    "availableOperations": [
+      "set_metadata"
+    ]
+  },
+  {
+    "id": "spec.guardrails.v1",
+    "fieldPath": "specification.guardrails",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 9,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.specification.guardrails"
+      },
+      {
+        "type": "guardrail-has-rationale-and-consequence"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate guardrails, or add naReason explaining why this field doesn't apply to this Spec.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} guardrail(s) with rationale and consequence. Guardrails communicate what must never be done and why, preventing costly mistakes during implementation.",
+    "availableOperations": [
+      "set_metadata"
+    ]
+  },
+  {
+    "id": "spec.sharedPatterns.v1",
+    "fieldPath": "specification.sharedPatterns",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 13,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.specification.sharedPatterns"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate sharedPatterns with the base patterns inherited by all epics, or add naReason explaining why this Spec has no shared patterns.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} shared pattern(s) at the spec level. These act as the BASE inheritance set — each Epic can override or extend via its own sharedPatterns. Use this to communicate codeStandards, commonImports, returnTypes, additionalImports, commonFiles that apply across the whole spec.",
+    "availableOperations": [
+      "set_metadata"
+    ]
+  },
+  {
+    "id": "spec.goals.leaf.v1",
+    "fieldPath": "specification.goals",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 11,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "array-item-field-min-length",
+        "param": "title",
+        "source": "config:structuralRequirements.arrayItemFieldMinLengths.specification.goals.title"
+      },
+      {
+        "type": "array-item-field-min-length",
+        "param": "description",
+        "source": "config:structuralRequirements.arrayItemFieldMinLengths.specification.goals.description"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Each goal needs a title of at least {itemMinLength} characters and a meaningful description. Short or placeholder titles undermine the rubric purpose.",
+    "availableOperations": [
+      "set_metadata"
+    ]
+  },
+  {
+    "id": "spec.requirements.leaf.v1",
+    "fieldPath": "specification.requirements",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 12,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "array-item-field-min-length",
+        "param": "title",
+        "source": "config:structuralRequirements.arrayItemFieldMinLengths.specification.requirements.title"
+      },
+      {
+        "type": "array-item-field-min-length",
+        "param": "description",
+        "source": "config:structuralRequirements.arrayItemFieldMinLengths.specification.requirements.description"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Each requirement needs a title of at least {itemMinLength} characters and a meaningful description. Short or placeholder titles undermine the rubric purpose.",
+    "availableOperations": [
+      "set_metadata"
+    ]
+  },
+  {
+    "id": "spec.background.v1",
+    "fieldPath": "specification.background",
+    "curriculumPhase": "planning_spec",
+    "curriculumStep": 10,
+    "tier": "enrichment",
+    "structuralChecks": [
+      {
+        "type": "minLength",
+        "source": "config:structuralRequirements.stringMinLengths.specification.background",
+        "appliesTo": "field"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate background, or add naReason explaining why this field doesn't apply to this Spec.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Background needs at least {minLength} characters (currently {actualLength}). Explain why this specification exists and what problem it solves — helps future contributors understand intent.",
+    "availableOperations": [
+      "set_metadata"
+    ]
+  },
+  {
+    "id": "epic.title.v1",
+    "fieldPath": "epic.title",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 1,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "present"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare the epic title — a short, descriptive name that identifies this epic's scope within the specification.",
+    "availableOperations": [
+      "update_epic"
+    ],
+    "composesWith": [
+      "epic.title",
+      "epic.description",
+      "epic.objective",
+      "epic.architecture",
+      "epic.scope.inScope",
+      "epic.scope.outOfScope",
+      "epic.acceptanceCriteria"
+    ]
+  },
+  {
+    "id": "epic.description.v1",
+    "fieldPath": "epic.description",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 2,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minLength",
+        "source": "config:structuralRequirements.stringMinLengths.epic.description",
+        "appliesTo": "field"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Epic description needs at least {minLength} characters (currently {actualLength}). Explain what this epic delivers and its role in the overall specification.",
+    "availableOperations": [
+      "update_epic"
+    ],
+    "composesWith": [
+      "epic.title",
+      "epic.description",
+      "epic.objective",
+      "epic.architecture",
+      "epic.scope.inScope",
+      "epic.scope.outOfScope",
+      "epic.acceptanceCriteria"
+    ]
+  },
+  {
+    "id": "epic.objective.v1",
+    "fieldPath": "epic.objective",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 3,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minLength",
+        "source": "config:structuralRequirements.stringMinLengths.epic.objective",
+        "appliesTo": "field"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Epic objective needs at least {minLength} characters (currently {actualLength}). Declare the concrete outcome this epic must achieve when all its tickets are complete.",
+    "availableOperations": [
+      "update_epic"
+    ],
+    "composesWith": [
+      "epic.title",
+      "epic.description",
+      "epic.objective",
+      "epic.architecture",
+      "epic.scope.inScope",
+      "epic.scope.outOfScope",
+      "epic.acceptanceCriteria"
+    ]
+  },
+  {
+    "id": "epic.architecture.v1",
+    "fieldPath": "epic.architecture",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 4,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minLength",
+        "source": "config:structuralRequirements.stringMinLengths.epic.architecture",
+        "appliesTo": "field"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Epic architecture needs at least {minLength} characters (currently {actualLength}). Describe the structural approach specific to this epic's scope, narrowing from the spec-level architecture.",
+    "availableOperations": [
+      "update_epic"
+    ],
+    "composesWith": [
+      "epic.title",
+      "epic.description",
+      "epic.objective",
+      "epic.architecture",
+      "epic.scope.inScope",
+      "epic.scope.outOfScope",
+      "epic.acceptanceCriteria"
+    ]
+  },
+  {
+    "id": "epic.scope.inScope.v1",
+    "fieldPath": "epic.scope.inScope",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 5,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.epic.scope.inScope"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} in-scope item(s) for this epic. In-scope items prevent ticket drift during expansion by binding tickets to this epic's slice of the spec.",
+    "availableOperations": [
+      "update_epic"
+    ],
+    "composesWith": [
+      "epic.title",
+      "epic.description",
+      "epic.objective",
+      "epic.architecture",
+      "epic.scope.inScope",
+      "epic.scope.outOfScope",
+      "epic.acceptanceCriteria"
+    ]
+  },
+  {
+    "id": "epic.scope.outOfScope.v1",
+    "fieldPath": "epic.scope.outOfScope",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 5,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.epic.scope.outOfScope"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} out-of-scope item(s) for this epic. Explicit non-goals at the epic level prevent ticket creep.",
+    "availableOperations": [
+      "update_epic"
+    ],
+    "composesWith": [
+      "epic.title",
+      "epic.description",
+      "epic.objective",
+      "epic.architecture",
+      "epic.scope.inScope",
+      "epic.scope.outOfScope",
+      "epic.acceptanceCriteria"
+    ]
+  },
+  {
+    "id": "epic.scope.assumptions.v1",
+    "fieldPath": "epic.scope.assumptions",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 5,
+    "tier": "enrichment",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.epic.scope.assumptions"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate epic.scope.assumptions, or add naReason explaining why this Epic has no scoping assumptions worth recording.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} epic-level assumption(s). Surfaced assumptions can be challenged during planning rather than discovered during implementation.",
+    "availableOperations": [
+      "update_epic"
+    ]
+  },
+  {
+    "id": "epic.scope.externalDependencies.v1",
+    "fieldPath": "epic.scope.externalDependencies",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 5,
+    "tier": "enrichment",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.epic.scope.externalDependencies"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate epic.scope.externalDependencies, or add naReason explaining why this Epic has no external dependencies of its own.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} epic-level external dependency. Epic-specific dependencies (libraries, sibling-epic outputs) shape integration risk.",
+    "availableOperations": [
+      "update_epic"
+    ]
+  },
+  {
+    "id": "epic.acceptanceCriteria.v1",
+    "fieldPath": "epic.acceptanceCriteria",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 6,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.epic.acceptanceCriteria"
+      },
+      {
+        "type": "given-when-then"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} epic-level acceptance criterion in given/when/then format defining when this epic is complete.",
+    "availableOperations": [
+      "update_epic"
+    ],
+    "composesWith": [
+      "epic.title",
+      "epic.description",
+      "epic.objective",
+      "epic.architecture",
+      "epic.scope.inScope",
+      "epic.scope.outOfScope",
+      "epic.acceptanceCriteria"
+    ]
+  },
+  {
+    "id": "epic.validationCommands.v1",
+    "fieldPath": "epic.validationCommands",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 7,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.epic.validationCommands"
+      },
+      {
+        "type": "minLength",
+        "source": "config:structuralRequirements.itemMinLengths.epic.validationCommands",
+        "appliesTo": "items"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate validationCommands, or add naReason explaining why this field doesn't apply to this Epic.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} validation command(s) (currently {actualCount}) that verify this epic works end-to-end. Each command must be at least {itemMinLength} characters.",
+    "availableOperations": [
+      "update_epic"
+    ]
+  },
+  {
+    "id": "epic.apiContracts.v1",
+    "fieldPath": "epic.apiContracts",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 8,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.epic.apiContracts"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate apiContracts, or add naReason explaining why this field doesn't apply to this Epic.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} API contract(s) for endpoints or interfaces this epic exposes. Contracts prevent integration surprises between epics.",
+    "availableOperations": [
+      "update_epic"
+    ]
+  },
+  {
+    "id": "epic.sharedPatterns.v1",
+    "fieldPath": "epic.sharedPatterns",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 9,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.epic.sharedPatterns"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate sharedPatterns, or add naReason explaining why this field doesn't apply to this Epic.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} shared pattern(s) (reusable code patterns, conventions) that tickets within this epic should follow.",
+    "availableOperations": [
+      "update_epic"
+    ]
+  },
+  {
+    "id": "epic.fileStructures.v1",
+    "fieldPath": "epic.fileStructures",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 14,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.epic.fileStructures"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate fileStructures with the concrete files this epic creates or modifies, or add naReason explaining why this field doesn't apply (e.g. config-only or data-migration epics).",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} file structure(s) listing the concrete files this epic creates or modifies. The spec's folderStructures already defined macro topology; here you add the file-level detail for this epic's scope.",
+    "availableOperations": [
+      "update_epic"
+    ]
+  },
+  {
+    "id": "epic.goals.v1",
+    "fieldPath": "epic.goals",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 10,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.epic.goals"
+      },
+      {
+        "type": "goal-has-success-criteria"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate goals, or add naReason explaining why this field doesn't apply to this Epic.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} epic-specific goal(s) with success criteria to guide prioritization within this epic's tickets.",
+    "availableOperations": [
+      "update_epic"
+    ]
+  },
+  {
+    "id": "epic.requirementsCovered.v1",
+    "fieldPath": "epic.requirementsCovered",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 11,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "param": 1
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate requirementsCovered with the requirement ids this epic addresses, or add naReason explaining why this field doesn't apply to this Epic.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare which requirement ids from the spec this epic covers. Coverage is an architectural decision of the epic — it scopes the epic to a slice of the requirement set.",
+    "availableOperations": [
+      "update_epic"
+    ]
+  },
+  {
+    "id": "epic.nfrsCovered.v1",
+    "fieldPath": "epic.nfrsCovered",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 12,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "param": 1
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate nfrsCovered with the NFR ids this epic addresses, or add naReason explaining why this field doesn't apply to this Epic.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare which NFR ids from the spec this epic covers. NFR coverage anchors the epic to non-functional requirements that its verification tickets must validate.",
+    "availableOperations": [
+      "update_epic"
+    ]
+  },
+  {
+    "id": "epic.goalsCovered.v1",
+    "fieldPath": "epic.goalsCovered",
+    "curriculumPhase": "epic_expansion",
+    "curriculumStep": 13,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "param": 1
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate goalsCovered with the goal ids this epic advances, or add naReason explaining why this field doesn't apply to this Epic.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare which spec-level goal ids this epic advances. Goals coverage anchors the epic to the outcomes the spec exists to produce.",
+    "availableOperations": [
+      "update_epic"
+    ]
+  },
+  {
+    "id": "ticket.title.v1",
+    "fieldPath": "ticket.title",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 1,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "present"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare the ticket title — a concise name identifying the unit of work this ticket represents.",
+    "availableOperations": [
+      "update_ticket"
+    ],
+    "composesWith": [
+      "ticket.title",
+      "ticket.description",
+      "ticket.ticketType",
+      "ticket.acceptanceCriteria",
+      "ticket.implementationSteps",
+      "ticket.filesToBeCreated",
+      "ticket.filesToBeModified"
+    ]
+  },
+  {
+    "id": "ticket.description.v1",
+    "fieldPath": "ticket.description",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 2,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minLength",
+        "source": "config:structuralRequirements.stringMinLengths.ticket.description",
+        "appliesTo": "field"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate description, or add naReason explaining why this field doesn't apply to this Ticket.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Ticket description needs at least {minLength} characters (currently {actualLength}). Explain what this ticket implements and why it matters.",
+    "availableOperations": [
+      "update_ticket"
+    ],
+    "composesWith": [
+      "ticket.title",
+      "ticket.description",
+      "ticket.ticketType",
+      "ticket.acceptanceCriteria",
+      "ticket.implementationSteps",
+      "ticket.filesToBeCreated",
+      "ticket.filesToBeModified"
+    ]
+  },
+  {
+    "id": "ticket.ticketType.v1",
+    "fieldPath": "ticket.ticketType",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 3,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "enumMember",
+        "param": [
+          "implementation",
+          "verification"
+        ]
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare the ticketType as \"implementation\" (code to write) or \"verification\" (tests to write). The type determines whether testSpecification is required.",
+    "availableOperations": [
+      "update_ticket"
+    ],
+    "composesWith": [
+      "ticket.title",
+      "ticket.description",
+      "ticket.ticketType",
+      "ticket.acceptanceCriteria",
+      "ticket.implementationSteps",
+      "ticket.filesToBeCreated",
+      "ticket.filesToBeModified"
+    ]
+  },
+  {
+    "id": "ticket.acceptanceCriteria.v1",
+    "fieldPath": "ticket.acceptanceCriteria",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 4,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.complexityDrivenMinCounts.ticket.acceptanceCriteria"
+      },
+      {
+        "type": "given-when-then"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} acceptance criterion (currently {actualCount}) in given/when/then format. AC defines verifiability — without it, implementation has no clear completion condition.",
+    "availableOperations": [
+      "update_ticket"
+    ],
+    "composesWith": [
+      "ticket.title",
+      "ticket.description",
+      "ticket.ticketType",
+      "ticket.acceptanceCriteria",
+      "ticket.implementationSteps",
+      "ticket.filesToBeCreated",
+      "ticket.filesToBeModified"
+    ]
+  },
+  {
+    "id": "ticket.implementationSteps.v1",
+    "fieldPath": "ticket.implementationSteps",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 5,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.complexityDrivenMinCounts.ticket.implementationSteps"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} ordered implementation step(s) (currently {actualCount}) describing the work sequence. Steps give the executing agent a clear action plan.",
+    "availableOperations": [
+      "update_ticket"
+    ],
+    "composesWith": [
+      "ticket.title",
+      "ticket.description",
+      "ticket.ticketType",
+      "ticket.acceptanceCriteria",
+      "ticket.implementationSteps",
+      "ticket.filesToBeCreated",
+      "ticket.filesToBeModified"
+    ]
+  },
+  {
+    "id": "ticket.filesToBeCreated.v1",
+    "fieldPath": "ticket.filesToBeCreated",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 6,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "has-file-paths"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare files this ticket creates. File declarations scope the ticket's impact and enable dependency detection across tickets.",
+    "availableOperations": [
+      "update_ticket"
+    ],
+    "composesWith": [
+      "ticket.title",
+      "ticket.description",
+      "ticket.ticketType",
+      "ticket.acceptanceCriteria",
+      "ticket.implementationSteps",
+      "ticket.filesToBeCreated",
+      "ticket.filesToBeModified"
+    ]
+  },
+  {
+    "id": "ticket.filesToBeModified.v1",
+    "fieldPath": "ticket.filesToBeModified",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 7,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "has-file-paths"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare files this ticket modifies. Modification declarations signal coordination points with other tickets.",
+    "availableOperations": [
+      "update_ticket"
+    ],
+    "composesWith": [
+      "ticket.title",
+      "ticket.description",
+      "ticket.ticketType",
+      "ticket.acceptanceCriteria",
+      "ticket.implementationSteps",
+      "ticket.filesToBeCreated",
+      "ticket.filesToBeModified"
+    ]
+  },
+  {
+    "id": "ticket.filesToBeDeleted.v1",
+    "fieldPath": "ticket.filesToBeDeleted",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 8,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "has-file-paths"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate filesToBeDeleted, or add naReason explaining why this field doesn't apply to this Ticket.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare files this ticket deletes. Deletion declarations participate in wave analysis to detect deletion-after-modification and deletion-after-creation conflicts.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  },
+  {
+    "id": "ticket.filesToBeReferenced.v1",
+    "fieldPath": "ticket.filesToBeReferenced",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 8,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "has-file-paths"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate filesToBeReferenced, or add naReason explaining why this field doesn't apply to this Ticket.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare files this ticket reads or imports. Referenced files from other tickets require dependencies declarations to enforce ordering.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  },
+  {
+    "id": "ticket.guardrails.v1",
+    "fieldPath": "ticket.guardrails",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 9,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.ticket.guardrails"
+      },
+      {
+        "type": "minLength",
+        "source": "config:structuralRequirements.itemMinLengths.ticket.guardrails",
+        "appliesTo": "items"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate guardrails, or add naReason explaining why this field doesn't apply to this Ticket.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} ticket-specific guardrail(s) (currently {actualCount}) — constraints and non-negotiables the implementing agent must respect. Each must be at least {itemMinLength} characters.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  },
+  {
+    "id": "ticket.testSpecification.testTypes.v1",
+    "fieldPath": "ticket.testSpecification.testTypes",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 10,
+    "tier": "critical",
+    "conditionalApplicability": {
+      "field": "ticketType",
+      "equals": "verification"
+    },
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.ticket.testSpecification.testTypes"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} testTypes for this verification ticket (unit, integration, contract, e2e, structural, layout, a11y, performance). Test types shape the verification surface.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  },
+  {
+    "id": "ticket.testSpecification.qualityGates.v1",
+    "fieldPath": "ticket.testSpecification.qualityGates",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 10,
+    "tier": "critical",
+    "conditionalApplicability": {
+      "field": "ticketType",
+      "equals": "verification"
+    },
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.ticket.testSpecification.qualityGates"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} quality gate(s) for this verification ticket. Quality gates state the conditions that must hold for the verification to be considered complete.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  },
+  {
+    "id": "ticket.testSpecification.testCommands.v1",
+    "fieldPath": "ticket.testSpecification.testCommands",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 10,
+    "tier": "recommended",
+    "conditionalApplicability": {
+      "field": "ticketType",
+      "equals": "verification"
+    },
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.ticket.testSpecification.testCommands"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate testCommands with the executable commands that run this verification, or add naReason explaining why no command surface applies.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} test command(s) — concrete shell invocations that run this verification (e.g. \"pnpm test --filter pkg\"). Executable commands close the gap between intent and CI.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  },
+  {
+    "id": "ticket.testSpecification.coverageTarget.v1",
+    "fieldPath": "ticket.testSpecification.coverageTarget",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 10,
+    "tier": "enrichment",
+    "conditionalApplicability": {
+      "field": "ticketType",
+      "equals": "verification"
+    },
+    "structuralChecks": [
+      {
+        "type": "range",
+        "param": {
+          "min": 0,
+          "max": 100
+        }
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either declare a coverageTarget between 0 and 100, or add naReason explaining why coverage isn't meaningful for this verification.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare coverageTarget as a number in [0, 100]. Coverage targets are a soft planning signal — set realistic floors, not aspirational ceilings.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  },
+  {
+    "id": "ticket.codeReferences.v1",
+    "fieldPath": "ticket.codeReferences",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 13,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.ticket.codeReferences"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate codeReferences, or add naReason explaining why this field doesn't apply to this Ticket.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} code reference(s) (currently {actualCount}) — existing functions, classes, or patterns the implementation must follow. Without code references, the ticket is vague prose instead of executable spec.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  },
+  {
+    "id": "ticket.typeReferences.v1",
+    "fieldPath": "ticket.typeReferences",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 14,
+    "tier": "recommended",
+    "applicabilityCheck": "enforceTypes",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.ticket.typeReferences"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate typeReferences, or add naReason explaining why this field doesn't apply to this Ticket.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} type reference(s) (currently {actualCount}) — TypeScript interfaces, types, or enums the implementation uses. Type references make the contract explicit.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  },
+  {
+    "id": "ticket.blueprintReferences.v1",
+    "fieldPath": "ticket.blueprintReferences",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 14,
+    "tier": "recommended",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.arrayMinCounts.ticket.blueprintReferences"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate blueprintReferences, or add naReason explaining why this ticket follows no blueprint.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} blueprint reference(s) (currently {actualCount}) — the architectural patterns this ticket follows. Linking blueprints propagates design decisions into implementation.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  },
+  {
+    "id": "ticket.codeSnippets.v1",
+    "fieldPath": "ticket.codeSnippets",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 15,
+    "tier": "critical",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.complexityDrivenMinCounts.ticket.codeSnippets"
+      },
+      {
+        "type": "array-item-field-min-length",
+        "param": "content",
+        "source": "config:structuralRequirements.arrayItemFieldMinLengths.ticket.codeSnippets.content"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate codeSnippets with inline code patterns, or add naReason explaining why this field doesn't apply to this Ticket.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} code snippet(s) (currently {actualCount}) — inline code examples the agent should follow as a pattern. Inline code is more deterministic than file references for executing agents.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  },
+  {
+    "id": "ticket.typeSnippets.v1",
+    "fieldPath": "ticket.typeSnippets",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 16,
+    "tier": "recommended",
+    "applicabilityCheck": "enforceTypes",
+    "structuralChecks": [
+      {
+        "type": "minCount",
+        "source": "config:structuralRequirements.complexityDrivenMinCounts.ticket.typeSnippets"
+      },
+      {
+        "type": "array-item-field-min-length",
+        "param": "content",
+        "source": "config:structuralRequirements.arrayItemFieldMinLengths.ticket.typeSnippets.content"
+      }
+    ],
+    "naEligible": true,
+    "naWithoutReasonPrompt": "Either populate typeSnippets with inline type definitions, or add naReason explaining why this field doesn't apply to this Ticket.",
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare at least {minCount} type snippet(s) (currently {actualCount}) — inline type/interface definitions the agent should use. Inline types make the contract explicit without requiring lookup of an external file.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  },
+  {
+    "id": "ticket.estimatedMinutes.v1",
+    "fieldPath": "ticket.estimatedMinutes",
+    "curriculumPhase": "ticket_expansion",
+    "curriculumStep": 17,
+    "tier": "enrichment",
+    "structuralChecks": [
+      {
+        "type": "present"
+      }
+    ],
+    "naEligible": false,
+    "primaryVerbs": [
+      "DECLARE"
+    ],
+    "curriculumPrompt": "Declare estimatedMinutes — an integer ≥ 0 capturing the expected time to complete this ticket. Provides a planning signal that aggregates upward at the spec/epic level.",
+    "availableOperations": [
+      "update_ticket"
+    ]
+  }
+]

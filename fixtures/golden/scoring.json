@@ -1,0 +1,831 @@
+{
+  "cascadeFloors": {
+    "specOnly": 0,
+    "specPlusEpics": 30,
+    "total": 80
+  },
+  "seeds": {
+    "seed-planning-spec": {
+      "specLocalScore": 86.11111111111111,
+      "specPerField": {
+        "spec.goals.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.requirements.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.architecture.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.inScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.outOfScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.assumptions.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.scope.externalDependencies.v1": {
+          "earned": 0,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.techStack.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.folderStructures.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.acceptanceCriteria.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.nonFunctionalRequirements.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.guardrails.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.sharedPatterns.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.goals.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.requirements.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.background.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        }
+      },
+      "global": {
+        "globalScore": 17.222222222222225,
+        "specBlock": 17.222222222222225,
+        "epicBlock": 0,
+        "ticketBlock": 0,
+        "specScore": 86.11111111111111,
+        "epicAvg": null,
+        "ticketAvg": null,
+        "topologyPenalty": 0,
+        "weights": {
+          "spec": 0.2,
+          "epics": 0.3,
+          "tickets": 0.5
+        }
+      },
+      "topology": {
+        "rootCount": 0,
+        "leafCount": 0,
+        "islandCount": 0,
+        "totalTickets": 0,
+        "rootRatio": 0,
+        "leafRatio": 0,
+        "rootRatioExceeded": false,
+        "leafRatioExceeded": false,
+        "totalPenalty": 0
+      },
+      "epicScores": [],
+      "ticketScores": []
+    },
+    "seed-epic-decomposition": {
+      "specLocalScore": 86.11111111111111,
+      "specPerField": {
+        "spec.goals.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.requirements.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.architecture.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.inScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.outOfScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.assumptions.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.scope.externalDependencies.v1": {
+          "earned": 0,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.techStack.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.folderStructures.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.acceptanceCriteria.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.nonFunctionalRequirements.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.guardrails.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.sharedPatterns.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.goals.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.requirements.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.background.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        }
+      },
+      "global": {
+        "globalScore": 21.722222222222225,
+        "specBlock": 17.222222222222225,
+        "epicBlock": 4.5,
+        "ticketBlock": 0,
+        "specScore": 86.11111111111111,
+        "epicAvg": 15,
+        "ticketAvg": null,
+        "topologyPenalty": 0,
+        "weights": {
+          "spec": 0.2,
+          "epics": 0.3,
+          "tickets": 0.5
+        }
+      },
+      "topology": {
+        "rootCount": 0,
+        "leafCount": 0,
+        "islandCount": 0,
+        "totalTickets": 0,
+        "rootRatio": 0,
+        "leafRatio": 0,
+        "rootRatioExceeded": false,
+        "leafRatioExceeded": false,
+        "totalPenalty": 0
+      },
+      "epicScores": [
+        {
+          "id": "ep-1",
+          "score": 15
+        },
+        {
+          "id": "ep-2",
+          "score": 15
+        },
+        {
+          "id": "ep-3",
+          "score": 15
+        }
+      ],
+      "ticketScores": []
+    },
+    "seed-epic-expansion": {
+      "specLocalScore": 86.11111111111111,
+      "specPerField": {
+        "spec.goals.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.requirements.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.architecture.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.inScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.outOfScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.assumptions.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.scope.externalDependencies.v1": {
+          "earned": 0,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.techStack.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.folderStructures.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.acceptanceCriteria.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.nonFunctionalRequirements.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.guardrails.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.sharedPatterns.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.goals.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.requirements.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.background.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        }
+      },
+      "global": null,
+      "topology": null,
+      "epicScores": [
+        {
+          "id": "ep-1",
+          "score": 95
+        },
+        {
+          "id": "ep-2",
+          "score": 22.5
+        }
+      ],
+      "ticketScores": [
+        {
+          "id": "tkt-1-1",
+          "score": 30
+        },
+        {
+          "id": "tkt-1-2",
+          "score": 42.857142857142854
+        }
+      ]
+    },
+    "seed-ticket-decomposition": {
+      "specLocalScore": 86.11111111111111,
+      "specPerField": {
+        "spec.goals.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.requirements.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.architecture.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.inScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.outOfScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.assumptions.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.scope.externalDependencies.v1": {
+          "earned": 0,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.techStack.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.folderStructures.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.acceptanceCriteria.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.nonFunctionalRequirements.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.guardrails.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.sharedPatterns.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.goals.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.requirements.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.background.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        }
+      },
+      "global": null,
+      "topology": null,
+      "epicScores": [
+        {
+          "id": "ep-1",
+          "score": 95
+        }
+      ],
+      "ticketScores": [
+        {
+          "id": "tkt-1-1",
+          "score": 37.5
+        },
+        {
+          "id": "tkt-1-2",
+          "score": 37.5
+        },
+        {
+          "id": "tkt-1-3",
+          "score": 37.5
+        },
+        {
+          "id": "tkt-1-4",
+          "score": 37.5
+        },
+        {
+          "id": "tkt-1-5",
+          "score": 30.612244897959183
+        }
+      ]
+    },
+    "seed-ticket-expansion": {
+      "specLocalScore": 86.11111111111111,
+      "specPerField": {
+        "spec.goals.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.requirements.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.architecture.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.inScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.outOfScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.assumptions.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.scope.externalDependencies.v1": {
+          "earned": 0,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.techStack.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.folderStructures.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.acceptanceCriteria.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.nonFunctionalRequirements.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.guardrails.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.sharedPatterns.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.goals.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.requirements.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.background.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        }
+      },
+      "global": null,
+      "topology": null,
+      "epicScores": [
+        {
+          "id": "ep-1",
+          "score": 95
+        }
+      ],
+      "ticketScores": [
+        {
+          "id": "tkt-1-1",
+          "score": 80
+        },
+        {
+          "id": "tkt-1-2",
+          "score": 80
+        },
+        {
+          "id": "tkt-1-3",
+          "score": 87.5
+        },
+        {
+          "id": "tkt-1-4",
+          "score": 80
+        },
+        {
+          "id": "tkt-1-5",
+          "score": 83.6734693877551
+        }
+      ]
+    },
+    "seed-cross-validation": {
+      "specLocalScore": 86.11111111111111,
+      "specPerField": {
+        "spec.goals.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.requirements.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.architecture.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.inScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.outOfScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.assumptions.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.scope.externalDependencies.v1": {
+          "earned": 0,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.techStack.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.folderStructures.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.acceptanceCriteria.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.nonFunctionalRequirements.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.guardrails.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.sharedPatterns.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.goals.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.requirements.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.background.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        }
+      },
+      "global": null,
+      "topology": null,
+      "epicScores": [
+        {
+          "id": "ep-1",
+          "score": 95
+        },
+        {
+          "id": "ep-2",
+          "score": 80
+        }
+      ],
+      "ticketScores": [
+        {
+          "id": "tkt-1-1",
+          "score": 75
+        },
+        {
+          "id": "tkt-1-2",
+          "score": 80
+        },
+        {
+          "id": "tkt-1-3",
+          "score": 87.5
+        },
+        {
+          "id": "tkt-1-4",
+          "score": 80
+        },
+        {
+          "id": "tkt-1-5",
+          "score": 83.6734693877551
+        },
+        {
+          "id": "tkt-2-1",
+          "score": 82.5
+        },
+        {
+          "id": "tkt-2-2",
+          "score": 87.5
+        },
+        {
+          "id": "tkt-2-3",
+          "score": 89.79591836734694
+        }
+      ]
+    },
+    "seed-ticket-expansion__no-types": {
+      "specLocalScore": 86.11111111111111,
+      "specPerField": {
+        "spec.goals.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.requirements.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.architecture.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.inScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.outOfScope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.assumptions.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.scope.externalDependencies.v1": {
+          "earned": 0,
+          "possible": 1,
+          "tier": "enrichment"
+        },
+        "spec.techStack.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.folderStructures.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.acceptanceCriteria.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.nonFunctionalRequirements.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.guardrails.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.sharedPatterns.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.goals.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.requirements.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.background.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        }
+      },
+      "global": null,
+      "topology": null,
+      "epicScores": [
+        {
+          "id": "ep-1",
+          "score": 95
+        }
+      ],
+      "ticketScores": [
+        {
+          "id": "tkt-1-1",
+          "score": 80
+        },
+        {
+          "id": "tkt-1-2",
+          "score": 80
+        },
+        {
+          "id": "tkt-1-3",
+          "score": 87.5
+        },
+        {
+          "id": "tkt-1-4",
+          "score": 80
+        },
+        {
+          "id": "tkt-1-5",
+          "score": 83.6734693877551
+        }
+      ]
+    }
+  }
+}
