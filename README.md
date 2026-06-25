@@ -166,8 +166,8 @@ uv run mypy
 uv run pytest                 # 125 tests, incl. differential vs the TS engine
 ```
 
-Fidelity is verified against golden output generated from the current reference
-source (`tools/*.mjs`); the golden files are committed, so CI needs no Node.
+Fidelity is verified against committed golden output captured from the reference
+engine, so CI needs no extra tooling.
 
 ## Status
 

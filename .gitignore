@@ -32,5 +32,7 @@ node_modules/
 .vscode/
 .DS_Store
 
-# Local-only docs (engine reference, port notes, publishing runbook)
+# Local-only, maintainer-only material (engine reference, port notes,
+# publishing runbook, and golden-generation scripts with local source paths)
 docs/
+tools/
