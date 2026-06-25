@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/blacksmithers/crucible/main/assets/crucibleforge-logo.svg" alt="crucible" width="440">
+  <img src="assets/crucibleforge-logo.svg" alt="crucible" width="440">
 </p>
 
 <p align="center"><i>A self-contained, deterministic validation engine for OpenSpec v1.1 specifications.</i></p>
