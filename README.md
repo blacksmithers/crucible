@@ -177,4 +177,4 @@ validator** across every phase and all four output layers (structural · scoring
 
 ## License
 
-Apache 2.0 © Gabriel Augusto / blacksmithers
+Apache 2.0 © Gabriel Augusto Gonçalves / blacksmithers
