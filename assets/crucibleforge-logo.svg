@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 64" width="460" height="64">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5A2B"/>
+      <stop offset="50%" stop-color="#B08D57"/>
+      <stop offset="100%" stop-color="#D4A574"/>
+    </linearGradient>
+    <radialGradient id="ring-outer" cx="35%" cy="35%" r="70%">
+      <stop offset="0.5" stop-color="#5C3317"/>
+      <stop offset="1" stop-color="#2D1809"/>
+    </radialGradient>
+    <radialGradient id="ring-inner" cx="35%" cy="35%" r="70%">
+      <stop offset="0.5" stop-color="#8B5A2B"/>
+      <stop offset="1" stop-color="#5C3317"/>
+    </radialGradient>
+    <linearGradient id="arrow-base" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6B4423"/>
+      <stop offset="100%" stop-color="#8B5A2B"/>
+    </linearGradient>
+    <linearGradient id="arrow-bright" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B08D57"/>
+      <stop offset="50%" stop-color="#D4A574"/>
+      <stop offset="100%" stop-color="#E8C9A0"/>
+    </linearGradient>
+    <linearGradient id="diamond-grad" x1="0%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#F5E6D3"/>
+      <stop offset="100%" stop-color="#D4A574"/>
+    </linearGradient>
+    <linearGradient id="forge-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5A2B"/>
+      <stop offset="40%" stop-color="#B08D57"/>
+      <stop offset="100%" stop-color="#D4A574"/>
+    </linearGradient>
+    <filter id="gl">
+      <feGaussianBlur stdDeviation="1.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@900&amp;display=swap');
+    </style>
+  </defs>
+
+  <g transform="translate(32, 32)">
+    <!-- Rounded square container -->
+    <rect x="-28" y="-28" width="56" height="56" rx="10"
+          fill="none" stroke="url(#g)" stroke-width="2.4" filter="url(#gl)"/>
+
+    <!-- Crucible: 2 rings + 4 arrows piercing. Scale 0.1308 → 48px. Center (341, 853) → (0, 0) -->
+    <g transform="translate(-44.6, -111.6) scale(0.1308)" filter="url(#gl)">
+      <!-- OUTER RING (annulus, raio 158→122) -->
+      <path fill="url(#ring-outer)" d="M453.265,740.547c-62.037-62.037-162.619-62.037-224.656,0c-62.037,62.037-62.037,162.619,0,224.656c62.037,62.037,162.619,62.037,224.656,0C515.302,903.166,515.302,802.584,453.265,740.547z M254.321,939.491c-47.837-47.837-47.837-125.396,0-173.233c47.837-47.837,125.396-47.837,173.233,0c47.837,47.837,47.837,125.396,0,173.233C379.716,987.328,302.157,987.328,254.321,939.491z"/>
+      <!-- INNER RING (annulus, raio 122→87) -->
+      <path fill="url(#ring-inner)" d="M427.553,766.258c-47.837-47.837-125.396-47.837-173.233,0c-47.837,47.837-47.837,125.396,0,173.233c47.837,47.837,125.396,47.837,173.233,0C475.39,891.654,475.39,814.095,427.553,766.258z M279.447,914.365c-33.96-33.96-33.96-89.02,0-122.981s89.021-33.96,122.981,0c33.96,33.96,33.96,89.021,0,122.981C368.467,948.325,313.407,948.325,279.447,914.365z"/>
+
+      <!-- NW arrow -->
+      <path fill="url(#arrow-base)" d="M258.059,669.762c-21.464,9.71-41.576,23.373-59.219,41.016c-17.643,17.643-31.306,37.755-41.016,59.219l171.474,71.239L258.059,669.762z"/>
+      <path fill="url(#arrow-bright)" opacity="0.85" d="M161.512,767.765c9.239-17.789,21.14-34.017,35.469-48.346c14.33-14.33,30.557-26.23,48.346-35.469l59.568,143.383L161.512,767.765z"/>
+
+      <!-- NE arrow -->
+      <path fill="url(#arrow-base)" d="M524.049,769.997c-9.71-21.464-23.373-41.576-41.016-59.219c-17.643-17.643-37.755-31.306-59.219-41.016l-71.239,171.473L524.049,769.997z"/>
+      <path fill="url(#arrow-bright)" opacity="0.85" d="M428.984,683.383c17.286,8.978,33.054,20.542,46.978,34.466c13.924,13.924,25.488,29.692,34.466,46.978l-139.327,57.884L428.984,683.383z"/>
+
+      <!-- SW arrow -->
+      <path fill="url(#arrow-base)" d="M157.824,935.753c9.71,21.464,23.373,41.576,41.016,59.219c17.643,17.643,37.755,31.306,59.219,41.016l71.239-171.474L157.824,935.753z"/>
+      <path fill="url(#arrow-bright)" opacity="0.85" d="M206.981,995.331c-14.33-14.33-26.23-30.557-35.469-48.346l143.383-59.568l-59.568,143.383C237.537,1021.56,221.311,1009.66,206.981,995.331z"/>
+
+      <!-- SE arrow -->
+      <path fill="url(#arrow-base)" d="M524.049,935.753l-171.474-71.239l71.239,171.474c21.464-9.71,41.576-23.373,59.219-41.016C500.676,977.328,514.339,957.216,524.049,935.753z"/>
+      <path fill="url(#arrow-bright)" opacity="0.85" d="M375.478,877.416l143.383,59.568c-9.239,17.788-21.139,34.015-35.47,48.345c-14.33,14.33-30.556,26.23-48.345,35.469L375.478,877.416z"/>
+
+      <!-- FACETED DIAMOND at center (341, 853), radius ~24 units in ref space -->
+      <polygon points="341,829 365,853 341,877 317,853" fill="url(#diamond-grad)" opacity="0.98"/>
+      <line x1="341" y1="829" x2="341" y2="877" stroke="#F5E6D3" stroke-width="2.5" opacity="0.7"/>
+      <line x1="317" y1="853" x2="365" y2="853" stroke="#F5E6D3" stroke-width="2.5" opacity="0.7"/>
+    </g>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(76, 46)">
+    <text font-family="'Outfit', sans-serif" font-weight="900" font-size="44" letter-spacing="-2">
+      <tspan fill="#f0f0f0">Crucible</tspan><tspan fill="url(#forge-grad)">Forge</tspan>
+    </text>
+  </g>
+</svg>

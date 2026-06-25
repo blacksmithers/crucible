@@ -1,4 +1,6 @@
-<h1 align="center">🔥 crucible</h1>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/blacksmithers/crucible/main/assets/crucibleforge-logo.svg" alt="crucible" width="440">
+</p>
 
 <p align="center"><i>A self-contained, deterministic validation engine for OpenSpec v1.1 specifications.</i></p>
 
