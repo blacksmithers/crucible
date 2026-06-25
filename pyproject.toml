@@ -9,7 +9,7 @@ description = "Self-contained, deterministic validation engine for OpenSpec v1.1
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
-authors = [{ name = "Gabriel Augusto Gonçalves", email = "gabri.augustog@gmail.com" }]
+authors = [{ name = "Gabriel Augusto Gonçalves", email = "gab.augustog@gmail.com" }]
 keywords = ["spec", "validation", "openspec", "specsmither", "rubric", "scoring"]
 classifiers = [
     "Development Status :: 3 - Alpha",
