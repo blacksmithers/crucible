@@ -1,0 +1,75 @@
+{
+  "input": {
+    "specId": "spec-epic-decomp-below-min",
+    "context": {
+      "phase": "epic_decomposition",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "epic_decomposition",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 1 epic(s); minimum is 2",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 1 épico(s). Mínimo configurado: 2. Decomponha o trabalho em mais épicos pra habilitar paralelização e fronteiras claras de responsabilidade. Cada épico deve representar um conjunto coeso de funcionalidades que pode ser implementado e validado independentemente.",
+          "operations": [
+            "create_epic"
+          ],
+          "context": {
+            "currentCount": 1,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "scoring": {
+      "skipped": true,
+      "reason": "no-rubric-for-phase",
+      "localScore": null,
+      "globalScore": null,
+      "perField": {},
+      "gateResult": "n/a",
+      "threshold": null
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [],
+      "ranChecks": [
+        "blueprint-epic-ratio"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "spec-epic-decomp-below-min": [
+          {
+            "patternId": "individual",
+            "entityId": "spec-epic-decomp-below-min",
+            "entityType": "specification",
+            "message": "Decomposition phase. Review the current set of epics and decide whether the decomposition is sufficient. Available operations: create_epic, update_epic, delete_epic. To advance to the next phase, invoke complete_decomposition_phase explicitly.",
+            "operations": [
+              "create_epic",
+              "update_epic",
+              "delete_epic"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.018Z"
+    }
+  }
+}

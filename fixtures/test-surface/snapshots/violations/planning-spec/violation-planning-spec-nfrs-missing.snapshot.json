@@ -1,0 +1,128 @@
+{
+  "input": {
+    "specId": "spec-planning",
+    "context": {
+      "phase": "planning_spec",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "planning_spec",
+    "passed": true,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": []
+    },
+    "scoring": {
+      "skipped": false,
+      "localScore": 92.85714285714286,
+      "globalScore": 18.571428571428573,
+      "perField": {
+        "spec.goals.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.requirements.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.architecture.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.techStack.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.folderStructures.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.acceptanceCriteria.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.nonFunctionalRequirements.v1": {
+          "earned": 0,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.guardrails.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.goals.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.requirements.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.background.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        }
+      },
+      "topologyPenalties": 0,
+      "gateResult": "pass",
+      "threshold": 80,
+      "globalScoreBreakdown": {
+        "specBlock": 18.571428571428573,
+        "epicBlock": 0,
+        "ticketBlock": 0,
+        "epicAvg": null,
+        "ticketAvg": null,
+        "weights": {
+          "spec": 0.2,
+          "epics": 0.3,
+          "tickets": 0.5
+        }
+      },
+      "cascadeFloors": {
+        "specOnly": 0,
+        "specPlusEpics": 30,
+        "total": 80
+      },
+      "cascadeFailures": []
+    },
+    "guidance": {
+      "perEntity": {
+        "spec-planning": [
+          {
+            "patternId": "individual",
+            "entityId": "spec-planning",
+            "entityType": "specification",
+            "message": "Specification \"TaskFlow — Collaborative Task Management Platform\" — missing \"nonFunctionalRequirements\". Declare at least 1 non-functional requirement(s) with measurable metrics and targets (e.g. latency < 200ms at p99). NFRs constrain how the system must behave beyond functional requirements.",
+            "operations": [
+              "set_metadata"
+            ],
+            "pointsLost": 7.142857142857142,
+            "globalImpactOnFix": 1.4285714285714286
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.086Z"
+    }
+  }
+}

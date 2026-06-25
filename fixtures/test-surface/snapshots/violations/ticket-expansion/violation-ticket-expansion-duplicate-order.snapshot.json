@@ -1,0 +1,76 @@
+{
+  "input": {
+    "specId": "spec-ticket-expansion",
+    "context": {
+      "phase": "ticket_expansion",
+      "activeEntityId": "tkt-1-1"
+    }
+  },
+  "output": {
+    "phase": "ticket_expansion",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "duplicate-order",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-1].acceptanceCriteria[order=1]",
+          "message": "Multiple acceptanceCriteria items have order=1; order values must be unique within a ticket"
+        }
+      ]
+    },
+    "scoring": {
+      "skipped": false,
+      "localScore": 91.17647058823529,
+      "globalScore": 91.23934094522329,
+      "perField": {},
+      "topologyPenalties": 0,
+      "gateResult": "pass",
+      "threshold": 70,
+      "globalScoreBreakdown": {
+        "specBlock": 20,
+        "epicBlock": 27.27272727272727,
+        "ticketBlock": 43.966613672496024,
+        "epicAvg": 90.9090909090909,
+        "ticketAvg": 87.93322734499205,
+        "weights": {
+          "spec": 0.2,
+          "epics": 0.3,
+          "tickets": 0.5
+        }
+      },
+      "cascadeFloors": {
+        "specOnly": 0,
+        "specPlusEpics": 30,
+        "total": 80
+      },
+      "cascadeFailures": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-1": [
+          {
+            "patternId": "individual",
+            "entityId": "tkt-1-1",
+            "entityType": "ticket",
+            "message": "Ticket \"Define Task domain type and DynamoDB schema\" — missing \"implementationSteps\". Declare at least 4 ordered implementation step(s) (currently 3) describing the work sequence. Steps give the executing agent a clear action plan.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 8.823529411764707,
+            "globalImpactOnFix": 0.8823529411764707
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "activeEntityId": "tkt-1-1",
+      "resolution": "by-ticket",
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.120Z"
+    }
+  }
+}

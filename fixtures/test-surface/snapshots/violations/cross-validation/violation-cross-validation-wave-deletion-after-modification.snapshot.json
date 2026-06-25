@@ -1,0 +1,139 @@
+{
+  "input": {
+    "specId": "spec-cross-validation",
+    "context": {
+      "phase": "cross_validation",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "cross_validation",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 1 epic(s); minimum is 2",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 1 épico(s). Mínimo configurado: 2. Decomponha o trabalho em mais épicos pra habilitar paralelização e fronteiras claras de responsabilidade. Cada épico deve representar um conjunto coeso de funcionalidades que pode ser implementado e validado independentemente.",
+          "operations": [
+            "create_epic"
+          ],
+          "context": {
+            "currentCount": 1,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [
+        {
+          "category": "wave-deletion-after-modification",
+          "severity": "error",
+          "field": "filesToBeDeleted:packages/core/src/legacy.ts",
+          "message": "Ticket \"tkt-1-4\" (wave 3) deletes file \"packages/core/src/legacy.ts\" modified by ticket \"tkt-1-2\" (wave 2)",
+          "entityIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ],
+          "primaryEntityId": "tkt-1-4",
+          "operations": [
+            "update_ticket",
+            "delete_ticket"
+          ],
+          "context": {
+            "path": "packages/core/src/legacy.ts",
+            "modifierTicketId": "tkt-1-2",
+            "modifierWave": 2,
+            "deleterTicketId": "tkt-1-4",
+            "deleterWave": 3
+          }
+        }
+      ],
+      "ranChecks": [
+        "circular-dependency",
+        "broken-reference",
+        "orphan-reference",
+        "island-ticket",
+        "topology-roots-exceed",
+        "topology-leaves-exceed",
+        "wave-size-exceed",
+        "wave-concurrent-modification",
+        "wave-deletion-after-modification",
+        "wave-deletion-after-creation",
+        "file-conflict",
+        "files-to-be-referenced",
+        "blueprint-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-2": [
+          {
+            "patternId": "cross-validation",
+            "category": "wave-deletion-after-modification",
+            "severity": "error",
+            "fieldPath": "filesToBeDeleted:packages/core/src/legacy.ts",
+            "primaryEntityId": "tkt-1-4",
+            "entityIds": [
+              "tkt-1-2",
+              "tkt-1-4"
+            ],
+            "message": "Ticket \"tkt-1-4\" (wave 3) deletes \"packages/core/src/legacy.ts\", but ticket \"tkt-1-2\" (wave 2) modified that same file. Deleting a file after modifications from prior waves makes the previous work pointless — likely a planning smell. Three possible scenarios: (1) the modifying ticket should not exist (futile modification — remove the filesToBeModified entry), (2) the deletion is wrong (the file is needed — remove the filesToBeDeleted entry), or (3) the deletion should occur before the modification (reorganize: move the deletion to a wave before the modification, or move the modification to a different ticket that operates on another file). Review the intent of both tickets.",
+            "operations": [
+              "update_ticket",
+              "delete_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "path": "packages/core/src/legacy.ts",
+              "modifierTicketId": "tkt-1-2",
+              "modifierWave": 2,
+              "deleterTicketId": "tkt-1-4",
+              "deleterWave": 3
+            }
+          }
+        ],
+        "tkt-1-4": [
+          {
+            "patternId": "cross-validation",
+            "category": "wave-deletion-after-modification",
+            "severity": "error",
+            "fieldPath": "filesToBeDeleted:packages/core/src/legacy.ts",
+            "primaryEntityId": "tkt-1-4",
+            "entityIds": [
+              "tkt-1-2",
+              "tkt-1-4"
+            ],
+            "message": "Ticket \"tkt-1-4\" (wave 3) deletes \"packages/core/src/legacy.ts\", but ticket \"tkt-1-2\" (wave 2) modified that same file. Deleting a file after modifications from prior waves makes the previous work pointless — likely a planning smell. Three possible scenarios: (1) the modifying ticket should not exist (futile modification — remove the filesToBeModified entry), (2) the deletion is wrong (the file is needed — remove the filesToBeDeleted entry), or (3) the deletion should occur before the modification (reorganize: move the deletion to a wave before the modification, or move the modification to a different ticket that operates on another file). Review the intent of both tickets.",
+            "operations": [
+              "update_ticket",
+              "delete_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "path": "packages/core/src/legacy.ts",
+              "modifierTicketId": "tkt-1-2",
+              "modifierWave": 2,
+              "deleterTicketId": "tkt-1-4",
+              "deleterWave": 3
+            }
+          }
+        ]
+      }
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.003Z"
+    }
+  }
+}

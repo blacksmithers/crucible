@@ -1,0 +1,4490 @@
+{
+  "$testSurface": {
+    "description": "Violation: ep-1 has 51 tickets; default max is 50. M4.16 entity-count-above-max finding for epic.tickets.",
+    "phase": "ticket_decomposition",
+    "expectedGateResult": "fail"
+  },
+  "schemaVersion": "1.1",
+  "id": "spec-ticket-decomp-above-max",
+  "projectId": "prj-canonical",
+  "title": "TaskFlow — Collaborative Task Management Platform",
+  "description": "A real-time collaborative task management platform for distributed engineering teams.",
+  "status": "ticket_decomposition",
+  "background": "Engineering teams at fast-growing startups struggle to coordinate work across time zones. Existing tools lack deep integration with code review workflows and sprint planning, causing context switching and productivity loss.",
+  "architecture": "TaskFlow is built on a serverless event-driven architecture deployed on AWS. The frontend is a React single-page application served via CloudFront and communicates with a GraphQL API backed by AWS AppSync. Business logic lives in Node.js Lambda functions organized by domain (tasks, projects, notifications, users). Persistent state is stored in DynamoDB with a global secondary index strategy for flexible query patterns. Real-time collaboration is powered by AppSync subscriptions over WebSocket. Authentication is handled by Amazon Cognito with JWT-based authorization. All infrastructure is defined as code using AWS CDK. CI/CD pipelines run on GitHub Actions with automated testing gates before every deployment.",
+  "scope": {
+    "inScope": [
+      "Task creation, assignment, and lifecycle management",
+      "Real-time collaborative updates and presence indicators",
+      "Sprint planning with drag-and-drop board interface",
+      "GitHub pull request integration for task status updates",
+      "Email and in-app notification delivery"
+    ],
+    "outOfScope": [
+      "Native mobile application development",
+      "Time tracking and invoicing features",
+      "Third-party calendar synchronization beyond read-only"
+    ],
+    "assumptions": [
+      "Users have modern browser support (Chrome 90+, Firefox 88+, Safari 14+)",
+      "Teams are expected to have fewer than 500 members per organization"
+    ]
+  },
+  "goals": [
+    {
+      "id": "g-1",
+      "title": "Reduce cross-team coordination overhead",
+      "description": "Enable distributed engineering teams to coordinate work without synchronous standups by providing a shared, always-current view of project state.",
+      "type": "business",
+      "successCriteria": [
+        "Average time to assign and scope a task drops below 5 minutes",
+        "Weekly standup duration reduced by at least 30% within 60 days of adoption"
+      ]
+    },
+    {
+      "id": "g-2",
+      "title": "Deliver real-time collaborative editing without merge conflicts",
+      "description": "Provide instant, conflict-free updates to task descriptions, acceptance criteria, and comments so that multiple team members can contribute simultaneously.",
+      "type": "technical",
+      "successCriteria": [
+        "Concurrent edits by two users on the same task resolve deterministically within 200ms",
+        "Zero data-loss incidents reported during the first 90 days post-launch"
+      ]
+    },
+    {
+      "id": "g-3",
+      "title": "Seamlessly integrate with existing GitHub workflows",
+      "description": "Automatically reflect pull request status changes on linked tasks, closing the gap between code review and project management without manual updates.",
+      "type": "operational",
+      "successCriteria": [
+        "Pull request webhook events update task status within 10 seconds",
+        "At least 80% of implementation tasks have a linked PR within 48 hours of starting"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "r-1",
+      "title": "Task lifecycle management with status transitions",
+      "description": "Users must be able to create tasks, set priority and assignee, and transition tasks through defined statuses (backlog, in-progress, review, done). Status transitions must be validated against a configurable workflow.",
+      "type": "functional",
+      "acceptanceCriteria": [
+        {
+          "id": "r-1-ac-1",
+          "given": "A project member is viewing the task board",
+          "when": "They create a new task with a title, description, and assignee",
+          "then": "The task appears in the backlog column and the assignee receives an in-app notification",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "r-2",
+      "title": "Real-time presence and live update propagation",
+      "description": "All connected clients must receive task updates within 500ms of a change being committed. The UI must show which team members are currently viewing or editing each task.",
+      "type": "functional",
+      "acceptanceCriteria": [
+        {
+          "id": "r-2-ac-1",
+          "given": "Two users have the same task open in their browsers",
+          "when": "One user updates the task description",
+          "then": "The other user's browser reflects the new description within 500ms without a page refresh",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "r-3",
+      "title": "GitHub webhook integration for linked pull requests",
+      "description": "The system must accept GitHub webhook events for pull request opened, merged, and closed actions, and update the status of any task linked to that pull request accordingly.",
+      "type": "integration",
+      "acceptanceCriteria": [
+        {
+          "id": "r-3-ac-1",
+          "given": "A task has a linked GitHub pull request",
+          "when": "The pull request is merged on GitHub",
+          "then": "The linked task transitions to the review status within 15 seconds",
+          "order": 1
+        }
+      ]
+    }
+  ],
+  "nonFunctionalRequirements": [
+    {
+      "id": "nfr-1",
+      "description": "The GraphQL API must respond to 95th-percentile queries within 200ms under a sustained load of 500 concurrent users.",
+      "category": "performance",
+      "metric": "p95 API response time",
+      "target": "≤ 200ms at 500 concurrent users",
+      "measurementMethod": "Load test with k6, 10-minute sustained ramp, measured at API Gateway"
+    }
+  ],
+  "guardrails": [
+    {
+      "id": "gr-1",
+      "description": "All user-supplied input must be validated and sanitized server-side before persistence to prevent injection attacks and data corruption.",
+      "category": "technical",
+      "rationale": "Client-side validation can be bypassed; server-side enforcement is the last line of defense.",
+      "consequence": "Unvalidated input reaching the database could lead to data corruption, XSS vulnerabilities, or unauthorized access."
+    }
+  ],
+  "techStack": [
+    {
+      "id": "ts-1",
+      "name": "React",
+      "version": "18.2",
+      "layer": "frontend",
+      "rationale": "Mature ecosystem, strong TypeScript support, and team familiarity reduce onboarding friction."
+    },
+    {
+      "id": "ts-2",
+      "name": "AWS DynamoDB",
+      "version": "latest",
+      "layer": "database",
+      "rationale": "Serverless, pay-per-request pricing aligns with early-stage traffic patterns, and single-table design enables the required query flexibility."
+    }
+  ],
+  "folderStructures": [
+    {
+      "id": "fs-1",
+      "scope": "monorepo root",
+      "description": "Top-level directory layout for the TaskFlow monorepo.",
+      "content": "taskflow/\n├── apps/\n│   ├── web/          # React SPA\n│   └── api/          # Lambda function handlers\n├── packages/\n│   ├── core/         # Shared domain types and utilities\n│   └── ui/           # Design system components\n├── infrastructure/   # AWS CDK stacks\n├── scripts/          # Developer tooling\n└── .github/\n    └── workflows/    # CI/CD pipeline definitions"
+    }
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "spec-ac-1",
+      "given": "A team member with project access is authenticated",
+      "when": "They navigate to the project board and create a task",
+      "then": "The task is persisted, appears on the board in real-time for all connected members, and the assignee is notified",
+      "order": 1
+    }
+  ],
+  "epics": [
+    {
+      "id": "ep-1",
+      "specificationId": "spec-ticket-decomp-above-max",
+      "title": "Core Task Management Domain",
+      "description": "Implement the foundational task entity model, CRUD operations, and status transition engine that all other epics and features depend upon.",
+      "objective": "Deliver a fully functional task domain layer including persistence, validation, and status-machine enforcement so downstream epics can build on a stable foundation.",
+      "architecture": "The task domain is implemented as a set of Lambda resolvers connected to AppSync. Each resolver validates input against a Zod schema, applies business rules through a pure-function state machine, and persists to DynamoDB using a single-table design. The Task entity uses a composite primary key (PK: TASK#<taskId>, SK: METADATA) with GSIs for project-scoped queries (GSI1PK: PROJECT#<projectId>) and assignee queries (GSI2PK: USER#<userId>). Optimistic locking via a version attribute prevents lost updates under concurrent writes. Lambda functions share a core package that exports domain types and the state machine to ensure consistency across resolvers.",
+      "scope": {
+        "inScope": [
+          "Task entity CRUD operations via AppSync resolvers",
+          "Status transition validation via configurable state machine",
+          "DynamoDB single-table schema and GSI definitions",
+          "Optimistic locking to prevent concurrent write conflicts"
+        ],
+        "outOfScope": [
+          "Real-time subscription wiring (covered in Epic 2)",
+          "GitHub linkage logic (covered in Epic 3)"
+        ]
+      },
+      "goals": [
+        {
+          "id": "ep-1-g-1",
+          "title": "Provide a stable, tested task domain foundation for all subsequent epics",
+          "description": "All task CRUD operations and state transitions are implemented, tested, and stable before other epics build on top of them.",
+          "type": "technical",
+          "successCriteria": [
+            "Unit test coverage for domain logic exceeds 90%",
+            "All four CRUD operations pass integration tests against a live DynamoDB table"
+          ]
+        }
+      ],
+      "acceptanceCriteria": [
+        {
+          "id": "ep-1-ac-1",
+          "given": "An authenticated user with project membership",
+          "when": "They call the createTask mutation with valid input",
+          "then": "A task record is created in DynamoDB, the response includes the new task ID, and the status is set to backlog",
+          "order": 1
+        }
+      ],
+      "validationCommands": [
+        "pnpm test --filter @taskflow/api -- --grep 'task domain'",
+        "pnpm run integration:test --suite task-crud"
+      ],
+      "apiContracts": [
+        {
+          "id": "ep-1-api-1",
+          "name": "Task CRUD Mutations",
+          "type": "graphql",
+          "description": "createTask, updateTask, deleteTask, and transitionTaskStatus mutations with input validation and authorization guards."
+        }
+      ],
+      "sharedPatterns": [
+        {
+          "id": "ep-1-sp-1",
+          "name": "DynamoDB single-table item factory",
+          "description": "A factory function that constructs DynamoDB PutItem payloads with correct PK/SK/GSI key patterns for each entity type, ensuring consistent key formatting across all Lambda handlers."
+        }
+      ],
+      "requirementsCovered": [
+        "r-1",
+        "r-2",
+        "r-3"
+      ],
+      "nfrsCovered": [
+        "nfr-1"
+      ],
+      "goalsCovered": [
+        "g-1",
+        "g-2",
+        "g-3"
+      ],
+      "tickets": [
+        {
+          "id": "tkt-1-1",
+          "epicId": "ep-1",
+          "title": "Stub ticket 1",
+          "description": "Stub ticket 1 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 1,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-1-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-1-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-1-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-1.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 1."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-1.ts",
+              "symbol": "stub1",
+              "description": "Stub code reference for ticket 1."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-1.ts",
+              "typeName": "Stub1",
+              "description": "Stub type reference for ticket 1."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [],
+          "fieldDeclarations": {
+            "dependsOn": {
+              "value": "N/A",
+              "reason": "Foundational stub ticket created for the above-max count violation seed; no prior dependency exists by construction."
+            },
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-1-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 1",
+              "content": "export function stub1() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-1-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 1",
+              "content": "export interface Stub1 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-2",
+          "epicId": "ep-1",
+          "title": "Stub ticket 2",
+          "description": "Stub ticket 2 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 2,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-2-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-2-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-2-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-2.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 2."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-2.ts",
+              "symbol": "stub2",
+              "description": "Stub code reference for ticket 2."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-2.ts",
+              "typeName": "Stub2",
+              "description": "Stub type reference for ticket 2."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-1",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-2-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 2",
+              "content": "export function stub2() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-2-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 2",
+              "content": "export interface Stub2 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-3",
+          "epicId": "ep-1",
+          "title": "Stub ticket 3",
+          "description": "Stub ticket 3 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 3,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-3-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-3-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-3-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-3.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 3."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-3.ts",
+              "symbol": "stub3",
+              "description": "Stub code reference for ticket 3."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-3.ts",
+              "typeName": "Stub3",
+              "description": "Stub type reference for ticket 3."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-2",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-3-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 3",
+              "content": "export function stub3() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-3-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 3",
+              "content": "export interface Stub3 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-4",
+          "epicId": "ep-1",
+          "title": "Stub ticket 4",
+          "description": "Stub ticket 4 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 4,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-4-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-4-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-4-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-4.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 4."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-4.ts",
+              "symbol": "stub4",
+              "description": "Stub code reference for ticket 4."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-4.ts",
+              "typeName": "Stub4",
+              "description": "Stub type reference for ticket 4."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-3",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-4-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 4",
+              "content": "export function stub4() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-4-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 4",
+              "content": "export interface Stub4 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-5",
+          "epicId": "ep-1",
+          "title": "Stub ticket 5",
+          "description": "Stub ticket 5 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 5,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-5-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-5-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-5-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-5.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 5."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-5.ts",
+              "symbol": "stub5",
+              "description": "Stub code reference for ticket 5."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-5.ts",
+              "typeName": "Stub5",
+              "description": "Stub type reference for ticket 5."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-4",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-5-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 5",
+              "content": "export function stub5() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-5-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 5",
+              "content": "export interface Stub5 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-6",
+          "epicId": "ep-1",
+          "title": "Stub ticket 6",
+          "description": "Stub ticket 6 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 6,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-6-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-6-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-6-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-6.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 6."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-6.ts",
+              "symbol": "stub6",
+              "description": "Stub code reference for ticket 6."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-6.ts",
+              "typeName": "Stub6",
+              "description": "Stub type reference for ticket 6."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-5",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-6-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 6",
+              "content": "export function stub6() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-6-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 6",
+              "content": "export interface Stub6 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-7",
+          "epicId": "ep-1",
+          "title": "Stub ticket 7",
+          "description": "Stub ticket 7 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 7,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-7-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-7-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-7-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-7.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 7."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-7.ts",
+              "symbol": "stub7",
+              "description": "Stub code reference for ticket 7."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-7.ts",
+              "typeName": "Stub7",
+              "description": "Stub type reference for ticket 7."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-6",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-7-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 7",
+              "content": "export function stub7() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-7-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 7",
+              "content": "export interface Stub7 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-8",
+          "epicId": "ep-1",
+          "title": "Stub ticket 8",
+          "description": "Stub ticket 8 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 8,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-8-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-8-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-8-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-8.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 8."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-8.ts",
+              "symbol": "stub8",
+              "description": "Stub code reference for ticket 8."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-8.ts",
+              "typeName": "Stub8",
+              "description": "Stub type reference for ticket 8."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-7",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-8-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 8",
+              "content": "export function stub8() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-8-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 8",
+              "content": "export interface Stub8 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-9",
+          "epicId": "ep-1",
+          "title": "Stub ticket 9",
+          "description": "Stub ticket 9 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 9,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-9-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-9-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-9-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-9.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 9."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-9.ts",
+              "symbol": "stub9",
+              "description": "Stub code reference for ticket 9."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-9.ts",
+              "typeName": "Stub9",
+              "description": "Stub type reference for ticket 9."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-8",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-9-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 9",
+              "content": "export function stub9() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-9-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 9",
+              "content": "export interface Stub9 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-10",
+          "epicId": "ep-1",
+          "title": "Stub ticket 10",
+          "description": "Stub ticket 10 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 10,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-10-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-10-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-10-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-10.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 10."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-10.ts",
+              "symbol": "stub10",
+              "description": "Stub code reference for ticket 10."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-10.ts",
+              "typeName": "Stub10",
+              "description": "Stub type reference for ticket 10."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-9",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-10-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 10",
+              "content": "export function stub10() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-10-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 10",
+              "content": "export interface Stub10 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-11",
+          "epicId": "ep-1",
+          "title": "Stub ticket 11",
+          "description": "Stub ticket 11 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 11,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-11-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-11-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-11-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-11.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 11."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-11.ts",
+              "symbol": "stub11",
+              "description": "Stub code reference for ticket 11."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-11.ts",
+              "typeName": "Stub11",
+              "description": "Stub type reference for ticket 11."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-10",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-11-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 11",
+              "content": "export function stub11() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-11-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 11",
+              "content": "export interface Stub11 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-12",
+          "epicId": "ep-1",
+          "title": "Stub ticket 12",
+          "description": "Stub ticket 12 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 12,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-12-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-12-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-12-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-12.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 12."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-12.ts",
+              "symbol": "stub12",
+              "description": "Stub code reference for ticket 12."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-12.ts",
+              "typeName": "Stub12",
+              "description": "Stub type reference for ticket 12."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-11",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-12-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 12",
+              "content": "export function stub12() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-12-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 12",
+              "content": "export interface Stub12 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-13",
+          "epicId": "ep-1",
+          "title": "Stub ticket 13",
+          "description": "Stub ticket 13 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 13,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-13-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-13-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-13-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-13.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 13."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-13.ts",
+              "symbol": "stub13",
+              "description": "Stub code reference for ticket 13."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-13.ts",
+              "typeName": "Stub13",
+              "description": "Stub type reference for ticket 13."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-12",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-13-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 13",
+              "content": "export function stub13() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-13-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 13",
+              "content": "export interface Stub13 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-14",
+          "epicId": "ep-1",
+          "title": "Stub ticket 14",
+          "description": "Stub ticket 14 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 14,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-14-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-14-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-14-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-14.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 14."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-14.ts",
+              "symbol": "stub14",
+              "description": "Stub code reference for ticket 14."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-14.ts",
+              "typeName": "Stub14",
+              "description": "Stub type reference for ticket 14."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-13",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-14-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 14",
+              "content": "export function stub14() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-14-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 14",
+              "content": "export interface Stub14 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-15",
+          "epicId": "ep-1",
+          "title": "Stub ticket 15",
+          "description": "Stub ticket 15 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 15,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-15-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-15-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-15-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-15.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 15."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-15.ts",
+              "symbol": "stub15",
+              "description": "Stub code reference for ticket 15."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-15.ts",
+              "typeName": "Stub15",
+              "description": "Stub type reference for ticket 15."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-14",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-15-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 15",
+              "content": "export function stub15() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-15-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 15",
+              "content": "export interface Stub15 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-16",
+          "epicId": "ep-1",
+          "title": "Stub ticket 16",
+          "description": "Stub ticket 16 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 16,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-16-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-16-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-16-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-16.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 16."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-16.ts",
+              "symbol": "stub16",
+              "description": "Stub code reference for ticket 16."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-16.ts",
+              "typeName": "Stub16",
+              "description": "Stub type reference for ticket 16."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-15",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-16-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 16",
+              "content": "export function stub16() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-16-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 16",
+              "content": "export interface Stub16 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-17",
+          "epicId": "ep-1",
+          "title": "Stub ticket 17",
+          "description": "Stub ticket 17 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 17,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-17-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-17-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-17-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-17.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 17."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-17.ts",
+              "symbol": "stub17",
+              "description": "Stub code reference for ticket 17."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-17.ts",
+              "typeName": "Stub17",
+              "description": "Stub type reference for ticket 17."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-16",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-17-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 17",
+              "content": "export function stub17() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-17-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 17",
+              "content": "export interface Stub17 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-18",
+          "epicId": "ep-1",
+          "title": "Stub ticket 18",
+          "description": "Stub ticket 18 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 18,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-18-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-18-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-18-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-18.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 18."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-18.ts",
+              "symbol": "stub18",
+              "description": "Stub code reference for ticket 18."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-18.ts",
+              "typeName": "Stub18",
+              "description": "Stub type reference for ticket 18."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-17",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-18-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 18",
+              "content": "export function stub18() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-18-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 18",
+              "content": "export interface Stub18 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-19",
+          "epicId": "ep-1",
+          "title": "Stub ticket 19",
+          "description": "Stub ticket 19 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 19,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-19-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-19-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-19-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-19.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 19."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-19.ts",
+              "symbol": "stub19",
+              "description": "Stub code reference for ticket 19."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-19.ts",
+              "typeName": "Stub19",
+              "description": "Stub type reference for ticket 19."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-18",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-19-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 19",
+              "content": "export function stub19() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-19-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 19",
+              "content": "export interface Stub19 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-20",
+          "epicId": "ep-1",
+          "title": "Stub ticket 20",
+          "description": "Stub ticket 20 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 20,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-20-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-20-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-20-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-20.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 20."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-20.ts",
+              "symbol": "stub20",
+              "description": "Stub code reference for ticket 20."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-20.ts",
+              "typeName": "Stub20",
+              "description": "Stub type reference for ticket 20."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-19",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-20-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 20",
+              "content": "export function stub20() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-20-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 20",
+              "content": "export interface Stub20 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-21",
+          "epicId": "ep-1",
+          "title": "Stub ticket 21",
+          "description": "Stub ticket 21 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 21,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-21-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-21-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-21-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-21.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 21."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-21.ts",
+              "symbol": "stub21",
+              "description": "Stub code reference for ticket 21."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-21.ts",
+              "typeName": "Stub21",
+              "description": "Stub type reference for ticket 21."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-20",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-21-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 21",
+              "content": "export function stub21() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-21-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 21",
+              "content": "export interface Stub21 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-22",
+          "epicId": "ep-1",
+          "title": "Stub ticket 22",
+          "description": "Stub ticket 22 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 22,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-22-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-22-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-22-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-22.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 22."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-22.ts",
+              "symbol": "stub22",
+              "description": "Stub code reference for ticket 22."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-22.ts",
+              "typeName": "Stub22",
+              "description": "Stub type reference for ticket 22."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-21",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-22-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 22",
+              "content": "export function stub22() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-22-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 22",
+              "content": "export interface Stub22 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-23",
+          "epicId": "ep-1",
+          "title": "Stub ticket 23",
+          "description": "Stub ticket 23 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 23,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-23-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-23-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-23-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-23.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 23."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-23.ts",
+              "symbol": "stub23",
+              "description": "Stub code reference for ticket 23."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-23.ts",
+              "typeName": "Stub23",
+              "description": "Stub type reference for ticket 23."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-22",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-23-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 23",
+              "content": "export function stub23() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-23-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 23",
+              "content": "export interface Stub23 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-24",
+          "epicId": "ep-1",
+          "title": "Stub ticket 24",
+          "description": "Stub ticket 24 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 24,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-24-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-24-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-24-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-24.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 24."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-24.ts",
+              "symbol": "stub24",
+              "description": "Stub code reference for ticket 24."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-24.ts",
+              "typeName": "Stub24",
+              "description": "Stub type reference for ticket 24."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-23",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-24-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 24",
+              "content": "export function stub24() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-24-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 24",
+              "content": "export interface Stub24 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-25",
+          "epicId": "ep-1",
+          "title": "Stub ticket 25",
+          "description": "Stub ticket 25 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 25,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-25-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-25-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-25-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-25.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 25."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-25.ts",
+              "symbol": "stub25",
+              "description": "Stub code reference for ticket 25."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-25.ts",
+              "typeName": "Stub25",
+              "description": "Stub type reference for ticket 25."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-24",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-25-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 25",
+              "content": "export function stub25() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-25-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 25",
+              "content": "export interface Stub25 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-26",
+          "epicId": "ep-1",
+          "title": "Stub ticket 26",
+          "description": "Stub ticket 26 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 26,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-26-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-26-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-26-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-26.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 26."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-26.ts",
+              "symbol": "stub26",
+              "description": "Stub code reference for ticket 26."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-26.ts",
+              "typeName": "Stub26",
+              "description": "Stub type reference for ticket 26."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-25",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-26-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 26",
+              "content": "export function stub26() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-26-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 26",
+              "content": "export interface Stub26 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-27",
+          "epicId": "ep-1",
+          "title": "Stub ticket 27",
+          "description": "Stub ticket 27 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 27,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-27-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-27-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-27-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-27.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 27."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-27.ts",
+              "symbol": "stub27",
+              "description": "Stub code reference for ticket 27."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-27.ts",
+              "typeName": "Stub27",
+              "description": "Stub type reference for ticket 27."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-26",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-27-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 27",
+              "content": "export function stub27() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-27-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 27",
+              "content": "export interface Stub27 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-28",
+          "epicId": "ep-1",
+          "title": "Stub ticket 28",
+          "description": "Stub ticket 28 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 28,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-28-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-28-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-28-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-28.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 28."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-28.ts",
+              "symbol": "stub28",
+              "description": "Stub code reference for ticket 28."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-28.ts",
+              "typeName": "Stub28",
+              "description": "Stub type reference for ticket 28."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-27",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-28-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 28",
+              "content": "export function stub28() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-28-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 28",
+              "content": "export interface Stub28 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-29",
+          "epicId": "ep-1",
+          "title": "Stub ticket 29",
+          "description": "Stub ticket 29 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 29,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-29-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-29-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-29-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-29.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 29."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-29.ts",
+              "symbol": "stub29",
+              "description": "Stub code reference for ticket 29."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-29.ts",
+              "typeName": "Stub29",
+              "description": "Stub type reference for ticket 29."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-28",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-29-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 29",
+              "content": "export function stub29() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-29-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 29",
+              "content": "export interface Stub29 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-30",
+          "epicId": "ep-1",
+          "title": "Stub ticket 30",
+          "description": "Stub ticket 30 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 30,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-30-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-30-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-30-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-30.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 30."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-30.ts",
+              "symbol": "stub30",
+              "description": "Stub code reference for ticket 30."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-30.ts",
+              "typeName": "Stub30",
+              "description": "Stub type reference for ticket 30."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-29",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-30-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 30",
+              "content": "export function stub30() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-30-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 30",
+              "content": "export interface Stub30 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-31",
+          "epicId": "ep-1",
+          "title": "Stub ticket 31",
+          "description": "Stub ticket 31 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 31,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-31-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-31-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-31-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-31.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 31."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-31.ts",
+              "symbol": "stub31",
+              "description": "Stub code reference for ticket 31."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-31.ts",
+              "typeName": "Stub31",
+              "description": "Stub type reference for ticket 31."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-30",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-31-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 31",
+              "content": "export function stub31() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-31-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 31",
+              "content": "export interface Stub31 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-32",
+          "epicId": "ep-1",
+          "title": "Stub ticket 32",
+          "description": "Stub ticket 32 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 32,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-32-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-32-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-32-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-32.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 32."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-32.ts",
+              "symbol": "stub32",
+              "description": "Stub code reference for ticket 32."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-32.ts",
+              "typeName": "Stub32",
+              "description": "Stub type reference for ticket 32."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-31",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-32-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 32",
+              "content": "export function stub32() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-32-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 32",
+              "content": "export interface Stub32 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-33",
+          "epicId": "ep-1",
+          "title": "Stub ticket 33",
+          "description": "Stub ticket 33 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 33,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-33-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-33-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-33-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-33.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 33."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-33.ts",
+              "symbol": "stub33",
+              "description": "Stub code reference for ticket 33."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-33.ts",
+              "typeName": "Stub33",
+              "description": "Stub type reference for ticket 33."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-32",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-33-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 33",
+              "content": "export function stub33() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-33-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 33",
+              "content": "export interface Stub33 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-34",
+          "epicId": "ep-1",
+          "title": "Stub ticket 34",
+          "description": "Stub ticket 34 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 34,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-34-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-34-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-34-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-34.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 34."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-34.ts",
+              "symbol": "stub34",
+              "description": "Stub code reference for ticket 34."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-34.ts",
+              "typeName": "Stub34",
+              "description": "Stub type reference for ticket 34."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-33",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-34-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 34",
+              "content": "export function stub34() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-34-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 34",
+              "content": "export interface Stub34 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-35",
+          "epicId": "ep-1",
+          "title": "Stub ticket 35",
+          "description": "Stub ticket 35 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 35,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-35-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-35-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-35-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-35.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 35."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-35.ts",
+              "symbol": "stub35",
+              "description": "Stub code reference for ticket 35."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-35.ts",
+              "typeName": "Stub35",
+              "description": "Stub type reference for ticket 35."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-34",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-35-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 35",
+              "content": "export function stub35() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-35-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 35",
+              "content": "export interface Stub35 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-36",
+          "epicId": "ep-1",
+          "title": "Stub ticket 36",
+          "description": "Stub ticket 36 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 36,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-36-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-36-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-36-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-36.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 36."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-36.ts",
+              "symbol": "stub36",
+              "description": "Stub code reference for ticket 36."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-36.ts",
+              "typeName": "Stub36",
+              "description": "Stub type reference for ticket 36."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-35",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-36-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 36",
+              "content": "export function stub36() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-36-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 36",
+              "content": "export interface Stub36 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-37",
+          "epicId": "ep-1",
+          "title": "Stub ticket 37",
+          "description": "Stub ticket 37 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 37,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-37-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-37-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-37-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-37.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 37."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-37.ts",
+              "symbol": "stub37",
+              "description": "Stub code reference for ticket 37."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-37.ts",
+              "typeName": "Stub37",
+              "description": "Stub type reference for ticket 37."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-36",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-37-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 37",
+              "content": "export function stub37() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-37-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 37",
+              "content": "export interface Stub37 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-38",
+          "epicId": "ep-1",
+          "title": "Stub ticket 38",
+          "description": "Stub ticket 38 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 38,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-38-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-38-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-38-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-38.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 38."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-38.ts",
+              "symbol": "stub38",
+              "description": "Stub code reference for ticket 38."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-38.ts",
+              "typeName": "Stub38",
+              "description": "Stub type reference for ticket 38."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-37",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-38-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 38",
+              "content": "export function stub38() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-38-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 38",
+              "content": "export interface Stub38 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-39",
+          "epicId": "ep-1",
+          "title": "Stub ticket 39",
+          "description": "Stub ticket 39 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 39,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-39-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-39-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-39-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-39.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 39."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-39.ts",
+              "symbol": "stub39",
+              "description": "Stub code reference for ticket 39."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-39.ts",
+              "typeName": "Stub39",
+              "description": "Stub type reference for ticket 39."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-38",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-39-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 39",
+              "content": "export function stub39() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-39-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 39",
+              "content": "export interface Stub39 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-40",
+          "epicId": "ep-1",
+          "title": "Stub ticket 40",
+          "description": "Stub ticket 40 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 40,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-40-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-40-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-40-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-40.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 40."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-40.ts",
+              "symbol": "stub40",
+              "description": "Stub code reference for ticket 40."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-40.ts",
+              "typeName": "Stub40",
+              "description": "Stub type reference for ticket 40."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-39",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-40-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 40",
+              "content": "export function stub40() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-40-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 40",
+              "content": "export interface Stub40 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-41",
+          "epicId": "ep-1",
+          "title": "Stub ticket 41",
+          "description": "Stub ticket 41 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 41,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-41-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-41-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-41-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-41.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 41."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-41.ts",
+              "symbol": "stub41",
+              "description": "Stub code reference for ticket 41."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-41.ts",
+              "typeName": "Stub41",
+              "description": "Stub type reference for ticket 41."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-40",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-41-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 41",
+              "content": "export function stub41() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-41-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 41",
+              "content": "export interface Stub41 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-42",
+          "epicId": "ep-1",
+          "title": "Stub ticket 42",
+          "description": "Stub ticket 42 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 42,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-42-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-42-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-42-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-42.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 42."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-42.ts",
+              "symbol": "stub42",
+              "description": "Stub code reference for ticket 42."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-42.ts",
+              "typeName": "Stub42",
+              "description": "Stub type reference for ticket 42."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-41",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-42-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 42",
+              "content": "export function stub42() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-42-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 42",
+              "content": "export interface Stub42 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-43",
+          "epicId": "ep-1",
+          "title": "Stub ticket 43",
+          "description": "Stub ticket 43 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 43,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-43-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-43-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-43-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-43.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 43."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-43.ts",
+              "symbol": "stub43",
+              "description": "Stub code reference for ticket 43."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-43.ts",
+              "typeName": "Stub43",
+              "description": "Stub type reference for ticket 43."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-42",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-43-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 43",
+              "content": "export function stub43() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-43-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 43",
+              "content": "export interface Stub43 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-44",
+          "epicId": "ep-1",
+          "title": "Stub ticket 44",
+          "description": "Stub ticket 44 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 44,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-44-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-44-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-44-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-44.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 44."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-44.ts",
+              "symbol": "stub44",
+              "description": "Stub code reference for ticket 44."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-44.ts",
+              "typeName": "Stub44",
+              "description": "Stub type reference for ticket 44."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-43",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-44-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 44",
+              "content": "export function stub44() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-44-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 44",
+              "content": "export interface Stub44 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-45",
+          "epicId": "ep-1",
+          "title": "Stub ticket 45",
+          "description": "Stub ticket 45 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 45,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-45-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-45-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-45-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-45.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 45."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-45.ts",
+              "symbol": "stub45",
+              "description": "Stub code reference for ticket 45."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-45.ts",
+              "typeName": "Stub45",
+              "description": "Stub type reference for ticket 45."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-44",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-45-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 45",
+              "content": "export function stub45() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-45-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 45",
+              "content": "export interface Stub45 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-46",
+          "epicId": "ep-1",
+          "title": "Stub ticket 46",
+          "description": "Stub ticket 46 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 46,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-46-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-46-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-46-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-46.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 46."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-46.ts",
+              "symbol": "stub46",
+              "description": "Stub code reference for ticket 46."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-46.ts",
+              "typeName": "Stub46",
+              "description": "Stub type reference for ticket 46."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-45",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-46-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 46",
+              "content": "export function stub46() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-46-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 46",
+              "content": "export interface Stub46 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-47",
+          "epicId": "ep-1",
+          "title": "Stub ticket 47",
+          "description": "Stub ticket 47 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 47,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-47-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-47-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-47-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-47.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 47."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-47.ts",
+              "symbol": "stub47",
+              "description": "Stub code reference for ticket 47."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-47.ts",
+              "typeName": "Stub47",
+              "description": "Stub type reference for ticket 47."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-46",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-47-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 47",
+              "content": "export function stub47() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-47-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 47",
+              "content": "export interface Stub47 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-48",
+          "epicId": "ep-1",
+          "title": "Stub ticket 48",
+          "description": "Stub ticket 48 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 48,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-48-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-48-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-48-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-48.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 48."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-48.ts",
+              "symbol": "stub48",
+              "description": "Stub code reference for ticket 48."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-48.ts",
+              "typeName": "Stub48",
+              "description": "Stub type reference for ticket 48."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-47",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-48-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 48",
+              "content": "export function stub48() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-48-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 48",
+              "content": "export interface Stub48 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-49",
+          "epicId": "ep-1",
+          "title": "Stub ticket 49",
+          "description": "Stub ticket 49 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 49,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-49-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-49-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-49-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-49.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 49."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-49.ts",
+              "symbol": "stub49",
+              "description": "Stub code reference for ticket 49."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-49.ts",
+              "typeName": "Stub49",
+              "description": "Stub type reference for ticket 49."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-48",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-49-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 49",
+              "content": "export function stub49() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-49-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 49",
+              "content": "export interface Stub49 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-50",
+          "epicId": "ep-1",
+          "title": "Stub ticket 50",
+          "description": "Stub ticket 50 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "implementation",
+          "complexity": "small",
+          "order": 50,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-50-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [
+            {
+              "id": "tkt-1-50-step-1",
+              "description": "Stub step 1",
+              "order": 1
+            },
+            {
+              "id": "tkt-1-50-step-2",
+              "description": "Stub step 2",
+              "order": 2
+            }
+          ],
+          "filesToBeCreated": [
+            "stub/file-50.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 50."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-50.ts",
+              "symbol": "stub50",
+              "description": "Stub code reference for ticket 50."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-50.ts",
+              "typeName": "Stub50",
+              "description": "Stub type reference for ticket 50."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-49",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-50-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 50",
+              "content": "export function stub50() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-50-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 50",
+              "content": "export interface Stub50 { id: string }"
+            }
+          ]
+        },
+        {
+          "id": "tkt-1-51",
+          "epicId": "ep-1",
+          "title": "Stub ticket 51",
+          "description": "Stub ticket 51 created to exceed the configured max-ticket count for entity-count-above-max violation seed.",
+          "ticketType": "verification",
+          "complexity": "small",
+          "order": 51,
+          "acceptanceCriteria": [
+            {
+              "id": "tkt-1-51-ac-1",
+              "given": "Stub g",
+              "when": "Stub w",
+              "then": "Stub t",
+              "order": 1
+            }
+          ],
+          "implementationSteps": [],
+          "filesToBeCreated": [
+            "stub/file-51.ts"
+          ],
+          "filesToBeModified": [],
+          "filesToBeDeleted": [],
+          "filesToBeReferenced": [],
+          "guardrails": [
+            "Stub guardrail for ticket 51."
+          ],
+          "codeReferences": [
+            {
+              "filePath": "stub/file-51.ts",
+              "symbol": "stub51",
+              "description": "Stub code reference for ticket 51."
+            }
+          ],
+          "typeReferences": [
+            {
+              "filePath": "stub/file-51.ts",
+              "typeName": "Stub51",
+              "description": "Stub type reference for ticket 51."
+            }
+          ],
+          "blueprintReferences": [],
+          "dependsOn": [
+            {
+              "ticketId": "tkt-1-50",
+              "type": "requires"
+            }
+          ],
+          "fieldDeclarations": {
+            "blueprintReferences": {
+              "value": "N/A",
+              "reason": "Generated stub ticket — no semantic relationship to project blueprints."
+            }
+          },
+          "estimatedMinutes": 10,
+          "codeSnippets": [
+            {
+              "id": "tkt-1-51-codeSnippets-1",
+              "language": "typescript",
+              "description": "Stub snippet 51",
+              "content": "export function stub51() {}"
+            }
+          ],
+          "typeSnippets": [
+            {
+              "id": "tkt-1-51-typeSnippets-1",
+              "language": "typescript",
+              "description": "Stub type 51",
+              "content": "export interface Stub51 { id: string }"
+            }
+          ],
+          "testSpecification": {
+            "testTypes": [
+              "integration"
+            ],
+            "qualityGates": [
+              "all tests pass"
+            ],
+            "testCommands": [
+              "pnpm test"
+            ],
+            "coverageTarget": 70
+          }
+        }
+      ]
+    }
+  ],
+  "blueprints": [
+    {
+      "id": "bp-1",
+      "title": "Task Entity State Machine",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> backlog : task created\n  backlog --> in_progress : assignee starts work\n  in_progress --> review : PR opened\n  review --> done : PR merged\n  review --> in_progress : PR closed without merge\n  done --> [*]\n```"
+    },
+    {
+      "id": "bp-2",
+      "title": "System Architecture Overview",
+      "category": "architecture",
+      "coverageType": "ticket",
+      "content": "```mermaid\ngraph TD\n  Client[React SPA] -->|GraphQL| AppSync\n  AppSync --> LambdaTask[Task Lambda]\n  AppSync --> LambdaNotif[Notification Lambda]\n  LambdaTask --> DynamoDB\n  LambdaNotif --> SES\n  GitHub -->|Webhook| APIGateway\n  APIGateway --> LambdaWebhook[Webhook Lambda]\n  LambdaWebhook --> DynamoDB\n```"
+    }
+  ]
+}

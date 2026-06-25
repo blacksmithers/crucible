@@ -1,0 +1,80 @@
+{
+  "input": {
+    "specId": "spec-ticket-expansion",
+    "context": {
+      "phase": "ticket_expansion",
+      "activeEntityId": "tkt-1-1"
+    }
+  },
+  "output": {
+    "phase": "ticket_expansion",
+    "passed": true,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": []
+    },
+    "scoring": {
+      "skipped": false,
+      "localScore": 75.67567567567568,
+      "globalScore": 89.68926145396733,
+      "perField": {},
+      "topologyPenalties": 0,
+      "gateResult": "pass",
+      "threshold": 70,
+      "globalScoreBreakdown": {
+        "specBlock": 20,
+        "epicBlock": 27.27272727272727,
+        "ticketBlock": 42.41653418124007,
+        "epicAvg": 90.9090909090909,
+        "ticketAvg": 84.83306836248013,
+        "weights": {
+          "spec": 0.2,
+          "epics": 0.3,
+          "tickets": 0.5
+        }
+      },
+      "cascadeFloors": {
+        "specOnly": 0,
+        "specPlusEpics": 30,
+        "total": 80
+      },
+      "cascadeFailures": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-1": [
+          {
+            "patternId": "foundation-gap",
+            "entityId": "tkt-1-1",
+            "entityType": "ticket",
+            "message": "Ticket \"Define Task domain type and DynamoDB schema\" — ticket_expansion has critical gaps:\n  - acceptanceCriteria\n  - implementationSteps\n  - testSpecification\n\nDECLARE all together. Files determine scope, AC determines verifiability, steps determine execution sequence, ticketType determines whether testSpecification is required.\n\nOperation available: action_planning_session({\n  operation: { type: 'update_ticket', ticketId: \"tkt-1-1\", ... }\n})",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 24.324324324324326,
+            "globalImpactOnFix": 2.4324324324324325
+          },
+          {
+            "patternId": "conditional-gap",
+            "entityId": "tkt-1-1",
+            "entityType": "ticket",
+            "message": "Verification ticket \"Define Task domain type and DynamoDB schema\" has ticketType='verification' but testSpecification is incomplete:\n  - testTypes empty (minimum 1)\n  - qualityGates empty (minimum 1)\n  - testCommands empty\n  - coverageTarget not set\n\nDECLARE the complete test specification covering what this verification must assert and how.\n\nOperation available: action_planning_session({\n  operation: { type: 'update_ticket', ticketId: \"tkt-1-1\", testSpecification: { testTypes, qualityGates, testCommands, coverageTarget } }\n})",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 8.108108108108109,
+            "globalImpactOnFix": 0.8108108108108109
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "activeEntityId": "tkt-1-1",
+      "resolution": "by-ticket",
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.136Z"
+    }
+  }
+}

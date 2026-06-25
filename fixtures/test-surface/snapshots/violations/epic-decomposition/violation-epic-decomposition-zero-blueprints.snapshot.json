@@ -1,0 +1,73 @@
+{
+  "input": {
+    "specId": "spec-epic-decomp",
+    "context": {
+      "phase": "epic_decomposition",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "epic_decomposition",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": []
+    },
+    "scoring": {
+      "skipped": true,
+      "reason": "no-rubric-for-phase",
+      "localScore": null,
+      "globalScore": null,
+      "perField": {},
+      "gateResult": "n/a",
+      "threshold": null
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [
+        {
+          "category": "blueprint-epic-ratio",
+          "severity": "error",
+          "field": "specification.blueprints",
+          "message": "0 ticket-scoped blueprints for 3 epics (ratio 0.00); min 0.5",
+          "entityIds": [
+            "spec-epic-decomp"
+          ],
+          "primaryEntityId": "spec-epic-decomp",
+          "operations": [
+            "create_blueprint"
+          ]
+        }
+      ],
+      "ranChecks": [
+        "blueprint-epic-ratio"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "spec-epic-decomp": [
+          {
+            "patternId": "individual",
+            "entityId": "spec-epic-decomp",
+            "entityType": "specification",
+            "message": "Decomposition phase. Review the current set of epics and decide whether the decomposition is sufficient. Available operations: create_epic, update_epic, delete_epic. To advance to the next phase, invoke complete_decomposition_phase explicitly.",
+            "operations": [
+              "create_epic",
+              "update_epic",
+              "delete_epic"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.020Z"
+    }
+  }
+}

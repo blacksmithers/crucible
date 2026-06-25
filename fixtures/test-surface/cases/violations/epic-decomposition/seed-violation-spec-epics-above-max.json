@@ -1,0 +1,911 @@
+{
+  "$testSurface": {
+    "description": "Violation: spec has 51 epics; default max is 50. M4.16 entity-count-above-max finding.",
+    "phase": "epic_decomposition",
+    "expectedGateResult": "fail"
+  },
+  "schemaVersion": "1.1",
+  "id": "spec-epic-decomp-above-max",
+  "projectId": "prj-canonical",
+  "title": "TaskFlow — Collaborative Task Management Platform",
+  "description": "A real-time collaborative task management platform for distributed engineering teams.",
+  "status": "epic_decomposition",
+  "background": "Engineering teams at fast-growing startups struggle to coordinate work across time zones. Existing tools lack deep integration with code review workflows and sprint planning, causing context switching and productivity loss.",
+  "architecture": "TaskFlow is built on a serverless event-driven architecture deployed on AWS. The frontend is a React single-page application served via CloudFront and communicates with a GraphQL API backed by AWS AppSync. Business logic lives in Node.js Lambda functions organized by domain (tasks, projects, notifications, users). Persistent state is stored in DynamoDB with a global secondary index strategy for flexible query patterns. Real-time collaboration is powered by AppSync subscriptions over WebSocket. Authentication is handled by Amazon Cognito with JWT-based authorization. All infrastructure is defined as code using AWS CDK. CI/CD pipelines run on GitHub Actions with automated testing gates before every deployment.",
+  "scope": {
+    "inScope": [
+      "Task creation, assignment, and lifecycle management",
+      "Real-time collaborative updates and presence indicators",
+      "Sprint planning with drag-and-drop board interface",
+      "GitHub pull request integration for task status updates",
+      "Email and in-app notification delivery"
+    ],
+    "outOfScope": [
+      "Native mobile application development",
+      "Time tracking and invoicing features",
+      "Third-party calendar synchronization beyond read-only"
+    ],
+    "assumptions": [
+      "Users have modern browser support (Chrome 90+, Firefox 88+, Safari 14+)",
+      "Teams are expected to have fewer than 500 members per organization"
+    ]
+  },
+  "goals": [
+    {
+      "id": "g-1",
+      "title": "Reduce cross-team coordination overhead",
+      "description": "Enable distributed engineering teams to coordinate work without synchronous standups by providing a shared, always-current view of project state.",
+      "type": "business",
+      "successCriteria": [
+        "Average time to assign and scope a task drops below 5 minutes",
+        "Weekly standup duration reduced by at least 30% within 60 days of adoption"
+      ]
+    },
+    {
+      "id": "g-2",
+      "title": "Deliver real-time collaborative editing without merge conflicts",
+      "description": "Provide instant, conflict-free updates to task descriptions, acceptance criteria, and comments so that multiple team members can contribute simultaneously.",
+      "type": "technical",
+      "successCriteria": [
+        "Concurrent edits by two users on the same task resolve deterministically within 200ms",
+        "Zero data-loss incidents reported during the first 90 days post-launch"
+      ]
+    },
+    {
+      "id": "g-3",
+      "title": "Seamlessly integrate with existing GitHub workflows",
+      "description": "Automatically reflect pull request status changes on linked tasks, closing the gap between code review and project management without manual updates.",
+      "type": "operational",
+      "successCriteria": [
+        "Pull request webhook events update task status within 10 seconds",
+        "At least 80% of implementation tasks have a linked PR within 48 hours of starting"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "r-1",
+      "title": "Task lifecycle management with status transitions",
+      "description": "Users must be able to create tasks, set priority and assignee, and transition tasks through defined statuses (backlog, in-progress, review, done). Status transitions must be validated against a configurable workflow.",
+      "type": "functional",
+      "acceptanceCriteria": [
+        {
+          "id": "r-1-ac-1",
+          "given": "A project member is viewing the task board",
+          "when": "They create a new task with a title, description, and assignee",
+          "then": "The task appears in the backlog column and the assignee receives an in-app notification",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "r-2",
+      "title": "Real-time presence and live update propagation",
+      "description": "All connected clients must receive task updates within 500ms of a change being committed. The UI must show which team members are currently viewing or editing each task.",
+      "type": "functional",
+      "acceptanceCriteria": [
+        {
+          "id": "r-2-ac-1",
+          "given": "Two users have the same task open in their browsers",
+          "when": "One user updates the task description",
+          "then": "The other user's browser reflects the new description within 500ms without a page refresh",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "r-3",
+      "title": "GitHub webhook integration for linked pull requests",
+      "description": "The system must accept GitHub webhook events for pull request opened, merged, and closed actions, and update the status of any task linked to that pull request accordingly.",
+      "type": "integration",
+      "acceptanceCriteria": [
+        {
+          "id": "r-3-ac-1",
+          "given": "A task has a linked GitHub pull request",
+          "when": "The pull request is merged on GitHub",
+          "then": "The linked task transitions to the review status within 15 seconds",
+          "order": 1
+        }
+      ]
+    }
+  ],
+  "nonFunctionalRequirements": [
+    {
+      "id": "nfr-1",
+      "description": "The GraphQL API must respond to 95th-percentile queries within 200ms under a sustained load of 500 concurrent users.",
+      "category": "performance",
+      "metric": "p95 API response time",
+      "target": "≤ 200ms at 500 concurrent users",
+      "measurementMethod": "Load test with k6, 10-minute sustained ramp, measured at API Gateway"
+    }
+  ],
+  "guardrails": [
+    {
+      "id": "gr-1",
+      "description": "All user-supplied input must be validated and sanitized server-side before persistence to prevent injection attacks and data corruption.",
+      "category": "technical",
+      "rationale": "Client-side validation can be bypassed; server-side enforcement is the last line of defense.",
+      "consequence": "Unvalidated input reaching the database could lead to data corruption, XSS vulnerabilities, or unauthorized access."
+    }
+  ],
+  "techStack": [
+    {
+      "id": "ts-1",
+      "name": "React",
+      "version": "18.2",
+      "layer": "frontend",
+      "rationale": "Mature ecosystem, strong TypeScript support, and team familiarity reduce onboarding friction."
+    },
+    {
+      "id": "ts-2",
+      "name": "AWS DynamoDB",
+      "version": "latest",
+      "layer": "database",
+      "rationale": "Serverless, pay-per-request pricing aligns with early-stage traffic patterns, and single-table design enables the required query flexibility."
+    }
+  ],
+  "folderStructures": [
+    {
+      "id": "fs-1",
+      "scope": "monorepo root",
+      "description": "Top-level directory layout for the TaskFlow monorepo.",
+      "content": "taskflow/\n├── apps/\n│   ├── web/          # React SPA\n│   └── api/          # Lambda function handlers\n├── packages/\n│   ├── core/         # Shared domain types and utilities\n│   └── ui/           # Design system components\n├── infrastructure/   # AWS CDK stacks\n├── scripts/          # Developer tooling\n└── .github/\n    └── workflows/    # CI/CD pipeline definitions"
+    }
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "spec-ac-1",
+      "given": "A team member with project access is authenticated",
+      "when": "They navigate to the project board and create a task",
+      "then": "The task is persisted, appears on the board in real-time for all connected members, and the assignee is notified",
+      "order": 1
+    }
+  ],
+  "epics": [
+    {
+      "id": "ep-1",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 1 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 1.",
+      "objective": "Stub objective for epic 1 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-2",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 2 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 2.",
+      "objective": "Stub objective for epic 2 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-3",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 3 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 3.",
+      "objective": "Stub objective for epic 3 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-4",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 4 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 4.",
+      "objective": "Stub objective for epic 4 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-5",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 5 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 5.",
+      "objective": "Stub objective for epic 5 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-6",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 6 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 6.",
+      "objective": "Stub objective for epic 6 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-7",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 7 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 7.",
+      "objective": "Stub objective for epic 7 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-8",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 8 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 8.",
+      "objective": "Stub objective for epic 8 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-9",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 9 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 9.",
+      "objective": "Stub objective for epic 9 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-10",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 10 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 10.",
+      "objective": "Stub objective for epic 10 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-11",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 11 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 11.",
+      "objective": "Stub objective for epic 11 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-12",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 12 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 12.",
+      "objective": "Stub objective for epic 12 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-13",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 13 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 13.",
+      "objective": "Stub objective for epic 13 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-14",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 14 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 14.",
+      "objective": "Stub objective for epic 14 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-15",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 15 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 15.",
+      "objective": "Stub objective for epic 15 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-16",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 16 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 16.",
+      "objective": "Stub objective for epic 16 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-17",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 17 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 17.",
+      "objective": "Stub objective for epic 17 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-18",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 18 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 18.",
+      "objective": "Stub objective for epic 18 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-19",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 19 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 19.",
+      "objective": "Stub objective for epic 19 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-20",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 20 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 20.",
+      "objective": "Stub objective for epic 20 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-21",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 21 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 21.",
+      "objective": "Stub objective for epic 21 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-22",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 22 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 22.",
+      "objective": "Stub objective for epic 22 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-23",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 23 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 23.",
+      "objective": "Stub objective for epic 23 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-24",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 24 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 24.",
+      "objective": "Stub objective for epic 24 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-25",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 25 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 25.",
+      "objective": "Stub objective for epic 25 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-26",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 26 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 26.",
+      "objective": "Stub objective for epic 26 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-27",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 27 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 27.",
+      "objective": "Stub objective for epic 27 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-28",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 28 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 28.",
+      "objective": "Stub objective for epic 28 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-29",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 29 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 29.",
+      "objective": "Stub objective for epic 29 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-30",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 30 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 30.",
+      "objective": "Stub objective for epic 30 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-31",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 31 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 31.",
+      "objective": "Stub objective for epic 31 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-32",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 32 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 32.",
+      "objective": "Stub objective for epic 32 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-33",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 33 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 33.",
+      "objective": "Stub objective for epic 33 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-34",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 34 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 34.",
+      "objective": "Stub objective for epic 34 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-35",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 35 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 35.",
+      "objective": "Stub objective for epic 35 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-36",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 36 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 36.",
+      "objective": "Stub objective for epic 36 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-37",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 37 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 37.",
+      "objective": "Stub objective for epic 37 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-38",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 38 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 38.",
+      "objective": "Stub objective for epic 38 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-39",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 39 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 39.",
+      "objective": "Stub objective for epic 39 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-40",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 40 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 40.",
+      "objective": "Stub objective for epic 40 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-41",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 41 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 41.",
+      "objective": "Stub objective for epic 41 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-42",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 42 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 42.",
+      "objective": "Stub objective for epic 42 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-43",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 43 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 43.",
+      "objective": "Stub objective for epic 43 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-44",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 44 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 44.",
+      "objective": "Stub objective for epic 44 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-45",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 45 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 45.",
+      "objective": "Stub objective for epic 45 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-46",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 46 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 46.",
+      "objective": "Stub objective for epic 46 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-47",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 47 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 47.",
+      "objective": "Stub objective for epic 47 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-48",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 48 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 48.",
+      "objective": "Stub objective for epic 48 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-49",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 49 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 49.",
+      "objective": "Stub objective for epic 49 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-50",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 50 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 50.",
+      "objective": "Stub objective for epic 50 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    },
+    {
+      "id": "ep-51",
+      "specificationId": "spec-epic-decomp-above-max",
+      "title": "Epic 51 — generated stub",
+      "description": "Stub epic generated to exceed the configured max-epic count for the entity-count-above-max violation seed. Index 51.",
+      "objective": "Stub objective for epic 51 so the structural format check passes while the count check fails.",
+      "tickets": [],
+      "requirementsCovered": [],
+      "nfrsCovered": [],
+      "goalsCovered": []
+    }
+  ],
+  "blueprints": [
+    {
+      "id": "bp-1",
+      "title": "Blueprint 1",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub1\n```"
+    },
+    {
+      "id": "bp-2",
+      "title": "Blueprint 2",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub2\n```"
+    },
+    {
+      "id": "bp-3",
+      "title": "Blueprint 3",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub3\n```"
+    },
+    {
+      "id": "bp-4",
+      "title": "Blueprint 4",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub4\n```"
+    },
+    {
+      "id": "bp-5",
+      "title": "Blueprint 5",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub5\n```"
+    },
+    {
+      "id": "bp-6",
+      "title": "Blueprint 6",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub6\n```"
+    },
+    {
+      "id": "bp-7",
+      "title": "Blueprint 7",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub7\n```"
+    },
+    {
+      "id": "bp-8",
+      "title": "Blueprint 8",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub8\n```"
+    },
+    {
+      "id": "bp-9",
+      "title": "Blueprint 9",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub9\n```"
+    },
+    {
+      "id": "bp-10",
+      "title": "Blueprint 10",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub10\n```"
+    },
+    {
+      "id": "bp-11",
+      "title": "Blueprint 11",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub11\n```"
+    },
+    {
+      "id": "bp-12",
+      "title": "Blueprint 12",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub12\n```"
+    },
+    {
+      "id": "bp-13",
+      "title": "Blueprint 13",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub13\n```"
+    },
+    {
+      "id": "bp-14",
+      "title": "Blueprint 14",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub14\n```"
+    },
+    {
+      "id": "bp-15",
+      "title": "Blueprint 15",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub15\n```"
+    },
+    {
+      "id": "bp-16",
+      "title": "Blueprint 16",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub16\n```"
+    },
+    {
+      "id": "bp-17",
+      "title": "Blueprint 17",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub17\n```"
+    },
+    {
+      "id": "bp-18",
+      "title": "Blueprint 18",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub18\n```"
+    },
+    {
+      "id": "bp-19",
+      "title": "Blueprint 19",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub19\n```"
+    },
+    {
+      "id": "bp-20",
+      "title": "Blueprint 20",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub20\n```"
+    },
+    {
+      "id": "bp-21",
+      "title": "Blueprint 21",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub21\n```"
+    },
+    {
+      "id": "bp-22",
+      "title": "Blueprint 22",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub22\n```"
+    },
+    {
+      "id": "bp-23",
+      "title": "Blueprint 23",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub23\n```"
+    },
+    {
+      "id": "bp-24",
+      "title": "Blueprint 24",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub24\n```"
+    },
+    {
+      "id": "bp-25",
+      "title": "Blueprint 25",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub25\n```"
+    },
+    {
+      "id": "bp-26",
+      "title": "Blueprint 26",
+      "category": "state",
+      "coverageType": "ticket",
+      "content": "```mermaid\nstateDiagram-v2\n  [*] --> stub26\n```"
+    }
+  ]
+}

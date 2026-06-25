@@ -1,0 +1,95 @@
+{
+  "input": {
+    "specId": "spec-ticket-decomp-above-max",
+    "context": {
+      "phase": "ticket_decomposition",
+      "activeEntityId": "ep-1"
+    }
+  },
+  "output": {
+    "phase": "ticket_decomposition",
+    "passed": false,
+    "structural": {
+      "missingFields": [
+        "ticket[id=tkt-1-51].implementationSteps"
+      ],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-above-max",
+          "severity": "error",
+          "field": "epics[id=ep-1].tickets",
+          "message": "Epic \"Core Task Management Domain\" has 51 ticket(s); maximum is 50",
+          "guidance": "Épico \"Core Task Management Domain\" tem 51 tickets — excede o máximo configurado de 50. Excesso de tickets indica que o épico cobre trabalho amplo demais. Considere splittar o épico em múltiplos épicos com responsabilidades coesas. Alternativamente, consolide tickets relacionados se a granularidade está fina demais.",
+          "operations": [
+            "update_ticket",
+            "delete_ticket",
+            "create_epic"
+          ],
+          "context": {
+            "epicId": "ep-1",
+            "currentCount": 51,
+            "configuredMin": 3,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "scoring": {
+      "skipped": true,
+      "reason": "no-rubric-for-phase",
+      "localScore": null,
+      "globalScore": null,
+      "perField": {},
+      "gateResult": "n/a",
+      "threshold": null
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [
+        {
+          "category": "impl-verification-ratio",
+          "severity": "error",
+          "field": "specification.tickets",
+          "message": "Ratio implementation:verification is 50.0:1; allowed range [1, 10]",
+          "entityIds": [
+            "spec-ticket-decomp-above-max"
+          ],
+          "primaryEntityId": "spec-ticket-decomp-above-max",
+          "operations": [
+            "create_ticket"
+          ]
+        }
+      ],
+      "ranChecks": [
+        "impl-verification-ratio"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "ep-1": [
+          {
+            "patternId": "individual",
+            "entityId": "ep-1",
+            "entityType": "epic",
+            "message": "Decomposition phase. Review the current set of tickets in this epic and decide whether the decomposition is sufficient. Available operations: create_ticket, update_ticket, delete_ticket. To advance to the next phase, invoke complete_decomposition_phase explicitly.",
+            "operations": [
+              "create_ticket",
+              "update_ticket",
+              "delete_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "activeEntityId": "ep-1",
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.103Z"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "input": {
+    "specId": "spec-ticket-expansion",
+    "context": {
+      "phase": "ticket_expansion",
+      "activeEntityId": "tkt-1-1"
+    }
+  },
+  "output": {
+    "phase": "ticket_expansion",
+    "passed": true,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": []
+    },
+    "scoring": {
+      "skipped": false,
+      "localScore": 73.52941176470588,
+      "globalScore": 89.47463506287036,
+      "perField": {},
+      "topologyPenalties": 0,
+      "gateResult": "pass",
+      "threshold": 70,
+      "globalScoreBreakdown": {
+        "specBlock": 20,
+        "epicBlock": 27.27272727272727,
+        "ticketBlock": 42.20190779014309,
+        "epicAvg": 90.9090909090909,
+        "ticketAvg": 84.40381558028618,
+        "weights": {
+          "spec": 0.2,
+          "epics": 0.3,
+          "tickets": 0.5
+        }
+      },
+      "cascadeFloors": {
+        "specOnly": 0,
+        "specPlusEpics": 30,
+        "total": 80
+      },
+      "cascadeFailures": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-1": [
+          {
+            "patternId": "foundation-gap",
+            "entityId": "tkt-1-1",
+            "entityType": "ticket",
+            "message": "Ticket \"Define Task domain type and DynamoDB schema\" — ticket_expansion has critical gaps:\n  - description\n  - acceptanceCriteria\n  - implementationSteps\n\nDECLARE all together. Files determine scope, AC determines verifiability, steps determine execution sequence, ticketType determines whether testSpecification is required.\n\nOperation available: action_planning_session({\n  operation: { type: 'update_ticket', ticketId: \"tkt-1-1\", ... }\n})",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 26.47058823529412,
+            "globalImpactOnFix": 2.647058823529412
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "activeEntityId": "tkt-1-1",
+      "resolution": "by-ticket",
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.118Z"
+    }
+  }
+}

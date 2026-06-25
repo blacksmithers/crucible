@@ -1,0 +1,135 @@
+{
+  "input": {
+    "specId": "spec-planning",
+    "context": {
+      "phase": "planning_spec",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "planning_spec",
+    "passed": false,
+    "structural": {
+      "missingFields": [
+        "goals"
+      ],
+      "invalidFields": [
+        {
+          "fieldPath": "goals",
+          "reason": "Array must contain at least 3 element(s)"
+        }
+      ],
+      "findings": []
+    },
+    "scoring": {
+      "skipped": false,
+      "localScore": 89.28571428571429,
+      "globalScore": 17.857142857142858,
+      "perField": {
+        "spec.goals.v1": {
+          "earned": 0,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.requirements.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.architecture.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.scope.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.techStack.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.folderStructures.v1": {
+          "earned": 3,
+          "possible": 3,
+          "tier": "critical"
+        },
+        "spec.acceptanceCriteria.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.nonFunctionalRequirements.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.guardrails.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.goals.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.requirements.leaf.v1": {
+          "earned": 2,
+          "possible": 2,
+          "tier": "recommended"
+        },
+        "spec.background.v1": {
+          "earned": 1,
+          "possible": 1,
+          "tier": "enrichment"
+        }
+      },
+      "topologyPenalties": 0,
+      "gateResult": "pass",
+      "threshold": 80,
+      "globalScoreBreakdown": {
+        "specBlock": 17.857142857142858,
+        "epicBlock": 0,
+        "ticketBlock": 0,
+        "epicAvg": null,
+        "ticketAvg": null,
+        "weights": {
+          "spec": 0.2,
+          "epics": 0.3,
+          "tickets": 0.5
+        }
+      },
+      "cascadeFloors": {
+        "specOnly": 0,
+        "specPlusEpics": 30,
+        "total": 80
+      },
+      "cascadeFailures": []
+    },
+    "guidance": {
+      "perEntity": {
+        "spec-planning": [
+          {
+            "patternId": "individual",
+            "entityId": "spec-planning",
+            "entityType": "specification",
+            "message": "Specification \"TaskFlow — Collaborative Task Management Platform\" — missing \"goals\". Specification needs at least 3 goals (currently 0). Goals scope what the architecture must achieve and are interdependent with requirements and scope. Each goal requires measurable success criteria.",
+            "operations": [
+              "set_metadata"
+            ],
+            "pointsLost": 10.714285714285714,
+            "globalImpactOnFix": 2.142857142857143
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.076Z"
+    }
+  }
+}

@@ -1,0 +1,173 @@
+# Copy of @specforge/validator/src/config/defaults.yml. Keep in sync.
+# Layer thresholds (gate pass/fail)
+thresholds:
+  global: 80
+  specification: 80
+  epic: 70
+  ticket: 70
+
+# Tier weights (scoring formula)
+tiers:
+  critical: 3
+  recommended: 2
+  enrichment: 1
+  contextual: 0.5
+
+# Topology penalties (cumulative)
+topology:
+  rootPenalty: -3
+  leafPenalty: -3
+  islandPenalty: -6
+  maxRootRatio: 0.25
+  maxLeafRatio: 0.25
+
+# N/A reason validation
+naReason:
+  minLength: 20
+
+# Cross-validation rules
+crossValidation:
+  ratios:
+    blueprintToEpic:
+      min: 0.5
+    implementationToVerification:
+      min: 1
+      max: 10
+  topology:
+    rootRatio: 0.25
+    rootCap: 5
+    leafRatio: 0.25
+    leafCap: 5
+  waves:
+    maxTicketsPerWave: 5
+  checks:
+    circular-dependency:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+    broken-reference:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+    orphan-reference:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+    island-ticket:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+    topology-roots-exceed:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+    topology-leaves-exceed:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+    wave-size-exceed:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+    wave-concurrent-modification:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+    wave-deletion-after-modification:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+    wave-deletion-after-creation:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+    file-conflict:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+    files-to-be-referenced:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+    blueprint-coverage:
+      enabled: true
+      enabledPhases: [cross_validation, all]
+      minTicketsPerBlueprint: 2
+
+# Guidance output
+guidance:
+  topNPerEntity:
+    default: 5
+    min: 1
+    max: 100
+
+# Global scoring weights (must sum to 1.0)
+scoring:
+  weights:
+    spec: 0.2
+    epics: 0.3
+    tickets: 0.5
+
+# Configurable structural thresholds
+structuralRequirements:
+  enforceTypes: true        # M4.9. Default true. Set false for untyped projects.
+  arrayMinCounts:
+    specification:
+      goals: { default: 3, min: 1, max: 20 }
+      requirements: { default: 3, min: 1, max: 30 }
+      acceptanceCriteria: { default: 1, min: 1, max: 50 }
+      nonFunctionalRequirements: { default: 1, min: 1, max: 30 }
+      guardrails: { default: 1, min: 1, max: 20 }
+      techStack: { default: 1, min: 1, max: 30 }
+      folderStructures: { default: 1, min: 1, max: 10 }
+      epics: { default: 2, min: 0, max: 50 }              # M4.16
+    epic:
+      goals: { default: 1, min: 1, max: 10 }
+      acceptanceCriteria: { default: 1, min: 1, max: 20 }
+      validationCommands: { default: 1, min: 1, max: 20 }
+      apiContracts: { default: 1, min: 1, max: 20 }
+      sharedPatterns: { default: 1, min: 1, max: 20 }
+      fileStructures: { default: 1, min: 1, max: 20 }     # M4.17
+      tickets: { default: 3, min: 0, max: 50 }            # M4.16
+    ticket:
+      guardrails: { default: 1, min: 1, max: 20 }
+      codeReferences: { default: 1, min: 1, max: 20 }
+      typeReferences: { default: 1, min: 1, max: 20 }
+  arrayMaxCounts:                                         # M4.16
+    specification:
+      epics: { default: 50, min: 1, max: 1000 }
+    epic:
+      tickets: { default: 50, min: 1, max: 1000 }
+  arrayCountPhases:                                       # M4.16
+    specification:
+      epics: [epic_decomposition, epic_expansion, cross_validation]
+    epic:
+      tickets: [ticket_decomposition, ticket_expansion, cross_validation]
+  stringMinLengths:
+    specification:
+      architecture: { default: 200, min: 50, max: 5000 }
+      background: { default: 50, min: 20, max: 2000 }
+    epic:
+      architecture: { default: 200, min: 50, max: 5000 }
+      objective: { default: 50, min: 20, max: 1000 }
+      description: { default: 50, min: 20, max: 1000 }
+    ticket:
+      description: { default: 30, min: 10, max: 500 }
+  itemMinLengths:
+    specification:
+      goals: { default: 20, min: 5, max: 500 }
+      requirements: { default: 20, min: 5, max: 500 }
+      guardrails: { default: 20, min: 5, max: 500 }
+      nonFunctionalRequirements: { default: 30, min: 10, max: 500 }
+    epic:
+      goals: { default: 20, min: 5, max: 500 }
+      validationCommands: { default: 5, min: 3, max: 500 }
+    ticket:
+      guardrails: { default: 20, min: 5, max: 500 }
+  arrayItemFieldMinLengths:
+    specification:
+      goals:
+        title: { default: 5, min: 1, max: 200 }
+        description: { default: 30, min: 10, max: 1000 }
+      requirements:
+        title: { default: 5, min: 1, max: 200 }
+        description: { default: 30, min: 10, max: 1000 }
+    ticket:
+      codeSnippets:
+        content: { default: 50, min: 10, max: 5000 }
+      typeSnippets:
+        content: { default: 50, min: 10, max: 5000 }
+  complexityDrivenMinCounts:
+    ticket:
+      codeSnippets: { small: 1, medium: 2, large: 3, xlarge: 4 }
+      typeSnippets: { small: 1, medium: 1, large: 2, xlarge: 2 }
+      acceptanceCriteria: { small: 1, medium: 2, large: 3, xlarge: 5 }
+      implementationSteps: { small: 2, medium: 4, large: 6, xlarge: 10 }

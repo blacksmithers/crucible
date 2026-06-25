@@ -1,0 +1,756 @@
+{
+  "input": {
+    "specId": "spec-cross-validation",
+    "context": {
+      "phase": "cross_validation",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "cross_validation",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 1 epic(s); minimum is 2",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 1 épico(s). Mínimo configurado: 2. Decomponha o trabalho em mais épicos pra habilitar paralelização e fronteiras claras de responsabilidade. Cada épico deve representar um conjunto coeso de funcionalidades que pode ser implementado e validado independentemente.",
+          "operations": [
+            "create_epic"
+          ],
+          "context": {
+            "currentCount": 1,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [
+        {
+          "category": "topology-roots-exceed",
+          "severity": "error",
+          "field": "specification.tickets",
+          "message": "5 root tickets exceed maximum 2 (5 total)",
+          "entityIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ],
+          "primaryEntityId": "tkt-1-1",
+          "operations": [
+            "update_ticket"
+          ],
+          "context": {
+            "rootCount": 5,
+            "totalTickets": 5,
+            "maxAllowed": 2,
+            "rootIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4",
+              "tkt-1-5"
+            ]
+          }
+        },
+        {
+          "category": "topology-leaves-exceed",
+          "severity": "error",
+          "field": "specification.tickets",
+          "message": "5 leaf tickets exceed maximum 2 (5 total)",
+          "entityIds": [
+            "tkt-1-1",
+            "tkt-1-2",
+            "tkt-1-3",
+            "tkt-1-4",
+            "tkt-1-5"
+          ],
+          "primaryEntityId": "tkt-1-1",
+          "operations": [
+            "update_ticket",
+            "create_ticket"
+          ],
+          "context": {
+            "leafCount": 5,
+            "totalTickets": 5,
+            "maxAllowed": 2,
+            "leafIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4",
+              "tkt-1-5"
+            ]
+          }
+        },
+        {
+          "category": "wave-concurrent-modification",
+          "severity": "error",
+          "field": "filesToBeModified:packages/core/src/index.ts",
+          "message": "Tickets [tkt-1-1, tkt-1-3] modify same file \"packages/core/src/index.ts\" in same wave (1)",
+          "entityIds": [
+            "tkt-1-1",
+            "tkt-1-3"
+          ],
+          "primaryEntityId": "tkt-1-1",
+          "operations": [
+            "update_ticket"
+          ],
+          "context": {
+            "wave": 1,
+            "path": "packages/core/src/index.ts",
+            "ticketIds": [
+              "tkt-1-1",
+              "tkt-1-3"
+            ]
+          }
+        },
+        {
+          "category": "wave-concurrent-modification",
+          "severity": "error",
+          "field": "filesToBeModified:apps/api/src/resolvers/index.ts",
+          "message": "Tickets [tkt-1-2, tkt-1-4] modify same file \"apps/api/src/resolvers/index.ts\" in same wave (1)",
+          "entityIds": [
+            "tkt-1-2",
+            "tkt-1-4"
+          ],
+          "primaryEntityId": "tkt-1-2",
+          "operations": [
+            "update_ticket"
+          ],
+          "context": {
+            "wave": 1,
+            "path": "apps/api/src/resolvers/index.ts",
+            "ticketIds": [
+              "tkt-1-2",
+              "tkt-1-4"
+            ]
+          }
+        },
+        {
+          "category": "files-to-be-referenced",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+          "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependsOn on creator \"tkt-1-1\"",
+          "entityIds": [
+            "tkt-1-2"
+          ],
+          "primaryEntityId": "tkt-1-2",
+          "operations": [
+            "update_ticket",
+            "create_ticket"
+          ]
+        },
+        {
+          "category": "files-to-be-referenced",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+          "message": "Ticket \"tkt-1-3\" references \"packages/core/src/domain/task.ts\" but does not declare dependsOn on creator \"tkt-1-1\"",
+          "entityIds": [
+            "tkt-1-3"
+          ],
+          "primaryEntityId": "tkt-1-3",
+          "operations": [
+            "update_ticket",
+            "create_ticket"
+          ]
+        },
+        {
+          "category": "files-to-be-referenced",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+          "message": "Ticket \"tkt-1-4\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependsOn on creator \"tkt-1-3\"",
+          "entityIds": [
+            "tkt-1-4"
+          ],
+          "primaryEntityId": "tkt-1-4",
+          "operations": [
+            "update_ticket",
+            "create_ticket"
+          ]
+        },
+        {
+          "category": "files-to-be-referenced",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+          "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task.ts\" but does not declare dependsOn on creator \"tkt-1-1\"",
+          "entityIds": [
+            "tkt-1-5"
+          ],
+          "primaryEntityId": "tkt-1-5",
+          "operations": [
+            "update_ticket",
+            "create_ticket"
+          ]
+        },
+        {
+          "category": "files-to-be-referenced",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+          "message": "Ticket \"tkt-1-5\" references \"packages/core/src/domain/task-state-machine.ts\" but does not declare dependsOn on creator \"tkt-1-3\"",
+          "entityIds": [
+            "tkt-1-5"
+          ],
+          "primaryEntityId": "tkt-1-5",
+          "operations": [
+            "update_ticket",
+            "create_ticket"
+          ]
+        }
+      ],
+      "ranChecks": [
+        "circular-dependency",
+        "broken-reference",
+        "orphan-reference",
+        "island-ticket",
+        "topology-roots-exceed",
+        "topology-leaves-exceed",
+        "wave-size-exceed",
+        "wave-concurrent-modification",
+        "wave-deletion-after-modification",
+        "wave-deletion-after-creation",
+        "file-conflict",
+        "files-to-be-referenced",
+        "blueprint-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-1": [
+          {
+            "patternId": "cross-validation",
+            "category": "topology-roots-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4",
+              "tkt-1-5"
+            ],
+            "message": "Spec has 5 tickets without dependsOn (roots), but the maximum allowed is 2 (computed: min(ceil(5 × 0.25), 5) = 2, ratio 25% capped at 5). Too many roots indicates that sequencing was under-declared — several tickets can start in parallel, but this rarely reflects the reality of implementation. Establish dependencies between related tickets to reflect the real execution order, or justify legitimate roots via fieldDeclarations.dependsOn with an explicit reason for each. Real foundational tickets (3–5 roots) are acceptable when justified; the excess is almost always a lack of articulation.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "rootCount": 5,
+              "totalTickets": 5,
+              "maxAllowed": 2,
+              "rootIds": [
+                "tkt-1-1",
+                "tkt-1-2",
+                "tkt-1-3",
+                "tkt-1-4",
+                "tkt-1-5"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "topology-leaves-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4",
+              "tkt-1-5"
+            ],
+            "message": "Spec has 5 tickets with no dependents (leaves), but the maximum allowed is 2 (computed: min(ceil(5 × 0.25), 5) = 2, ratio 25% capped at 5). Too many leaves indicates that the set of terminal tickets does not converge — some of them likely should feed into other tickets (e.g., implementation tickets that should be consumed by verification or integration tickets). Consider adding integration/verification tickets that depend on the existing leaves, or consolidate tickets that produce similar outputs.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "leafCount": 5,
+              "totalTickets": 5,
+              "maxAllowed": 2,
+              "leafIds": [
+                "tkt-1-1",
+                "tkt-1-2",
+                "tkt-1-3",
+                "tkt-1-4",
+                "tkt-1-5"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "wave-concurrent-modification",
+            "severity": "error",
+            "fieldPath": "filesToBeModified:packages/core/src/index.ts",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-3"
+            ],
+            "message": "Tickets \"tkt-1-1\" and \"tkt-1-3\" are in wave 1 and all modify \"packages/core/src/index.ts\". When waves execute in parallel, simultaneous modifications to the same file cause merge conflicts and lost work. Resolve by adding dependsOn between the tickets to force sequential order (one ticket modifies first, another after) OR consolidating into a single ticket if the split does not make sense OR moving the modifications to separate files if they are independent. The choice depends on whether the modifications are logically related (consolidate) or independent (separate).",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "wave": 1,
+              "path": "packages/core/src/index.ts",
+              "ticketIds": [
+                "tkt-1-1",
+                "tkt-1-3"
+              ]
+            }
+          }
+        ],
+        "tkt-1-2": [
+          {
+            "patternId": "cross-validation",
+            "category": "topology-roots-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4",
+              "tkt-1-5"
+            ],
+            "message": "Spec has 5 tickets without dependsOn (roots), but the maximum allowed is 2 (computed: min(ceil(5 × 0.25), 5) = 2, ratio 25% capped at 5). Too many roots indicates that sequencing was under-declared — several tickets can start in parallel, but this rarely reflects the reality of implementation. Establish dependencies between related tickets to reflect the real execution order, or justify legitimate roots via fieldDeclarations.dependsOn with an explicit reason for each. Real foundational tickets (3–5 roots) are acceptable when justified; the excess is almost always a lack of articulation.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "rootCount": 5,
+              "totalTickets": 5,
+              "maxAllowed": 2,
+              "rootIds": [
+                "tkt-1-1",
+                "tkt-1-2",
+                "tkt-1-3",
+                "tkt-1-4",
+                "tkt-1-5"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "topology-leaves-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4",
+              "tkt-1-5"
+            ],
+            "message": "Spec has 5 tickets with no dependents (leaves), but the maximum allowed is 2 (computed: min(ceil(5 × 0.25), 5) = 2, ratio 25% capped at 5). Too many leaves indicates that the set of terminal tickets does not converge — some of them likely should feed into other tickets (e.g., implementation tickets that should be consumed by verification or integration tickets). Consider adding integration/verification tickets that depend on the existing leaves, or consolidate tickets that produce similar outputs.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "leafCount": 5,
+              "totalTickets": 5,
+              "maxAllowed": 2,
+              "leafIds": [
+                "tkt-1-1",
+                "tkt-1-2",
+                "tkt-1-3",
+                "tkt-1-4",
+                "tkt-1-5"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "wave-concurrent-modification",
+            "severity": "error",
+            "fieldPath": "filesToBeModified:apps/api/src/resolvers/index.ts",
+            "primaryEntityId": "tkt-1-2",
+            "entityIds": [
+              "tkt-1-2",
+              "tkt-1-4"
+            ],
+            "message": "Tickets \"tkt-1-2\" and \"tkt-1-4\" are in wave 1 and all modify \"apps/api/src/resolvers/index.ts\". When waves execute in parallel, simultaneous modifications to the same file cause merge conflicts and lost work. Resolve by adding dependsOn between the tickets to force sequential order (one ticket modifies first, another after) OR consolidating into a single ticket if the split does not make sense OR moving the modifications to separate files if they are independent. The choice depends on whether the modifications are logically related (consolidate) or independent (separate).",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "wave": 1,
+              "path": "apps/api/src/resolvers/index.ts",
+              "ticketIds": [
+                "tkt-1-2",
+                "tkt-1-4"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "files-to-be-referenced",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+            "primaryEntityId": "tkt-1-2",
+            "entityIds": [
+              "tkt-1-2"
+            ],
+            "message": "Ticket \"tkt-1-2\" lists \"packages/core/src/domain/task.ts\" in filesToBeReferenced, and ticket \"tkt-1-1\" creates/modifies that file, but \"tkt-1-2\" does not declare dependsOn on the creator. Broken reference at runtime — when an agent executes \"tkt-1-2\", the topological order does not guarantee that \"tkt-1-1\" ran first. Resolve in one of three ways: (1) add \"tkt-1-1\" to \"tkt-1-2\".dependsOn to force the correct order, OR (2) move the file creation to a ticket that is already a predecessor of \"tkt-1-2\", OR (3) remove filesToBeReferenced if the file is not actually needed by this ticket.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ],
+        "tkt-1-3": [
+          {
+            "patternId": "cross-validation",
+            "category": "topology-roots-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4",
+              "tkt-1-5"
+            ],
+            "message": "Spec has 5 tickets without dependsOn (roots), but the maximum allowed is 2 (computed: min(ceil(5 × 0.25), 5) = 2, ratio 25% capped at 5). Too many roots indicates that sequencing was under-declared — several tickets can start in parallel, but this rarely reflects the reality of implementation. Establish dependencies between related tickets to reflect the real execution order, or justify legitimate roots via fieldDeclarations.dependsOn with an explicit reason for each. Real foundational tickets (3–5 roots) are acceptable when justified; the excess is almost always a lack of articulation.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "rootCount": 5,
+              "totalTickets": 5,
+              "maxAllowed": 2,
+              "rootIds": [
+                "tkt-1-1",
+                "tkt-1-2",
+                "tkt-1-3",
+                "tkt-1-4",
+                "tkt-1-5"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "topology-leaves-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4",
+              "tkt-1-5"
+            ],
+            "message": "Spec has 5 tickets with no dependents (leaves), but the maximum allowed is 2 (computed: min(ceil(5 × 0.25), 5) = 2, ratio 25% capped at 5). Too many leaves indicates that the set of terminal tickets does not converge — some of them likely should feed into other tickets (e.g., implementation tickets that should be consumed by verification or integration tickets). Consider adding integration/verification tickets that depend on the existing leaves, or consolidate tickets that produce similar outputs.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "leafCount": 5,
+              "totalTickets": 5,
+              "maxAllowed": 2,
+              "leafIds": [
+                "tkt-1-1",
+                "tkt-1-2",
+                "tkt-1-3",
+                "tkt-1-4",
+                "tkt-1-5"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "wave-concurrent-modification",
+            "severity": "error",
+            "fieldPath": "filesToBeModified:packages/core/src/index.ts",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-3"
+            ],
+            "message": "Tickets \"tkt-1-1\" and \"tkt-1-3\" are in wave 1 and all modify \"packages/core/src/index.ts\". When waves execute in parallel, simultaneous modifications to the same file cause merge conflicts and lost work. Resolve by adding dependsOn between the tickets to force sequential order (one ticket modifies first, another after) OR consolidating into a single ticket if the split does not make sense OR moving the modifications to separate files if they are independent. The choice depends on whether the modifications are logically related (consolidate) or independent (separate).",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "wave": 1,
+              "path": "packages/core/src/index.ts",
+              "ticketIds": [
+                "tkt-1-1",
+                "tkt-1-3"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "files-to-be-referenced",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-3].filesToBeReferenced:packages/core/src/domain/task.ts",
+            "primaryEntityId": "tkt-1-3",
+            "entityIds": [
+              "tkt-1-3"
+            ],
+            "message": "Ticket \"tkt-1-3\" lists \"packages/core/src/domain/task.ts\" in filesToBeReferenced, and ticket \"tkt-1-1\" creates/modifies that file, but \"tkt-1-3\" does not declare dependsOn on the creator. Broken reference at runtime — when an agent executes \"tkt-1-3\", the topological order does not guarantee that \"tkt-1-1\" ran first. Resolve in one of three ways: (1) add \"tkt-1-1\" to \"tkt-1-3\".dependsOn to force the correct order, OR (2) move the file creation to a ticket that is already a predecessor of \"tkt-1-3\", OR (3) remove filesToBeReferenced if the file is not actually needed by this ticket.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ],
+        "tkt-1-4": [
+          {
+            "patternId": "cross-validation",
+            "category": "topology-roots-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4",
+              "tkt-1-5"
+            ],
+            "message": "Spec has 5 tickets without dependsOn (roots), but the maximum allowed is 2 (computed: min(ceil(5 × 0.25), 5) = 2, ratio 25% capped at 5). Too many roots indicates that sequencing was under-declared — several tickets can start in parallel, but this rarely reflects the reality of implementation. Establish dependencies between related tickets to reflect the real execution order, or justify legitimate roots via fieldDeclarations.dependsOn with an explicit reason for each. Real foundational tickets (3–5 roots) are acceptable when justified; the excess is almost always a lack of articulation.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "rootCount": 5,
+              "totalTickets": 5,
+              "maxAllowed": 2,
+              "rootIds": [
+                "tkt-1-1",
+                "tkt-1-2",
+                "tkt-1-3",
+                "tkt-1-4",
+                "tkt-1-5"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "topology-leaves-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4",
+              "tkt-1-5"
+            ],
+            "message": "Spec has 5 tickets with no dependents (leaves), but the maximum allowed is 2 (computed: min(ceil(5 × 0.25), 5) = 2, ratio 25% capped at 5). Too many leaves indicates that the set of terminal tickets does not converge — some of them likely should feed into other tickets (e.g., implementation tickets that should be consumed by verification or integration tickets). Consider adding integration/verification tickets that depend on the existing leaves, or consolidate tickets that produce similar outputs.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "leafCount": 5,
+              "totalTickets": 5,
+              "maxAllowed": 2,
+              "leafIds": [
+                "tkt-1-1",
+                "tkt-1-2",
+                "tkt-1-3",
+                "tkt-1-4",
+                "tkt-1-5"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "wave-concurrent-modification",
+            "severity": "error",
+            "fieldPath": "filesToBeModified:apps/api/src/resolvers/index.ts",
+            "primaryEntityId": "tkt-1-2",
+            "entityIds": [
+              "tkt-1-2",
+              "tkt-1-4"
+            ],
+            "message": "Tickets \"tkt-1-2\" and \"tkt-1-4\" are in wave 1 and all modify \"apps/api/src/resolvers/index.ts\". When waves execute in parallel, simultaneous modifications to the same file cause merge conflicts and lost work. Resolve by adding dependsOn between the tickets to force sequential order (one ticket modifies first, another after) OR consolidating into a single ticket if the split does not make sense OR moving the modifications to separate files if they are independent. The choice depends on whether the modifications are logically related (consolidate) or independent (separate).",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "wave": 1,
+              "path": "apps/api/src/resolvers/index.ts",
+              "ticketIds": [
+                "tkt-1-2",
+                "tkt-1-4"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "files-to-be-referenced",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-4].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+            "primaryEntityId": "tkt-1-4",
+            "entityIds": [
+              "tkt-1-4"
+            ],
+            "message": "Ticket \"tkt-1-4\" lists \"packages/core/src/domain/task-state-machine.ts\" in filesToBeReferenced, and ticket \"tkt-1-3\" creates/modifies that file, but \"tkt-1-4\" does not declare dependsOn on the creator. Broken reference at runtime — when an agent executes \"tkt-1-4\", the topological order does not guarantee that \"tkt-1-3\" ran first. Resolve in one of three ways: (1) add \"tkt-1-3\" to \"tkt-1-4\".dependsOn to force the correct order, OR (2) move the file creation to a ticket that is already a predecessor of \"tkt-1-4\", OR (3) remove filesToBeReferenced if the file is not actually needed by this ticket.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ],
+        "tkt-1-5": [
+          {
+            "patternId": "cross-validation",
+            "category": "topology-roots-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4",
+              "tkt-1-5"
+            ],
+            "message": "Spec has 5 tickets without dependsOn (roots), but the maximum allowed is 2 (computed: min(ceil(5 × 0.25), 5) = 2, ratio 25% capped at 5). Too many roots indicates that sequencing was under-declared — several tickets can start in parallel, but this rarely reflects the reality of implementation. Establish dependencies between related tickets to reflect the real execution order, or justify legitimate roots via fieldDeclarations.dependsOn with an explicit reason for each. Real foundational tickets (3–5 roots) are acceptable when justified; the excess is almost always a lack of articulation.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "rootCount": 5,
+              "totalTickets": 5,
+              "maxAllowed": 2,
+              "rootIds": [
+                "tkt-1-1",
+                "tkt-1-2",
+                "tkt-1-3",
+                "tkt-1-4",
+                "tkt-1-5"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "topology-leaves-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2",
+              "tkt-1-3",
+              "tkt-1-4",
+              "tkt-1-5"
+            ],
+            "message": "Spec has 5 tickets with no dependents (leaves), but the maximum allowed is 2 (computed: min(ceil(5 × 0.25), 5) = 2, ratio 25% capped at 5). Too many leaves indicates that the set of terminal tickets does not converge — some of them likely should feed into other tickets (e.g., implementation tickets that should be consumed by verification or integration tickets). Consider adding integration/verification tickets that depend on the existing leaves, or consolidate tickets that produce similar outputs.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "leafCount": 5,
+              "totalTickets": 5,
+              "maxAllowed": 2,
+              "leafIds": [
+                "tkt-1-1",
+                "tkt-1-2",
+                "tkt-1-3",
+                "tkt-1-4",
+                "tkt-1-5"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "files-to-be-referenced",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task.ts",
+            "primaryEntityId": "tkt-1-5",
+            "entityIds": [
+              "tkt-1-5"
+            ],
+            "message": "Ticket \"tkt-1-5\" lists \"packages/core/src/domain/task.ts\" in filesToBeReferenced, and ticket \"tkt-1-1\" creates/modifies that file, but \"tkt-1-5\" does not declare dependsOn on the creator. Broken reference at runtime — when an agent executes \"tkt-1-5\", the topological order does not guarantee that \"tkt-1-1\" ran first. Resolve in one of three ways: (1) add \"tkt-1-1\" to \"tkt-1-5\".dependsOn to force the correct order, OR (2) move the file creation to a ticket that is already a predecessor of \"tkt-1-5\", OR (3) remove filesToBeReferenced if the file is not actually needed by this ticket.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "files-to-be-referenced",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-5].filesToBeReferenced:packages/core/src/domain/task-state-machine.ts",
+            "primaryEntityId": "tkt-1-5",
+            "entityIds": [
+              "tkt-1-5"
+            ],
+            "message": "Ticket \"tkt-1-5\" lists \"packages/core/src/domain/task-state-machine.ts\" in filesToBeReferenced, and ticket \"tkt-1-3\" creates/modifies that file, but \"tkt-1-5\" does not declare dependsOn on the creator. Broken reference at runtime — when an agent executes \"tkt-1-5\", the topological order does not guarantee that \"tkt-1-3\" ran first. Resolve in one of three ways: (1) add \"tkt-1-3\" to \"tkt-1-5\".dependsOn to force the correct order, OR (2) move the file creation to a ticket that is already a predecessor of \"tkt-1-5\", OR (3) remove filesToBeReferenced if the file is not actually needed by this ticket.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ]
+      }
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:35.995Z"
+    }
+  }
+}

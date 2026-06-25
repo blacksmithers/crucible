@@ -1,0 +1,94 @@
+{
+  "input": {
+    "specId": "spec-cross-validation",
+    "context": {
+      "phase": "cross_validation",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "cross_validation",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 1 epic(s); minimum is 2",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 1 épico(s). Mínimo configurado: 2. Decomponha o trabalho em mais épicos pra habilitar paralelização e fronteiras claras de responsabilidade. Cada épico deve representar um conjunto coeso de funcionalidades que pode ser implementado e validado independentemente.",
+          "operations": [
+            "create_epic"
+          ],
+          "context": {
+            "currentCount": 1,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [
+        {
+          "category": "island-ticket",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-island].dependsOn",
+          "message": "Ticket \"tkt-1-island\" is isolated — no dependsOn and no dependents",
+          "entityIds": [
+            "tkt-1-island"
+          ],
+          "primaryEntityId": "tkt-1-island",
+          "operations": [
+            "update_ticket"
+          ]
+        }
+      ],
+      "ranChecks": [
+        "circular-dependency",
+        "broken-reference",
+        "orphan-reference",
+        "island-ticket",
+        "topology-roots-exceed",
+        "topology-leaves-exceed",
+        "wave-size-exceed",
+        "wave-concurrent-modification",
+        "wave-deletion-after-modification",
+        "wave-deletion-after-creation",
+        "file-conflict",
+        "files-to-be-referenced",
+        "blueprint-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-island": [
+          {
+            "patternId": "cross-validation",
+            "category": "island-ticket",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-island].dependsOn",
+            "primaryEntityId": "tkt-1-island",
+            "entityIds": [
+              "tkt-1-island"
+            ],
+            "message": "Ticket \"tkt-1-island\" has neither dependsOn nor dependents — it is fully isolated from the execution graph. Isolated tickets break wave computation because there is no natural execution order, and may indicate work disconnected from the rest of the spec (likely a planning smell). Add dependsOn pointing to a ticket that precedes this work OR make another ticket depend on this one OR justify the isolation via fieldDeclarations.dependsOn with an explicit reason (e.g., \"standalone setup ticket, intentionally isolated from dependency graph\").",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ]
+      }
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:35.984Z"
+    }
+  }
+}

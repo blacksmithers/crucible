@@ -1,0 +1,115 @@
+{
+  "input": {
+    "specId": "spec-cross-validation",
+    "context": {
+      "phase": "cross_validation",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "cross_validation",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 1 epic(s); minimum is 2",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 1 épico(s). Mínimo configurado: 2. Decomponha o trabalho em mais épicos pra habilitar paralelização e fronteiras claras de responsabilidade. Cada épico deve representar um conjunto coeso de funcionalidades que pode ser implementado e validado independentemente.",
+          "operations": [
+            "create_epic"
+          ],
+          "context": {
+            "currentCount": 1,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [
+        {
+          "category": "circular-dependency",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-1].dependsOn",
+          "message": "Cycle detected: tkt-1-1 → tkt-1-2 → tkt-1-1",
+          "entityIds": [
+            "tkt-1-1",
+            "tkt-1-2"
+          ],
+          "primaryEntityId": "tkt-1-1",
+          "operations": [
+            "update_ticket"
+          ]
+        }
+      ],
+      "ranChecks": [
+        "circular-dependency",
+        "broken-reference",
+        "orphan-reference",
+        "island-ticket",
+        "topology-roots-exceed",
+        "topology-leaves-exceed",
+        "wave-size-exceed",
+        "wave-concurrent-modification",
+        "wave-deletion-after-modification",
+        "wave-deletion-after-creation",
+        "file-conflict",
+        "files-to-be-referenced",
+        "blueprint-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-1": [
+          {
+            "patternId": "cross-validation",
+            "category": "circular-dependency",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-1].dependsOn",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2"
+            ],
+            "message": "Dependency cycle detected: tkt-1-1 → tkt-1-2 → tkt-1-1. Cycles break topological ordering and stall execution at runtime — no ticket in the cycle can start because each one waits on the other. Remove one of the dependencies in the cycle (typically the least critical) or restructure the work split to eliminate the circularity. If two tickets have a natural circular dependency, they may need to be consolidated into a single ticket.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ],
+        "tkt-1-2": [
+          {
+            "patternId": "cross-validation",
+            "category": "circular-dependency",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-1].dependsOn",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2"
+            ],
+            "message": "Dependency cycle detected: tkt-1-1 → tkt-1-2 → tkt-1-1. Cycles break topological ordering and stall execution at runtime — no ticket in the cycle can start because each one waits on the other. Remove one of the dependencies in the cycle (typically the least critical) or restructure the work split to eliminate the circularity. If two tickets have a natural circular dependency, they may need to be consolidated into a single ticket.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ]
+      }
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:35.970Z"
+    }
+  }
+}

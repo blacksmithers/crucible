@@ -1,0 +1,69 @@
+{
+  "input": {
+    "specId": "spec-epic-expansion",
+    "context": {
+      "phase": "epic_expansion",
+      "activeEntityId": "ep-1"
+    }
+  },
+  "output": {
+    "phase": "epic_expansion",
+    "passed": true,
+    "structural": {
+      "missingFields": [
+        "ticket[id=tkt-1-1].acceptanceCriteria",
+        "ticket[id=tkt-1-1].implementationSteps",
+        "ticket[id=tkt-1-2].acceptanceCriteria",
+        "ticket[id=tkt-1-2].implementationSteps"
+      ],
+      "invalidFields": [],
+      "findings": []
+    },
+    "scoring": {
+      "skipped": false,
+      "localScore": 100,
+      "globalScore": 34.04957363780893,
+      "perField": {},
+      "topologyPenalties": -24,
+      "gateResult": "pass",
+      "threshold": 70,
+      "globalScoreBreakdown": {
+        "specBlock": 20,
+        "epicBlock": 19.09090909090909,
+        "ticketBlock": 18.95866454689984,
+        "epicAvg": 63.63636363636363,
+        "ticketAvg": 37.91732909379968,
+        "weights": {
+          "spec": 0.2,
+          "epics": 0.3,
+          "tickets": 0.5
+        }
+      },
+      "cascadeFloors": {
+        "specOnly": 0,
+        "specPlusEpics": 30,
+        "total": 80
+      },
+      "cascadeFailures": []
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [],
+      "ranChecks": [
+        "na-validation",
+        "requirement-coverage",
+        "nfr-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {},
+      "truncated": false
+    },
+    "meta": {
+      "activeEntityId": "ep-1",
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:35.927Z"
+    }
+  }
+}

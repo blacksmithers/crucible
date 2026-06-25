@@ -1,0 +1,110 @@
+{
+  "input": {
+    "specId": "spec-epic-expansion",
+    "context": {
+      "phase": "epic_expansion",
+      "activeEntityId": "ep-1"
+    }
+  },
+  "output": {
+    "phase": "epic_expansion",
+    "passed": false,
+    "structural": {
+      "missingFields": [
+        "ticket[id=tkt-1-1].acceptanceCriteria",
+        "ticket[id=tkt-1-1].implementationSteps",
+        "ticket[id=tkt-1-2].acceptanceCriteria",
+        "ticket[id=tkt-1-2].implementationSteps"
+      ],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 1 epic(s); minimum is 2",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 1 épico(s). Mínimo configurado: 2. Decomponha o trabalho em mais épicos pra habilitar paralelização e fronteiras claras de responsabilidade. Cada épico deve representar um conjunto coeso de funcionalidades que pode ser implementado e validado independentemente.",
+          "operations": [
+            "create_epic"
+          ],
+          "context": {
+            "currentCount": 1,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "scoring": {
+      "skipped": false,
+      "localScore": 84.84848484848484,
+      "globalScore": 40.41321000144529,
+      "perField": {},
+      "topologyPenalties": -24,
+      "gateResult": "pass",
+      "threshold": 70,
+      "globalScoreBreakdown": {
+        "specBlock": 20,
+        "epicBlock": 25.454545454545453,
+        "ticketBlock": 18.95866454689984,
+        "epicAvg": 84.84848484848484,
+        "ticketAvg": 37.91732909379968,
+        "weights": {
+          "spec": 0.2,
+          "epics": 0.3,
+          "tickets": 0.5
+        }
+      },
+      "cascadeFloors": {
+        "specOnly": 0,
+        "specPlusEpics": 30,
+        "total": 80
+      },
+      "cascadeFailures": []
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [],
+      "ranChecks": [
+        "na-validation",
+        "requirement-coverage",
+        "nfr-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "ep-1": [
+          {
+            "patternId": "individual",
+            "entityId": "ep-1",
+            "entityType": "epic",
+            "message": "Epic \"Core Task Management Domain\" — missing \"fileStructures\". Declare at least 1 file structure(s) listing the concrete files this epic creates or modifies. The spec's folderStructures already defined macro topology; here you add the file-level detail for this epic's scope.",
+            "operations": [
+              "update_epic"
+            ],
+            "pointsLost": 9.090909090909092,
+            "globalImpactOnFix": 2.7272727272727275
+          },
+          {
+            "patternId": "individual",
+            "entityId": "ep-1",
+            "entityType": "epic",
+            "message": "Epic \"Core Task Management Domain\" — missing \"sharedPatterns\". Declare at least 1 shared pattern(s) (reusable code patterns, conventions) that tickets within this epic should follow.",
+            "operations": [
+              "update_epic"
+            ],
+            "pointsLost": 6.0606060606060606,
+            "globalImpactOnFix": 1.8181818181818181
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "activeEntityId": "ep-1",
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.055Z"
+    }
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "input": {
+    "specId": "spec-cross-validation",
+    "context": {
+      "phase": "cross_validation",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "cross_validation",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 1 epic(s); minimum is 2",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 1 épico(s). Mínimo configurado: 2. Decomponha o trabalho em mais épicos pra habilitar paralelização e fronteiras claras de responsabilidade. Cada épico deve representar um conjunto coeso de funcionalidades que pode ser implementado e validado independentemente.",
+          "operations": [
+            "create_epic"
+          ],
+          "context": {
+            "currentCount": 1,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [
+        {
+          "category": "wave-deletion-after-creation",
+          "severity": "error",
+          "field": "filesToBeDeleted:packages/core/src/temp-output.ts",
+          "message": "Ticket \"tkt-1-4\" (wave 3) deletes file \"packages/core/src/temp-output.ts\" created by ticket \"tkt-1-1\" (wave 1)",
+          "entityIds": [
+            "tkt-1-1",
+            "tkt-1-4"
+          ],
+          "primaryEntityId": "tkt-1-4",
+          "operations": [
+            "update_ticket",
+            "delete_ticket"
+          ],
+          "context": {
+            "path": "packages/core/src/temp-output.ts",
+            "creatorTicketId": "tkt-1-1",
+            "creatorWave": 1,
+            "deleterTicketId": "tkt-1-4",
+            "deleterWave": 3
+          }
+        }
+      ],
+      "ranChecks": [
+        "circular-dependency",
+        "broken-reference",
+        "orphan-reference",
+        "island-ticket",
+        "topology-roots-exceed",
+        "topology-leaves-exceed",
+        "wave-size-exceed",
+        "wave-concurrent-modification",
+        "wave-deletion-after-modification",
+        "wave-deletion-after-creation",
+        "file-conflict",
+        "files-to-be-referenced",
+        "blueprint-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-1": [
+          {
+            "patternId": "cross-validation",
+            "category": "wave-deletion-after-creation",
+            "severity": "error",
+            "fieldPath": "filesToBeDeleted:packages/core/src/temp-output.ts",
+            "primaryEntityId": "tkt-1-4",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-4"
+            ],
+            "message": "Ticket \"tkt-1-4\" (wave 3) deletes \"packages/core/src/temp-output.ts\", but ticket \"tkt-1-1\" (wave 1) creates that same file. Creating a file in one wave and deleting it in another is futile work at planning time — except in legitimate cases like intermediate build artifacts. Likely either: (1) the creating ticket should not exist (remove the filesToBeCreated entry), or (2) the deletion is wrong (the file is needed — remove the filesToBeDeleted entry), or (3) the two tickets represent incompatible phases and should be consolidated/rewritten. If this is a legitimate intermediate build-artifact flow (rare in planning specs), justify it in the description of both tickets.",
+            "operations": [
+              "update_ticket",
+              "delete_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "path": "packages/core/src/temp-output.ts",
+              "creatorTicketId": "tkt-1-1",
+              "creatorWave": 1,
+              "deleterTicketId": "tkt-1-4",
+              "deleterWave": 3
+            }
+          }
+        ],
+        "tkt-1-4": [
+          {
+            "patternId": "cross-validation",
+            "category": "wave-deletion-after-creation",
+            "severity": "error",
+            "fieldPath": "filesToBeDeleted:packages/core/src/temp-output.ts",
+            "primaryEntityId": "tkt-1-4",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-4"
+            ],
+            "message": "Ticket \"tkt-1-4\" (wave 3) deletes \"packages/core/src/temp-output.ts\", but ticket \"tkt-1-1\" (wave 1) creates that same file. Creating a file in one wave and deleting it in another is futile work at planning time — except in legitimate cases like intermediate build artifacts. Likely either: (1) the creating ticket should not exist (remove the filesToBeCreated entry), or (2) the deletion is wrong (the file is needed — remove the filesToBeDeleted entry), or (3) the two tickets represent incompatible phases and should be consolidated/rewritten. If this is a legitimate intermediate build-artifact flow (rare in planning specs), justify it in the description of both tickets.",
+            "operations": [
+              "update_ticket",
+              "delete_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "path": "packages/core/src/temp-output.ts",
+              "creatorTicketId": "tkt-1-1",
+              "creatorWave": 1,
+              "deleterTicketId": "tkt-1-4",
+              "deleterWave": 3
+            }
+          }
+        ]
+      }
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.000Z"
+    }
+  }
+}

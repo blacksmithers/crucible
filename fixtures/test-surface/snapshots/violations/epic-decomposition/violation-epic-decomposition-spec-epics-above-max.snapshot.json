@@ -1,0 +1,76 @@
+{
+  "input": {
+    "specId": "spec-epic-decomp-above-max",
+    "context": {
+      "phase": "epic_decomposition",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "epic_decomposition",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-above-max",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 51 epic(s); maximum is 50",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 51 épicos — excede o máximo configurado de 50. Excesso de épicos indica scope muito amplo ou granularidade errada. Considere consolidar épicos relacionados ou splittar a spec em múltiplas specs com escopos coesos. Se o trabalho é genuinamente massivo, ajuste arrayMaxCounts no config.",
+          "operations": [
+            "update_epic",
+            "delete_epic"
+          ],
+          "context": {
+            "currentCount": 51,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "scoring": {
+      "skipped": true,
+      "reason": "no-rubric-for-phase",
+      "localScore": null,
+      "globalScore": null,
+      "perField": {},
+      "gateResult": "n/a",
+      "threshold": null
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [],
+      "ranChecks": [
+        "blueprint-epic-ratio"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "spec-epic-decomp-above-max": [
+          {
+            "patternId": "individual",
+            "entityId": "spec-epic-decomp-above-max",
+            "entityType": "specification",
+            "message": "Decomposition phase. Review the current set of epics and decide whether the decomposition is sufficient. Available operations: create_epic, update_epic, delete_epic. To advance to the next phase, invoke complete_decomposition_phase explicitly.",
+            "operations": [
+              "create_epic",
+              "update_epic",
+              "delete_epic"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.014Z"
+    }
+  }
+}

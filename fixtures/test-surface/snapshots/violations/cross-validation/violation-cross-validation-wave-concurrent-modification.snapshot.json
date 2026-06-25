@@ -1,0 +1,139 @@
+{
+  "input": {
+    "specId": "spec-cross-validation",
+    "context": {
+      "phase": "cross_validation",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "cross_validation",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 1 epic(s); minimum is 2",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 1 épico(s). Mínimo configurado: 2. Decomponha o trabalho em mais épicos pra habilitar paralelização e fronteiras claras de responsabilidade. Cada épico deve representar um conjunto coeso de funcionalidades que pode ser implementado e validado independentemente.",
+          "operations": [
+            "create_epic"
+          ],
+          "context": {
+            "currentCount": 1,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [
+        {
+          "category": "wave-concurrent-modification",
+          "severity": "error",
+          "field": "filesToBeModified:packages/core/src/shared.ts",
+          "message": "Tickets [tkt-1-2, tkt-1-3] modify same file \"packages/core/src/shared.ts\" in same wave (2)",
+          "entityIds": [
+            "tkt-1-2",
+            "tkt-1-3"
+          ],
+          "primaryEntityId": "tkt-1-2",
+          "operations": [
+            "update_ticket"
+          ],
+          "context": {
+            "wave": 2,
+            "path": "packages/core/src/shared.ts",
+            "ticketIds": [
+              "tkt-1-2",
+              "tkt-1-3"
+            ]
+          }
+        }
+      ],
+      "ranChecks": [
+        "circular-dependency",
+        "broken-reference",
+        "orphan-reference",
+        "island-ticket",
+        "topology-roots-exceed",
+        "topology-leaves-exceed",
+        "wave-size-exceed",
+        "wave-concurrent-modification",
+        "wave-deletion-after-modification",
+        "wave-deletion-after-creation",
+        "file-conflict",
+        "files-to-be-referenced",
+        "blueprint-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-2": [
+          {
+            "patternId": "cross-validation",
+            "category": "wave-concurrent-modification",
+            "severity": "error",
+            "fieldPath": "filesToBeModified:packages/core/src/shared.ts",
+            "primaryEntityId": "tkt-1-2",
+            "entityIds": [
+              "tkt-1-2",
+              "tkt-1-3"
+            ],
+            "message": "Tickets \"tkt-1-2\" and \"tkt-1-3\" are in wave 2 and all modify \"packages/core/src/shared.ts\". When waves execute in parallel, simultaneous modifications to the same file cause merge conflicts and lost work. Resolve by adding dependsOn between the tickets to force sequential order (one ticket modifies first, another after) OR consolidating into a single ticket if the split does not make sense OR moving the modifications to separate files if they are independent. The choice depends on whether the modifications are logically related (consolidate) or independent (separate).",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "wave": 2,
+              "path": "packages/core/src/shared.ts",
+              "ticketIds": [
+                "tkt-1-2",
+                "tkt-1-3"
+              ]
+            }
+          }
+        ],
+        "tkt-1-3": [
+          {
+            "patternId": "cross-validation",
+            "category": "wave-concurrent-modification",
+            "severity": "error",
+            "fieldPath": "filesToBeModified:packages/core/src/shared.ts",
+            "primaryEntityId": "tkt-1-2",
+            "entityIds": [
+              "tkt-1-2",
+              "tkt-1-3"
+            ],
+            "message": "Tickets \"tkt-1-2\" and \"tkt-1-3\" are in wave 2 and all modify \"packages/core/src/shared.ts\". When waves execute in parallel, simultaneous modifications to the same file cause merge conflicts and lost work. Resolve by adding dependsOn between the tickets to force sequential order (one ticket modifies first, another after) OR consolidating into a single ticket if the split does not make sense OR moving the modifications to separate files if they are independent. The choice depends on whether the modifications are logically related (consolidate) or independent (separate).",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "wave": 2,
+              "path": "packages/core/src/shared.ts",
+              "ticketIds": [
+                "tkt-1-2",
+                "tkt-1-3"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:35.997Z"
+    }
+  }
+}

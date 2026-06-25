@@ -1,0 +1,146 @@
+{
+  "input": {
+    "specId": "spec-cross-validation",
+    "context": {
+      "phase": "cross_validation",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "cross_validation",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 1 epic(s); minimum is 2",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 1 épico(s). Mínimo configurado: 2. Decomponha o trabalho em mais épicos pra habilitar paralelização e fronteiras claras de responsabilidade. Cada épico deve representar um conjunto coeso de funcionalidades que pode ser implementado e validado independentemente.",
+          "operations": [
+            "create_epic"
+          ],
+          "context": {
+            "currentCount": 1,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [
+        {
+          "category": "orphan-reference",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-1].dependsOn",
+          "message": "Ticket \"tkt-1-1\" has no dependsOn but has dependents — root unjustified",
+          "entityIds": [
+            "tkt-1-1"
+          ],
+          "primaryEntityId": "tkt-1-1",
+          "operations": [
+            "update_ticket",
+            "create_ticket"
+          ]
+        },
+        {
+          "category": "file-conflict",
+          "severity": "error",
+          "field": "filesToBeCreated:packages/core/src/conflict/shared-file.ts",
+          "message": "File \"packages/core/src/conflict/shared-file.ts\" is in filesToBeCreated of multiple tickets: tkt-1-1, tkt-1-2",
+          "entityIds": [
+            "tkt-1-1",
+            "tkt-1-2"
+          ],
+          "primaryEntityId": "tkt-1-1",
+          "operations": [
+            "update_ticket"
+          ]
+        }
+      ],
+      "ranChecks": [
+        "circular-dependency",
+        "broken-reference",
+        "orphan-reference",
+        "island-ticket",
+        "topology-roots-exceed",
+        "topology-leaves-exceed",
+        "wave-size-exceed",
+        "wave-concurrent-modification",
+        "wave-deletion-after-modification",
+        "wave-deletion-after-creation",
+        "file-conflict",
+        "files-to-be-referenced",
+        "blueprint-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-1": [
+          {
+            "patternId": "cross-validation",
+            "category": "orphan-reference",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-1].dependsOn",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1"
+            ],
+            "message": "Ticket \"tkt-1-1\" declares no dependsOn (no prior work listed), but other tickets depend on it. Unjustified roots indicate that preparatory work was implicitly assumed — there's likely setup, infrastructure, or modeling that precedes this ticket but wasn't articulated in the spec. Add tickets that precede this work in dependsOn OR explicitly justify via fieldDeclarations.dependsOn with reason \"foundational ticket — no prior work\" (or similar) if the ticket is genuinely the starting point.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "file-conflict",
+            "severity": "error",
+            "fieldPath": "filesToBeCreated:packages/core/src/conflict/shared-file.ts",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2"
+            ],
+            "message": "Tickets [tkt-1-1, tkt-1-2] all declare creating \"packages/core/src/conflict/shared-file.ts\". Two or more tickets creating the same file produce merge conflicts and duplicated work — at runtime, distinct agents would attempt to create the same file. Reassign creation of the file to a single ticket OR consolidate the tickets if the responsibility split does not make sense. The choice depends on which ticket is the semantic \"owner\" of the file — typically the ticket that defines the structure/contract should create it; other tickets that need the file declare filesToBeReferenced + dependsOn.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ],
+        "tkt-1-2": [
+          {
+            "patternId": "cross-validation",
+            "category": "file-conflict",
+            "severity": "error",
+            "fieldPath": "filesToBeCreated:packages/core/src/conflict/shared-file.ts",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1",
+              "tkt-1-2"
+            ],
+            "message": "Tickets [tkt-1-1, tkt-1-2] all declare creating \"packages/core/src/conflict/shared-file.ts\". Two or more tickets creating the same file produce merge conflicts and duplicated work — at runtime, distinct agents would attempt to create the same file. Reassign creation of the file to a single ticket OR consolidate the tickets if the responsibility split does not make sense. The choice depends on which ticket is the semantic \"owner\" of the file — typically the ticket that defines the structure/contract should create it; other tickets that need the file declare filesToBeReferenced + dependsOn.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ]
+      }
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:35.975Z"
+    }
+  }
+}

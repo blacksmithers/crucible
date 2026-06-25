@@ -1,0 +1,49 @@
+{
+  "input": {
+    "specId": "spec-cross-validation",
+    "context": {
+      "phase": "cross_validation",
+      "activeEntityId": "ep-1"
+    }
+  },
+  "output": {
+    "phase": "cross_validation",
+    "passed": true,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": []
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [],
+      "ranChecks": [
+        "circular-dependency",
+        "broken-reference",
+        "orphan-reference",
+        "island-ticket",
+        "topology-roots-exceed",
+        "topology-leaves-exceed",
+        "wave-size-exceed",
+        "wave-concurrent-modification",
+        "wave-deletion-after-modification",
+        "wave-deletion-after-creation",
+        "file-conflict",
+        "files-to-be-referenced",
+        "blueprint-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {}
+    },
+    "meta": {
+      "activeEntityId": "ep-1",
+      "warnings": [
+        "cross_validation phase ignores activeEntityId; received: \"ep-1\""
+      ],
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:35.958Z"
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "input": {
+    "specId": "spec-ticket-expansion",
+    "context": {
+      "phase": "ticket_expansion",
+      "activeEntityId": "tkt-1-1"
+    }
+  },
+  "output": {
+    "phase": "ticket_expansion",
+    "passed": true,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": []
+    },
+    "scoring": {
+      "skipped": false,
+      "localScore": 76.47058823529412,
+      "globalScore": 89.76875270992917,
+      "perField": {},
+      "topologyPenalties": 0,
+      "gateResult": "pass",
+      "threshold": 70,
+      "globalScoreBreakdown": {
+        "specBlock": 20,
+        "epicBlock": 27.27272727272727,
+        "ticketBlock": 42.49602543720191,
+        "epicAvg": 90.9090909090909,
+        "ticketAvg": 84.99205087440382,
+        "weights": {
+          "spec": 0.2,
+          "epics": 0.3,
+          "tickets": 0.5
+        }
+      },
+      "cascadeFloors": {
+        "specOnly": 0,
+        "specPlusEpics": 30,
+        "total": 80
+      },
+      "cascadeFailures": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-1": [
+          {
+            "patternId": "foundation-gap",
+            "entityId": "tkt-1-1",
+            "entityType": "ticket",
+            "message": "Ticket \"Define Task domain type and DynamoDB schema\" — ticket_expansion has critical gaps:\n  - acceptanceCriteria\n  - implementationSteps\n\nDECLARE all together. Files determine scope, AC determines verifiability, steps determine execution sequence, ticketType determines whether testSpecification is required.\n\nOperation available: action_planning_session({\n  operation: { type: 'update_ticket', ticketId: \"tkt-1-1\", ... }\n})",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 17.647058823529413,
+            "globalImpactOnFix": 1.7647058823529413
+          },
+          {
+            "patternId": "individual",
+            "entityId": "tkt-1-1",
+            "entityType": "ticket",
+            "message": "Ticket \"Define Task domain type and DynamoDB schema\" — missing \"guardrails\". Declare at least 1 ticket-specific guardrail(s) (currently 0) — constraints and non-negotiables the implementing agent must respect. Each must be at least 20 characters.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 5.88235294117647,
+            "globalImpactOnFix": 0.588235294117647
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "activeEntityId": "tkt-1-1",
+      "resolution": "by-ticket",
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.128Z"
+    }
+  }
+}

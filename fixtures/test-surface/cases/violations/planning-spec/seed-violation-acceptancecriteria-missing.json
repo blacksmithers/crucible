@@ -1,0 +1,158 @@
+{
+  "$testSurface": {
+    "description": "Violation: acceptanceCriteria is empty. Triggers spec.acceptanceCriteria.v1 minCount check (recommended tier).",
+    "phase": "planning_spec",
+    "expectedGateResult": "fail"
+  },
+  "schemaVersion": "1.1",
+  "id": "spec-planning",
+  "projectId": "prj-canonical",
+  "title": "TaskFlow — Collaborative Task Management Platform",
+  "description": "A real-time collaborative task management platform for distributed engineering teams.",
+  "status": "planning_spec",
+  "background": "Engineering teams at fast-growing startups struggle to coordinate work across time zones. Existing tools lack deep integration with code review workflows and sprint planning, causing context switching and productivity loss.",
+  "architecture": "TaskFlow is built on a serverless event-driven architecture deployed on AWS. The frontend is a React single-page application served via CloudFront and communicates with a GraphQL API backed by AWS AppSync. Business logic lives in Node.js Lambda functions organized by domain (tasks, projects, notifications, users). Persistent state is stored in DynamoDB with a global secondary index strategy for flexible query patterns. Real-time collaboration is powered by AppSync subscriptions over WebSocket. Authentication is handled by Amazon Cognito with JWT-based authorization. All infrastructure is defined as code using AWS CDK. CI/CD pipelines run on GitHub Actions with automated testing gates before every deployment.",
+  "scope": {
+    "inScope": [
+      "Task creation, assignment, and lifecycle management",
+      "Real-time collaborative updates and presence indicators",
+      "Sprint planning with drag-and-drop board interface",
+      "GitHub pull request integration for task status updates",
+      "Email and in-app notification delivery"
+    ],
+    "outOfScope": [
+      "Native mobile application development",
+      "Time tracking and invoicing features",
+      "Third-party calendar synchronization beyond read-only"
+    ],
+    "assumptions": [
+      "Users have modern browser support (Chrome 90+, Firefox 88+, Safari 14+)",
+      "Teams are expected to have fewer than 500 members per organization"
+    ]
+  },
+  "goals": [
+    {
+      "id": "g-1",
+      "title": "Reduce cross-team coordination overhead",
+      "description": "Enable distributed engineering teams to coordinate work without synchronous standups by providing a shared, always-current view of project state.",
+      "type": "business",
+      "successCriteria": [
+        "Average time to assign and scope a task drops below 5 minutes",
+        "Weekly standup duration reduced by at least 30% within 60 days of adoption"
+      ]
+    },
+    {
+      "id": "g-2",
+      "title": "Deliver real-time collaborative editing without merge conflicts",
+      "description": "Provide instant, conflict-free updates to task descriptions, acceptance criteria, and comments so that multiple team members can contribute simultaneously.",
+      "type": "technical",
+      "successCriteria": [
+        "Concurrent edits by two users on the same task resolve deterministically within 200ms",
+        "Zero data-loss incidents reported during the first 90 days post-launch"
+      ]
+    },
+    {
+      "id": "g-3",
+      "title": "Seamlessly integrate with existing GitHub workflows",
+      "description": "Automatically reflect pull request status changes on linked tasks, closing the gap between code review and project management without manual updates.",
+      "type": "operational",
+      "successCriteria": [
+        "Pull request webhook events update task status within 10 seconds",
+        "At least 80% of implementation tasks have a linked PR within 48 hours of starting"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "r-1",
+      "title": "Task lifecycle management with status transitions",
+      "description": "Users must be able to create tasks, set priority and assignee, and transition tasks through defined statuses (backlog, in-progress, review, done). Status transitions must be validated against a configurable workflow.",
+      "type": "functional",
+      "acceptanceCriteria": [
+        {
+          "id": "r-1-ac-1",
+          "given": "A project member is viewing the task board",
+          "when": "They create a new task with a title, description, and assignee",
+          "then": "The task appears in the backlog column and the assignee receives an in-app notification",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "r-2",
+      "title": "Real-time presence and live update propagation",
+      "description": "All connected clients must receive task updates within 500ms of a change being committed. The UI must show which team members are currently viewing or editing each task.",
+      "type": "functional",
+      "acceptanceCriteria": [
+        {
+          "id": "r-2-ac-1",
+          "given": "Two users have the same task open in their browsers",
+          "when": "One user updates the task description",
+          "then": "The other user's browser reflects the new description within 500ms without a page refresh",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "r-3",
+      "title": "GitHub webhook integration for linked pull requests",
+      "description": "The system must accept GitHub webhook events for pull request opened, merged, and closed actions, and update the status of any task linked to that pull request accordingly.",
+      "type": "integration",
+      "acceptanceCriteria": [
+        {
+          "id": "r-3-ac-1",
+          "given": "A task has a linked GitHub pull request",
+          "when": "The pull request is merged on GitHub",
+          "then": "The linked task transitions to the review status within 15 seconds",
+          "order": 1
+        }
+      ]
+    }
+  ],
+  "nonFunctionalRequirements": [
+    {
+      "id": "nfr-1",
+      "description": "The GraphQL API must respond to 95th-percentile queries within 200ms under a sustained load of 500 concurrent users.",
+      "category": "performance",
+      "metric": "p95 API response time",
+      "target": "≤ 200ms at 500 concurrent users",
+      "measurementMethod": "Load test with k6, 10-minute sustained ramp, measured at API Gateway"
+    }
+  ],
+  "guardrails": [
+    {
+      "id": "gr-1",
+      "description": "All user-supplied input must be validated and sanitized server-side before persistence to prevent injection attacks and data corruption.",
+      "category": "technical",
+      "rationale": "Client-side validation can be bypassed; server-side enforcement is the last line of defense.",
+      "consequence": "Unvalidated input reaching the database could lead to data corruption, XSS vulnerabilities, or unauthorized access."
+    }
+  ],
+  "techStack": [
+    {
+      "id": "ts-1",
+      "name": "React",
+      "version": "18.2",
+      "layer": "frontend",
+      "rationale": "Mature ecosystem, strong TypeScript support, and team familiarity reduce onboarding friction."
+    },
+    {
+      "id": "ts-2",
+      "name": "AWS DynamoDB",
+      "version": "latest",
+      "layer": "database",
+      "rationale": "Serverless, pay-per-request pricing aligns with early-stage traffic patterns, and single-table design enables the required query flexibility."
+    }
+  ],
+  "folderStructures": [
+    {
+      "id": "fs-1",
+      "scope": "monorepo root",
+      "description": "Top-level directory layout for the TaskFlow monorepo.",
+      "content": "taskflow/\n├── apps/\n│   ├── web/          # React SPA\n│   └── api/          # Lambda function handlers\n├── packages/\n│   ├── core/         # Shared domain types and utilities\n│   └── ui/           # Design system components\n├── infrastructure/   # AWS CDK stacks\n├── scripts/          # Developer tooling\n└── .github/\n    └── workflows/    # CI/CD pipeline definitions"
+    }
+  ],
+  "acceptanceCriteria": [],
+  "epics": [],
+  "blueprints": []
+}

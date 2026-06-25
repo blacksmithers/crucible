@@ -1,0 +1,687 @@
+{
+  "input": {
+    "specId": "spec-cross-validation",
+    "context": {
+      "phase": "cross_validation",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "cross_validation",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 1 epic(s); minimum is 2",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 1 épico(s). Mínimo configurado: 2. Decomponha o trabalho em mais épicos pra habilitar paralelização e fronteiras claras de responsabilidade. Cada épico deve representar um conjunto coeso de funcionalidades que pode ser implementado e validado independentemente.",
+          "operations": [
+            "create_epic"
+          ],
+          "context": {
+            "currentCount": 1,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [
+        {
+          "category": "topology-leaves-exceed",
+          "severity": "error",
+          "field": "specification.tickets",
+          "message": "6 leaf tickets exceed maximum 2 (7 total)",
+          "entityIds": [
+            "tkt-1-w1",
+            "tkt-1-w2",
+            "tkt-1-w3",
+            "tkt-1-w4",
+            "tkt-1-w5",
+            "tkt-1-w6"
+          ],
+          "primaryEntityId": "tkt-1-w1",
+          "operations": [
+            "update_ticket",
+            "create_ticket"
+          ],
+          "context": {
+            "leafCount": 6,
+            "totalTickets": 7,
+            "maxAllowed": 2,
+            "leafIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ]
+          }
+        },
+        {
+          "category": "wave-size-exceed",
+          "severity": "error",
+          "field": "specification.tickets",
+          "message": "Wave 2 has 6 tickets, max allowed 5",
+          "entityIds": [
+            "tkt-1-w1",
+            "tkt-1-w2",
+            "tkt-1-w3",
+            "tkt-1-w4",
+            "tkt-1-w5",
+            "tkt-1-w6"
+          ],
+          "primaryEntityId": "tkt-1-w1",
+          "operations": [
+            "update_ticket"
+          ],
+          "context": {
+            "wave": 2,
+            "currentSize": 6,
+            "maxAllowed": 5,
+            "splitProposal": {
+              "baseWaveTicketIds": [
+                "tkt-1-w1",
+                "tkt-1-w2",
+                "tkt-1-w3"
+              ],
+              "intermediateWaveTicketIds": [
+                "tkt-1-w4",
+                "tkt-1-w5",
+                "tkt-1-w6"
+              ],
+              "suggestedAnchor": "tkt-1-w1",
+              "instruction": "For each ticket in intermediateWaveTicketIds, add \"tkt-1-w1\" to its dependsOn"
+            }
+          }
+        },
+        {
+          "category": "blueprint-coverage",
+          "severity": "error",
+          "field": "blueprints[id=bp-1]",
+          "message": "Blueprint \"Task Entity State Machine\" has 1 linked tickets; minimum 2",
+          "entityIds": [
+            "bp-1",
+            "tkt-1-1"
+          ],
+          "primaryEntityId": "bp-1",
+          "operations": [
+            "update_ticket",
+            "update_blueprint",
+            "delete_blueprint"
+          ]
+        },
+        {
+          "category": "blueprint-coverage",
+          "severity": "error",
+          "field": "blueprints[id=bp-2]",
+          "message": "Blueprint \"System Architecture Overview\" has 0 linked tickets; minimum 2",
+          "entityIds": [
+            "bp-2"
+          ],
+          "primaryEntityId": "bp-2",
+          "operations": [
+            "update_ticket",
+            "update_blueprint",
+            "delete_blueprint"
+          ]
+        }
+      ],
+      "ranChecks": [
+        "circular-dependency",
+        "broken-reference",
+        "orphan-reference",
+        "island-ticket",
+        "topology-roots-exceed",
+        "topology-leaves-exceed",
+        "wave-size-exceed",
+        "wave-concurrent-modification",
+        "wave-deletion-after-modification",
+        "wave-deletion-after-creation",
+        "file-conflict",
+        "files-to-be-referenced",
+        "blueprint-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-w1": [
+          {
+            "patternId": "cross-validation",
+            "category": "topology-leaves-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-w1",
+            "entityIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "message": "Spec has 6 tickets with no dependents (leaves), but the maximum allowed is 2 (computed: min(ceil(7 × 0.25), 5) = 2, ratio 25% capped at 5). Too many leaves indicates that the set of terminal tickets does not converge — some of them likely should feed into other tickets (e.g., implementation tickets that should be consumed by verification or integration tickets). Consider adding integration/verification tickets that depend on the existing leaves, or consolidate tickets that produce similar outputs.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "leafCount": 6,
+              "totalTickets": 7,
+              "maxAllowed": 2,
+              "leafIds": [
+                "tkt-1-w1",
+                "tkt-1-w2",
+                "tkt-1-w3",
+                "tkt-1-w4",
+                "tkt-1-w5",
+                "tkt-1-w6"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "wave-size-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-w1",
+            "entityIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "message": "Wave 2 has 6 tickets — exceeds the configured maximum (5 per wave). Too much parallelism in the same wave indicates that dependencies between related tickets were not declared — some of these tickets likely depend on each other but it was not made explicit. Simple split suggestion (arbitrary algorithm, humans should review): keep [tkt-1-w1, tkt-1-w2, tkt-1-w3] in the current wave, and add \"tkt-1-w1\" to the dependsOn of tickets [tkt-1-w4, tkt-1-w5, tkt-1-w6] to create an intermediate wave. Result: wave 2 with 3 tickets, intermediate wave with 3 tickets. Algorithm splits by alphabetic order with an arbitrary anchor — adjust to reflect real semantic relationships between tickets when known. Alternatively, if 5+ tickets really are independent (unlikely in practice), raise maxTicketsPerWave in the config.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "wave": 2,
+              "currentSize": 6,
+              "maxAllowed": 5,
+              "splitProposal": {
+                "baseWaveTicketIds": [
+                  "tkt-1-w1",
+                  "tkt-1-w2",
+                  "tkt-1-w3"
+                ],
+                "intermediateWaveTicketIds": [
+                  "tkt-1-w4",
+                  "tkt-1-w5",
+                  "tkt-1-w6"
+                ],
+                "suggestedAnchor": "tkt-1-w1",
+                "instruction": "For each ticket in intermediateWaveTicketIds, add \"tkt-1-w1\" to its dependsOn"
+              }
+            }
+          }
+        ],
+        "tkt-1-w2": [
+          {
+            "patternId": "cross-validation",
+            "category": "topology-leaves-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-w1",
+            "entityIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "message": "Spec has 6 tickets with no dependents (leaves), but the maximum allowed is 2 (computed: min(ceil(7 × 0.25), 5) = 2, ratio 25% capped at 5). Too many leaves indicates that the set of terminal tickets does not converge — some of them likely should feed into other tickets (e.g., implementation tickets that should be consumed by verification or integration tickets). Consider adding integration/verification tickets that depend on the existing leaves, or consolidate tickets that produce similar outputs.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "leafCount": 6,
+              "totalTickets": 7,
+              "maxAllowed": 2,
+              "leafIds": [
+                "tkt-1-w1",
+                "tkt-1-w2",
+                "tkt-1-w3",
+                "tkt-1-w4",
+                "tkt-1-w5",
+                "tkt-1-w6"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "wave-size-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-w1",
+            "entityIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "message": "Wave 2 has 6 tickets — exceeds the configured maximum (5 per wave). Too much parallelism in the same wave indicates that dependencies between related tickets were not declared — some of these tickets likely depend on each other but it was not made explicit. Simple split suggestion (arbitrary algorithm, humans should review): keep [tkt-1-w1, tkt-1-w2, tkt-1-w3] in the current wave, and add \"tkt-1-w1\" to the dependsOn of tickets [tkt-1-w4, tkt-1-w5, tkt-1-w6] to create an intermediate wave. Result: wave 2 with 3 tickets, intermediate wave with 3 tickets. Algorithm splits by alphabetic order with an arbitrary anchor — adjust to reflect real semantic relationships between tickets when known. Alternatively, if 5+ tickets really are independent (unlikely in practice), raise maxTicketsPerWave in the config.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "wave": 2,
+              "currentSize": 6,
+              "maxAllowed": 5,
+              "splitProposal": {
+                "baseWaveTicketIds": [
+                  "tkt-1-w1",
+                  "tkt-1-w2",
+                  "tkt-1-w3"
+                ],
+                "intermediateWaveTicketIds": [
+                  "tkt-1-w4",
+                  "tkt-1-w5",
+                  "tkt-1-w6"
+                ],
+                "suggestedAnchor": "tkt-1-w1",
+                "instruction": "For each ticket in intermediateWaveTicketIds, add \"tkt-1-w1\" to its dependsOn"
+              }
+            }
+          }
+        ],
+        "tkt-1-w3": [
+          {
+            "patternId": "cross-validation",
+            "category": "topology-leaves-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-w1",
+            "entityIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "message": "Spec has 6 tickets with no dependents (leaves), but the maximum allowed is 2 (computed: min(ceil(7 × 0.25), 5) = 2, ratio 25% capped at 5). Too many leaves indicates that the set of terminal tickets does not converge — some of them likely should feed into other tickets (e.g., implementation tickets that should be consumed by verification or integration tickets). Consider adding integration/verification tickets that depend on the existing leaves, or consolidate tickets that produce similar outputs.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "leafCount": 6,
+              "totalTickets": 7,
+              "maxAllowed": 2,
+              "leafIds": [
+                "tkt-1-w1",
+                "tkt-1-w2",
+                "tkt-1-w3",
+                "tkt-1-w4",
+                "tkt-1-w5",
+                "tkt-1-w6"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "wave-size-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-w1",
+            "entityIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "message": "Wave 2 has 6 tickets — exceeds the configured maximum (5 per wave). Too much parallelism in the same wave indicates that dependencies between related tickets were not declared — some of these tickets likely depend on each other but it was not made explicit. Simple split suggestion (arbitrary algorithm, humans should review): keep [tkt-1-w1, tkt-1-w2, tkt-1-w3] in the current wave, and add \"tkt-1-w1\" to the dependsOn of tickets [tkt-1-w4, tkt-1-w5, tkt-1-w6] to create an intermediate wave. Result: wave 2 with 3 tickets, intermediate wave with 3 tickets. Algorithm splits by alphabetic order with an arbitrary anchor — adjust to reflect real semantic relationships between tickets when known. Alternatively, if 5+ tickets really are independent (unlikely in practice), raise maxTicketsPerWave in the config.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "wave": 2,
+              "currentSize": 6,
+              "maxAllowed": 5,
+              "splitProposal": {
+                "baseWaveTicketIds": [
+                  "tkt-1-w1",
+                  "tkt-1-w2",
+                  "tkt-1-w3"
+                ],
+                "intermediateWaveTicketIds": [
+                  "tkt-1-w4",
+                  "tkt-1-w5",
+                  "tkt-1-w6"
+                ],
+                "suggestedAnchor": "tkt-1-w1",
+                "instruction": "For each ticket in intermediateWaveTicketIds, add \"tkt-1-w1\" to its dependsOn"
+              }
+            }
+          }
+        ],
+        "tkt-1-w4": [
+          {
+            "patternId": "cross-validation",
+            "category": "topology-leaves-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-w1",
+            "entityIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "message": "Spec has 6 tickets with no dependents (leaves), but the maximum allowed is 2 (computed: min(ceil(7 × 0.25), 5) = 2, ratio 25% capped at 5). Too many leaves indicates that the set of terminal tickets does not converge — some of them likely should feed into other tickets (e.g., implementation tickets that should be consumed by verification or integration tickets). Consider adding integration/verification tickets that depend on the existing leaves, or consolidate tickets that produce similar outputs.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "leafCount": 6,
+              "totalTickets": 7,
+              "maxAllowed": 2,
+              "leafIds": [
+                "tkt-1-w1",
+                "tkt-1-w2",
+                "tkt-1-w3",
+                "tkt-1-w4",
+                "tkt-1-w5",
+                "tkt-1-w6"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "wave-size-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-w1",
+            "entityIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "message": "Wave 2 has 6 tickets — exceeds the configured maximum (5 per wave). Too much parallelism in the same wave indicates that dependencies between related tickets were not declared — some of these tickets likely depend on each other but it was not made explicit. Simple split suggestion (arbitrary algorithm, humans should review): keep [tkt-1-w1, tkt-1-w2, tkt-1-w3] in the current wave, and add \"tkt-1-w1\" to the dependsOn of tickets [tkt-1-w4, tkt-1-w5, tkt-1-w6] to create an intermediate wave. Result: wave 2 with 3 tickets, intermediate wave with 3 tickets. Algorithm splits by alphabetic order with an arbitrary anchor — adjust to reflect real semantic relationships between tickets when known. Alternatively, if 5+ tickets really are independent (unlikely in practice), raise maxTicketsPerWave in the config.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "wave": 2,
+              "currentSize": 6,
+              "maxAllowed": 5,
+              "splitProposal": {
+                "baseWaveTicketIds": [
+                  "tkt-1-w1",
+                  "tkt-1-w2",
+                  "tkt-1-w3"
+                ],
+                "intermediateWaveTicketIds": [
+                  "tkt-1-w4",
+                  "tkt-1-w5",
+                  "tkt-1-w6"
+                ],
+                "suggestedAnchor": "tkt-1-w1",
+                "instruction": "For each ticket in intermediateWaveTicketIds, add \"tkt-1-w1\" to its dependsOn"
+              }
+            }
+          }
+        ],
+        "tkt-1-w5": [
+          {
+            "patternId": "cross-validation",
+            "category": "topology-leaves-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-w1",
+            "entityIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "message": "Spec has 6 tickets with no dependents (leaves), but the maximum allowed is 2 (computed: min(ceil(7 × 0.25), 5) = 2, ratio 25% capped at 5). Too many leaves indicates that the set of terminal tickets does not converge — some of them likely should feed into other tickets (e.g., implementation tickets that should be consumed by verification or integration tickets). Consider adding integration/verification tickets that depend on the existing leaves, or consolidate tickets that produce similar outputs.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "leafCount": 6,
+              "totalTickets": 7,
+              "maxAllowed": 2,
+              "leafIds": [
+                "tkt-1-w1",
+                "tkt-1-w2",
+                "tkt-1-w3",
+                "tkt-1-w4",
+                "tkt-1-w5",
+                "tkt-1-w6"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "wave-size-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-w1",
+            "entityIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "message": "Wave 2 has 6 tickets — exceeds the configured maximum (5 per wave). Too much parallelism in the same wave indicates that dependencies between related tickets were not declared — some of these tickets likely depend on each other but it was not made explicit. Simple split suggestion (arbitrary algorithm, humans should review): keep [tkt-1-w1, tkt-1-w2, tkt-1-w3] in the current wave, and add \"tkt-1-w1\" to the dependsOn of tickets [tkt-1-w4, tkt-1-w5, tkt-1-w6] to create an intermediate wave. Result: wave 2 with 3 tickets, intermediate wave with 3 tickets. Algorithm splits by alphabetic order with an arbitrary anchor — adjust to reflect real semantic relationships between tickets when known. Alternatively, if 5+ tickets really are independent (unlikely in practice), raise maxTicketsPerWave in the config.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "wave": 2,
+              "currentSize": 6,
+              "maxAllowed": 5,
+              "splitProposal": {
+                "baseWaveTicketIds": [
+                  "tkt-1-w1",
+                  "tkt-1-w2",
+                  "tkt-1-w3"
+                ],
+                "intermediateWaveTicketIds": [
+                  "tkt-1-w4",
+                  "tkt-1-w5",
+                  "tkt-1-w6"
+                ],
+                "suggestedAnchor": "tkt-1-w1",
+                "instruction": "For each ticket in intermediateWaveTicketIds, add \"tkt-1-w1\" to its dependsOn"
+              }
+            }
+          }
+        ],
+        "tkt-1-w6": [
+          {
+            "patternId": "cross-validation",
+            "category": "topology-leaves-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-w1",
+            "entityIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "message": "Spec has 6 tickets with no dependents (leaves), but the maximum allowed is 2 (computed: min(ceil(7 × 0.25), 5) = 2, ratio 25% capped at 5). Too many leaves indicates that the set of terminal tickets does not converge — some of them likely should feed into other tickets (e.g., implementation tickets that should be consumed by verification or integration tickets). Consider adding integration/verification tickets that depend on the existing leaves, or consolidate tickets that produce similar outputs.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "leafCount": 6,
+              "totalTickets": 7,
+              "maxAllowed": 2,
+              "leafIds": [
+                "tkt-1-w1",
+                "tkt-1-w2",
+                "tkt-1-w3",
+                "tkt-1-w4",
+                "tkt-1-w5",
+                "tkt-1-w6"
+              ]
+            }
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "wave-size-exceed",
+            "severity": "error",
+            "fieldPath": "specification.tickets",
+            "primaryEntityId": "tkt-1-w1",
+            "entityIds": [
+              "tkt-1-w1",
+              "tkt-1-w2",
+              "tkt-1-w3",
+              "tkt-1-w4",
+              "tkt-1-w5",
+              "tkt-1-w6"
+            ],
+            "message": "Wave 2 has 6 tickets — exceeds the configured maximum (5 per wave). Too much parallelism in the same wave indicates that dependencies between related tickets were not declared — some of these tickets likely depend on each other but it was not made explicit. Simple split suggestion (arbitrary algorithm, humans should review): keep [tkt-1-w1, tkt-1-w2, tkt-1-w3] in the current wave, and add \"tkt-1-w1\" to the dependsOn of tickets [tkt-1-w4, tkt-1-w5, tkt-1-w6] to create an intermediate wave. Result: wave 2 with 3 tickets, intermediate wave with 3 tickets. Algorithm splits by alphabetic order with an arbitrary anchor — adjust to reflect real semantic relationships between tickets when known. Alternatively, if 5+ tickets really are independent (unlikely in practice), raise maxTicketsPerWave in the config.",
+            "operations": [
+              "update_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0,
+            "context": {
+              "wave": 2,
+              "currentSize": 6,
+              "maxAllowed": 5,
+              "splitProposal": {
+                "baseWaveTicketIds": [
+                  "tkt-1-w1",
+                  "tkt-1-w2",
+                  "tkt-1-w3"
+                ],
+                "intermediateWaveTicketIds": [
+                  "tkt-1-w4",
+                  "tkt-1-w5",
+                  "tkt-1-w6"
+                ],
+                "suggestedAnchor": "tkt-1-w1",
+                "instruction": "For each ticket in intermediateWaveTicketIds, add \"tkt-1-w1\" to its dependsOn"
+              }
+            }
+          }
+        ],
+        "bp-1": [
+          {
+            "patternId": "cross-validation",
+            "category": "blueprint-coverage",
+            "severity": "error",
+            "fieldPath": "blueprints[id=bp-1]",
+            "primaryEntityId": "bp-1",
+            "entityIds": [
+              "bp-1",
+              "tkt-1-1"
+            ],
+            "message": "Blueprint \"Task Entity State Machine\" is linked to 1 ticket; configured minimum: 2. Underused blueprints indicate that the architectural pattern was not propagated to implementation — either the blueprint is unnecessary, or tickets that should consume it are missing. Review the tickets and link the blueprint to more tickets that should follow it, consolidate tickets that should use the blueprint but do not declare it, or remove the blueprint if it has no practical use in the current spec. Blueprints exist to propagate architectural decisions — without propagation they are dead weight.",
+            "operations": [
+              "update_ticket",
+              "update_blueprint",
+              "delete_blueprint"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ],
+        "tkt-1-1": [
+          {
+            "patternId": "cross-validation",
+            "category": "blueprint-coverage",
+            "severity": "error",
+            "fieldPath": "blueprints[id=bp-1]",
+            "primaryEntityId": "bp-1",
+            "entityIds": [
+              "bp-1",
+              "tkt-1-1"
+            ],
+            "message": "Blueprint \"Task Entity State Machine\" is linked to 1 ticket; configured minimum: 2. Underused blueprints indicate that the architectural pattern was not propagated to implementation — either the blueprint is unnecessary, or tickets that should consume it are missing. Review the tickets and link the blueprint to more tickets that should follow it, consolidate tickets that should use the blueprint but do not declare it, or remove the blueprint if it has no practical use in the current spec. Blueprints exist to propagate architectural decisions — without propagation they are dead weight.",
+            "operations": [
+              "update_ticket",
+              "update_blueprint",
+              "delete_blueprint"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ],
+        "bp-2": [
+          {
+            "patternId": "cross-validation",
+            "category": "blueprint-coverage",
+            "severity": "error",
+            "fieldPath": "blueprints[id=bp-2]",
+            "primaryEntityId": "bp-2",
+            "entityIds": [
+              "bp-2"
+            ],
+            "message": "Blueprint \"System Architecture Overview\" is linked to 0 tickets; configured minimum: 2. Underused blueprints indicate that the architectural pattern was not propagated to implementation — either the blueprint is unnecessary, or tickets that should consume it are missing. Review the tickets and link the blueprint to more tickets that should follow it, consolidate tickets that should use the blueprint but do not declare it, or remove the blueprint if it has no practical use in the current spec. Blueprints exist to propagate architectural decisions — without propagation they are dead weight.",
+            "operations": [
+              "update_ticket",
+              "update_blueprint",
+              "delete_blueprint"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ]
+      }
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.006Z"
+    }
+  }
+}

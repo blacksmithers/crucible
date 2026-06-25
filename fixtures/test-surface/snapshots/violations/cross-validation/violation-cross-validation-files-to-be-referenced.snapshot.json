@@ -1,0 +1,191 @@
+{
+  "input": {
+    "specId": "spec-cross-validation",
+    "context": {
+      "phase": "cross_validation",
+      "activeEntityId": null
+    }
+  },
+  "output": {
+    "phase": "cross_validation",
+    "passed": false,
+    "structural": {
+      "missingFields": [],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 1 epic(s); minimum is 2",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 1 épico(s). Mínimo configurado: 2. Decomponha o trabalho em mais épicos pra habilitar paralelização e fronteiras claras de responsabilidade. Cada épico deve representar um conjunto coeso de funcionalidades que pode ser implementado e validado independentemente.",
+          "operations": [
+            "create_epic"
+          ],
+          "context": {
+            "currentCount": 1,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [
+        {
+          "category": "orphan-reference",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-1].dependsOn",
+          "message": "Ticket \"tkt-1-1\" has no dependsOn but has dependents — root unjustified",
+          "entityIds": [
+            "tkt-1-1"
+          ],
+          "primaryEntityId": "tkt-1-1",
+          "operations": [
+            "update_ticket",
+            "create_ticket"
+          ]
+        },
+        {
+          "category": "orphan-reference",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-2].dependsOn",
+          "message": "Ticket \"tkt-1-2\" has no dependsOn but has dependents — root unjustified",
+          "entityIds": [
+            "tkt-1-2"
+          ],
+          "primaryEntityId": "tkt-1-2",
+          "operations": [
+            "update_ticket",
+            "create_ticket"
+          ]
+        },
+        {
+          "category": "files-to-be-referenced",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-1].filesToBeReferenced:packages/shared/src/nonexistent.ts",
+          "message": "Ticket \"tkt-1-1\" references \"packages/shared/src/nonexistent.ts\" but no ticket creates/modifies it",
+          "entityIds": [
+            "tkt-1-1"
+          ],
+          "primaryEntityId": "tkt-1-1",
+          "operations": [
+            "update_ticket",
+            "create_ticket"
+          ]
+        },
+        {
+          "category": "files-to-be-referenced",
+          "severity": "error",
+          "field": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+          "message": "Ticket \"tkt-1-2\" references \"packages/core/src/domain/task.ts\" but does not declare dependsOn on creator \"tkt-1-1\"",
+          "entityIds": [
+            "tkt-1-2"
+          ],
+          "primaryEntityId": "tkt-1-2",
+          "operations": [
+            "update_ticket",
+            "create_ticket"
+          ]
+        }
+      ],
+      "ranChecks": [
+        "circular-dependency",
+        "broken-reference",
+        "orphan-reference",
+        "island-ticket",
+        "topology-roots-exceed",
+        "topology-leaves-exceed",
+        "wave-size-exceed",
+        "wave-concurrent-modification",
+        "wave-deletion-after-modification",
+        "wave-deletion-after-creation",
+        "file-conflict",
+        "files-to-be-referenced",
+        "blueprint-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "tkt-1-1": [
+          {
+            "patternId": "cross-validation",
+            "category": "orphan-reference",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-1].dependsOn",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1"
+            ],
+            "message": "Ticket \"tkt-1-1\" declares no dependsOn (no prior work listed), but other tickets depend on it. Unjustified roots indicate that preparatory work was implicitly assumed — there's likely setup, infrastructure, or modeling that precedes this ticket but wasn't articulated in the spec. Add tickets that precede this work in dependsOn OR explicitly justify via fieldDeclarations.dependsOn with reason \"foundational ticket — no prior work\" (or similar) if the ticket is genuinely the starting point.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "files-to-be-referenced",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-1].filesToBeReferenced:packages/shared/src/nonexistent.ts",
+            "primaryEntityId": "tkt-1-1",
+            "entityIds": [
+              "tkt-1-1"
+            ],
+            "message": "Ticket \"tkt-1-1\" lists \"packages/shared/src/nonexistent.ts\" in filesToBeReferenced, but no ticket creates or modifies that file in the spec. Broken reference at runtime — when an agent executes \"tkt-1-1\", the file will not exist. Resolve in one of three ways: (1) add filesToBeCreated or filesToBeModified containing this path on some ticket that precedes \"tkt-1-1\" via dependsOn, OR (2) declare dependsOn on an existing ticket that creates/modifies the file (if the work already exists but isn't connected), OR (3) remove filesToBeReferenced if the file is not actually needed by this ticket.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ],
+        "tkt-1-2": [
+          {
+            "patternId": "cross-validation",
+            "category": "orphan-reference",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-2].dependsOn",
+            "primaryEntityId": "tkt-1-2",
+            "entityIds": [
+              "tkt-1-2"
+            ],
+            "message": "Ticket \"tkt-1-2\" declares no dependsOn (no prior work listed), but other tickets depend on it. Unjustified roots indicate that preparatory work was implicitly assumed — there's likely setup, infrastructure, or modeling that precedes this ticket but wasn't articulated in the spec. Add tickets that precede this work in dependsOn OR explicitly justify via fieldDeclarations.dependsOn with reason \"foundational ticket — no prior work\" (or similar) if the ticket is genuinely the starting point.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          },
+          {
+            "patternId": "cross-validation",
+            "category": "files-to-be-referenced",
+            "severity": "error",
+            "fieldPath": "tickets[id=tkt-1-2].filesToBeReferenced:packages/core/src/domain/task.ts",
+            "primaryEntityId": "tkt-1-2",
+            "entityIds": [
+              "tkt-1-2"
+            ],
+            "message": "Ticket \"tkt-1-2\" lists \"packages/core/src/domain/task.ts\" in filesToBeReferenced, and ticket \"tkt-1-1\" creates/modifies that file, but \"tkt-1-2\" does not declare dependsOn on the creator. Broken reference at runtime — when an agent executes \"tkt-1-2\", the topological order does not guarantee that \"tkt-1-1\" ran first. Resolve in one of three ways: (1) add \"tkt-1-1\" to \"tkt-1-2\".dependsOn to force the correct order, OR (2) move the file creation to a ticket that is already a predecessor of \"tkt-1-2\", OR (3) remove filesToBeReferenced if the file is not actually needed by this ticket.",
+            "operations": [
+              "update_ticket",
+              "create_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ]
+      }
+    },
+    "meta": {
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:35.978Z"
+    }
+  }
+}

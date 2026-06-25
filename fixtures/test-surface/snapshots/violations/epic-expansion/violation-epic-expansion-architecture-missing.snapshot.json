@@ -1,0 +1,99 @@
+{
+  "input": {
+    "specId": "spec-epic-expansion",
+    "context": {
+      "phase": "epic_expansion",
+      "activeEntityId": "ep-1"
+    }
+  },
+  "output": {
+    "phase": "epic_expansion",
+    "passed": false,
+    "structural": {
+      "missingFields": [
+        "ticket[id=tkt-1-1].acceptanceCriteria",
+        "ticket[id=tkt-1-1].implementationSteps",
+        "ticket[id=tkt-1-2].acceptanceCriteria",
+        "ticket[id=tkt-1-2].implementationSteps"
+      ],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "specification.epics",
+          "message": "Specification has 1 epic(s); minimum is 2",
+          "guidance": "Specification \"TaskFlow — Collaborative Task Management Platform\" tem 1 épico(s). Mínimo configurado: 2. Decomponha o trabalho em mais épicos pra habilitar paralelização e fronteiras claras de responsabilidade. Cada épico deve representar um conjunto coeso de funcionalidades que pode ser implementado e validado independentemente.",
+          "operations": [
+            "create_epic"
+          ],
+          "context": {
+            "currentCount": 1,
+            "configuredMin": 2,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "scoring": {
+      "skipped": false,
+      "localScore": 81.81818181818183,
+      "globalScore": 39.50411909235439,
+      "perField": {},
+      "topologyPenalties": -24,
+      "gateResult": "pass",
+      "threshold": 70,
+      "globalScoreBreakdown": {
+        "specBlock": 20,
+        "epicBlock": 24.545454545454547,
+        "ticketBlock": 18.95866454689984,
+        "epicAvg": 81.81818181818183,
+        "ticketAvg": 37.91732909379968,
+        "weights": {
+          "spec": 0.2,
+          "epics": 0.3,
+          "tickets": 0.5
+        }
+      },
+      "cascadeFloors": {
+        "specOnly": 0,
+        "specPlusEpics": 30,
+        "total": 80
+      },
+      "cascadeFailures": []
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [],
+      "ranChecks": [
+        "na-validation",
+        "requirement-coverage",
+        "nfr-coverage"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "ep-1": [
+          {
+            "patternId": "foundation-gap",
+            "entityId": "ep-1",
+            "entityType": "epic",
+            "message": "Epic \"Core Task Management Domain\" — epic_expansion phase has critical gaps:\n  - architecture\n  - fileStructures\n\nDECLARE these together via a single update.\n\nOperation available: action_planning_session({\n  operation: { type: 'update_epic', epicId: \"ep-1\", architecture, scope, objective, ... }\n})",
+            "operations": [
+              "update_epic"
+            ],
+            "pointsLost": 18.181818181818183,
+            "globalImpactOnFix": 5.454545454545455
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "activeEntityId": "ep-1",
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.032Z"
+    }
+  }
+}

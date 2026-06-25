@@ -1,0 +1,96 @@
+{
+  "input": {
+    "specId": "spec-ticket-decomp-below-min",
+    "context": {
+      "phase": "ticket_decomposition",
+      "activeEntityId": "ep-1"
+    }
+  },
+  "output": {
+    "phase": "ticket_decomposition",
+    "passed": false,
+    "structural": {
+      "missingFields": [
+        "ticket[id=tkt-1-1].acceptanceCriteria",
+        "ticket[id=tkt-1-1].implementationSteps",
+        "ticket[id=tkt-1-2].acceptanceCriteria",
+        "ticket[id=tkt-1-2].implementationSteps"
+      ],
+      "invalidFields": [],
+      "findings": [
+        {
+          "category": "entity-count-below-min",
+          "severity": "error",
+          "field": "epics[id=ep-1].tickets",
+          "message": "Epic \"Core Task Management Domain\" has 2 ticket(s); minimum is 3",
+          "guidance": "Épico \"Core Task Management Domain\" tem 2 ticket(s). Mínimo configurado: 3. Quebre a implementação em unidades menores e executáveis. Cada ticket deve representar trabalho focado que pode ser implementado e revisado independentemente. Se o épico é genuinamente atômico, considere se ele deveria ser uma seção de outro épico.",
+          "operations": [
+            "create_ticket"
+          ],
+          "context": {
+            "epicId": "ep-1",
+            "currentCount": 2,
+            "configuredMin": 3,
+            "configuredMax": 50
+          }
+        }
+      ]
+    },
+    "scoring": {
+      "skipped": true,
+      "reason": "no-rubric-for-phase",
+      "localScore": null,
+      "globalScore": null,
+      "perField": {},
+      "gateResult": "n/a",
+      "threshold": null
+    },
+    "crossValidation": {
+      "skipped": false,
+      "findings": [
+        {
+          "category": "impl-verification-ratio",
+          "severity": "error",
+          "field": "specification.tickets",
+          "message": "2 implementation tickets and 0 verification tickets",
+          "entityIds": [
+            "spec-ticket-decomp-below-min"
+          ],
+          "primaryEntityId": "spec-ticket-decomp-below-min",
+          "operations": [
+            "create_ticket"
+          ]
+        }
+      ],
+      "ranChecks": [
+        "impl-verification-ratio"
+      ],
+      "skippedChecks": []
+    },
+    "guidance": {
+      "perEntity": {
+        "ep-1": [
+          {
+            "patternId": "individual",
+            "entityId": "ep-1",
+            "entityType": "epic",
+            "message": "Decomposition phase. Review the current set of tickets in this epic and decide whether the decomposition is sufficient. Available operations: create_ticket, update_ticket, delete_ticket. To advance to the next phase, invoke complete_decomposition_phase explicitly.",
+            "operations": [
+              "create_ticket",
+              "update_ticket",
+              "delete_ticket"
+            ],
+            "pointsLost": 0,
+            "globalImpactOnFix": 0
+          }
+        ]
+      },
+      "truncated": false
+    },
+    "meta": {
+      "activeEntityId": "ep-1",
+      "validatorVersion": "0.1.0",
+      "generatedAt": "2026-05-08T16:42:36.105Z"
+    }
+  }
+}
