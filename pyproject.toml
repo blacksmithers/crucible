@@ -44,7 +44,7 @@ dev = [
 packages = ["src/crucible"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/crucible", "README.md", "LICENSE", "docs"]
+include = ["src/crucible", "README.md", "LICENSE"]
 
 [tool.ruff]
 line-length = 100
