@@ -41,7 +41,7 @@
           "patternId": "individual",
           "entityId": "ep-1",
           "entityType": "epic",
-          "message": "Decomposition phase. Review the current set of tickets in this epic and decide whether the decomposition is sufficient. Available operations: create_ticket, update_ticket, delete_ticket. To advance to the next phase, invoke complete_decomposition_phase explicitly.",
+          "message": "Decomposition phase. Review the current set of tickets in this epic and decide whether the decomposition is sufficient. Available operations: create_ticket, update_ticket, delete_ticket. To advance to the next phase, invoke complete_planning_session explicitly.",
           "operations": [
             "create_ticket",
             "update_ticket",

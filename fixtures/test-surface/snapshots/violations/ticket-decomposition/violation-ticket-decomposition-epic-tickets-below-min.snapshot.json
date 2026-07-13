@@ -22,7 +22,7 @@
           "category": "entity-count-below-min",
           "severity": "error",
           "field": "epics[id=ep-1].tickets",
-          "message": "Epic \"Core Task Management Domain\" has 2 ticket(s); minimum is 3",
+          "message": "Epic \"Core Task Management Domain\" (epicId: ep-1) has 2 ticket(s); minimum is 3",
           "guidance": "Épico \"Core Task Management Domain\" tem 2 ticket(s). Mínimo configurado: 3. Quebre a implementação em unidades menores e executáveis. Cada ticket deve representar trabalho focado que pode ser implementado e revisado independentemente. Se o épico é genuinamente atômico, considere se ele deveria ser uma seção de outro épico.",
           "operations": [
             "create_ticket"

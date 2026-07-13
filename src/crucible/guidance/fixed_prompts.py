@@ -10,14 +10,14 @@ _EPIC_DECOMPOSITION_TEMPLATE = (
     "Decomposition phase. Review the current set of epics and decide whether "
     "the decomposition is sufficient. Available operations: create_epic, "
     "update_epic, delete_epic. To advance to the next phase, invoke "
-    "complete_decomposition_phase explicitly."
+    "complete_planning_session explicitly."
 )
 
 _TICKET_DECOMPOSITION_TEMPLATE = (
     "Decomposition phase. Review the current set of tickets in this epic and "
     "decide whether the decomposition is sufficient. Available operations: "
     "create_ticket, update_ticket, delete_ticket. To advance to the next phase, "
-    "invoke complete_decomposition_phase explicitly."
+    "invoke complete_planning_session explicitly."
 )
 
 

@@ -52,7 +52,11 @@ def validate_epic_expansion(
     )
 
     threshold = config["thresholds"]["epic"]
-    gate_result = "pass" if avg_local >= threshold and cascade.gate_result == "pass" else "fail"
+    # ME.15.3 — ALL-PASS local gate (not the average): EVERY scored epic must clear the
+    # threshold. ``avg_local`` is still reported as the phase mean; only the pass/fail
+    # decision changed so a strong epic can no longer mask a weak one.
+    local_pass = True if not scores else all(s >= threshold for s in scores)
+    gate_result = "pass" if local_pass and cascade.gate_result == "pass" else "fail"
 
     scoring = build_active_scoring(
         local_score=avg_local,

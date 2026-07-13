@@ -30,7 +30,7 @@
           "patternId": "individual",
           "entityId": "spec-epic-decomp",
           "entityType": "specification",
-          "message": "Decomposition phase. Review the current set of epics and decide whether the decomposition is sufficient. Available operations: create_epic, update_epic, delete_epic. To advance to the next phase, invoke complete_decomposition_phase explicitly.",
+          "message": "Decomposition phase. Review the current set of epics and decide whether the decomposition is sufficient. Available operations: create_epic, update_epic, delete_epic. To advance to the next phase, invoke complete_planning_session explicitly.",
           "operations": [
             "create_epic",
             "update_epic",

@@ -52,7 +52,12 @@ def validate_ticket_expansion(
     )
 
     threshold = config["thresholds"]["ticket"]
-    gate_result = "pass" if avg_local >= threshold and cascade.gate_result == "pass" else "fail"
+    # ME.15.3 — the local gate is ALL-PASS, not the average: EVERY scored ticket must
+    # clear the threshold. An average lets a strong ticket mask a weak one, so a phase
+    # could "pass" on the mean while a ticket sits below threshold. ``avg_local`` is
+    # still reported as the phase mean; only the pass/fail decision changed.
+    local_pass = True if not scores else all(s >= threshold for s in scores)
+    gate_result = "pass" if local_pass and cascade.gate_result == "pass" else "fail"
 
     scoring = build_active_scoring(
         local_score=avg_local,

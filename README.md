@@ -171,9 +171,14 @@ engine, so CI needs no extra tooling.
 
 ## Status
 
-`0.1.0` — a **complete** port, **verified byte-for-byte against the current TS
+`0.2.0` — a **complete** port, **verified byte-for-byte against the current TS
 validator** across every phase and all four output layers (structural · scoring
-· crossValidation · guidance).
+· crossValidation · guidance). Tracks the reference engine through `@specforge/validator`
+`0.1.20`: the epic/ticket **expansion gate is ALL-PASS** (every touched entity must
+clear its threshold — a strong entity no longer masks a weak one; the mean is still
+reported), entity-count findings embed the `(epicId: …)` in their message, and the
+decomposition guidance advances via `complete_planning_session`. See
+[`CHANGELOG.md`](CHANGELOG.md).
 
 ## License
 

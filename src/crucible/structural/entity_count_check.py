@@ -107,8 +107,8 @@ def check_entity_counts(
                         severity="error",
                         field=f"epics[id={epic_id}].tickets",
                         message=(
-                            f'Epic "{epic_title}" has {tickets_count} ticket(s); '
-                            f"minimum is {tickets_min}"
+                            f'Epic "{epic_title}" (epicId: {epic_id}) has '
+                            f"{tickets_count} ticket(s); minimum is {tickets_min}"
                         ),
                         guidance=(
                             f'Épico "{epic_title}" tem {tickets_count} ticket(s). '
@@ -134,8 +134,8 @@ def check_entity_counts(
                         severity="error",
                         field=f"epics[id={epic_id}].tickets",
                         message=(
-                            f'Epic "{epic_title}" has {tickets_count} ticket(s); '
-                            f"maximum is {tickets_max}"
+                            f'Epic "{epic_title}" (epicId: {epic_id}) has '
+                            f"{tickets_count} ticket(s); maximum is {tickets_max}"
                         ),
                         guidance=(
                             f'Épico "{epic_title}" tem {tickets_count} tickets — excede o máximo '
