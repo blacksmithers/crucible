@@ -1,9 +1,13 @@
 """Cross-validation layer (port of ``@specforge/validator`` ``src/cross-validation``).
 
-Runs the 11-check registry (insertion order preserved), honoring each check's
+Runs the 11-entry registry (insertion order preserved), honoring each check's
 ``enabled`` flag and ``enabledPhases``. Each check yields emissions (finding +
 guidance prose); the layer result carries findings, the guidance layer consumes
 the prose.
+
+At most 10 run in ``cross_validation``: ``blueprint-coverage`` is
+registry-resident but phase-gated out of it since MB.9.3 (it is called directly
+by ``validate_ticket_decomposition``) — see ``config/defaults.py``.
 
 MB.10.5 — checks receive a third ``ctx`` argument carrying the grep evidence
 (``existing_files``); only ``file-provenance`` reads it today.

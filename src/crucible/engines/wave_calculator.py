@@ -1,7 +1,11 @@
 """Wave calculator (port of ``engines/wave-calculator.ts``).
 
 Assigns each ticket to an execution wave (longest-prerequisite-chain layering)
-over the dependency DAG. Used by the wave-coordination cross-validation checks.
+over the dependency DAG.
+
+MB.10.4 — ``wave-size-exceed`` is now the SOLE consumer: the concurrent-
+modification and deletion checks were rebuilt on the static file graph
+(dependency reachability), so they no longer need a wave timeline.
 """
 
 from __future__ import annotations

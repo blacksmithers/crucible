@@ -52,9 +52,11 @@ whole of this release lands in `ticket_decomposition`, `ticket_expansion` and
   invocation mechanics left the prose. The machine hint is `finding.operations`.
   `topology-leaves-exceed` is deliberately untouched.
 - **`data/defaults.yml` synced with the reference engine.** This also corrects a
-  pre-existing drift the 0.2.0 sync missed: `epic.tickets` min was still `3` in
-  the packaged YAML while upstream lowered it to `2` (locked 2026-06-14).
-  `CONFIG_DEFAULTS` already carried `2`.
+  pre-existing drift the 0.2.0 sync missed: `arrayMinCounts.epic.tickets.default`
+  was still `3` in the packaged YAML, while upstream had already lowered it to
+  `2` before the 0.1.20 baseline (locked 2026-06-14). `CONFIG_DEFAULTS` already
+  carried `2`, so only the YAML — which is what `load_defaults()` actually reads
+  — was wrong.
 
 ### Removed
 
@@ -75,7 +77,18 @@ whole of this release lands in `ticket_decomposition`, `ticket_expansion` and
   `link_blueprint_to_tickets`, `unlink_blueprint` →
   `unlink_blueprint_to_tickets`.
 - `CompositePatternId` no longer accepts `linkage-gap` / `integrity-gap`.
-- Finding categories `files-to-be-referenced` and `wave-*` no longer exist.
+- Finding categories `files-to-be-referenced`, `wave-concurrent-modification`,
+  `wave-deletion-after-creation` and `wave-deletion-after-modification` no longer
+  exist. (`wave-size-exceed` remains — it is the last check with a wave timeline.)
+- **`crossValidation.checks` keys renamed**, and this fails *silently*. A full
+  config loaded through `load_from_file()` is not merged over the defaults, and
+  an absent check key is treated as disabled — so a 0.2.0 config keeps validating
+  without error while `concurrent-modification` and `file-provenance` never run,
+  and `blueprint-coverage` still fires in `cross_validation`, duplicating the gate
+  that now lives in `ticket_decomposition`. Rename
+  `wave-concurrent-modification` / `wave-deletion-after-{creation,modification}`
+  / `files-to-be-referenced` → `concurrent-modification` / `file-provenance`, and
+  set `blueprint-coverage.enabledPhases` to `[all]`.
 - `ticket_expansion` scores change (see above).
 
 ### Notes

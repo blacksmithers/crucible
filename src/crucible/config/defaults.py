@@ -1,8 +1,10 @@
 """Built-in default validator config (verbatim port of ``config/defaults.ts``).
 
-Mirrors the TS ``HARDCODED_DEFAULTS`` literal exactly — including the points
-where it intentionally diverges from the shipped ``defaults.yml`` (e.g.
-``arrayMaxCounts`` caps and ``epic.tickets``/``guardrails`` minimums). Exposed
+Mirrors the TS ``HARDCODED_DEFAULTS`` literal exactly — including the single
+point where it intentionally diverges from the shipped ``defaults.yml``: the
+``arrayMaxCounts`` caps (15 here vs 50 in the YAML, for ``specification.epics``
+and ``epic.tickets``). ``epic.tickets``/``guardrails`` minimums used to diverge
+too; upstream resynced those, and 0.3.0 follows. Exposed
 here as ``CONFIG_DEFAULTS``: the fallback used by
 :func:`crucible.config.load.load_defaults` when the packaged YAML is unreadable.
 """

@@ -169,8 +169,12 @@ uv run pytest
 Fidelity is verified by a differential suite that replays seeds through both
 engines and compares byte-for-byte. Those suites and their goldens are generated
 from the private reference engine, so they live outside this repository and run
-only where that checkout is present — what ships here are the property and smoke
-tests. Every release below is cut only after the full differential passes.
+only where that checkout is present. Every release below is cut only after the
+full differential passes.
+
+What ships here are the unit suites for the self-contained modules
+(file-provenance, concurrent-modification, cycle-analysis, creator-election,
+na-eligible) plus the property and smoke tests — 107 tests, no fixtures needed.
 
 ## Status
 

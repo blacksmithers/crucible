@@ -27,8 +27,20 @@ from .config import (
     merge_config,
 )
 from .cross_validation.concurrent_modification import check_concurrent_modification
-from .cross_validation.creator_election import elect_file_creators
-from .cross_validation.cycle_analysis import analyze_cycle_edges
+from .cross_validation.creator_election import (
+    CreatorElectionResult,
+    FileCreatorPlan,
+    FileToucher,
+    RequiredDep,
+    elect_file_creators,
+)
+from .cross_validation.cycle_analysis import (
+    CycleAnalysis,
+    CycleEdgeEvidence,
+    StructuralCycle,
+    StructuralCycleEdge,
+    analyze_cycle_edges,
+)
 from .cross_validation.file_provenance import (
     FileProvenanceContext,
     check_file_consistency,
@@ -38,6 +50,7 @@ from .cross_validation.file_provenance import (
 from .models import Blueprint, Epic, Specification, Ticket
 from .na_eligible import (
     CROSS_CUTTING_NA_ELIGIBLE_SCOPES,
+    NaEligibleEntity,
     is_na_eligible_scope,
     na_eligible_scopes_for,
 )
@@ -50,11 +63,20 @@ __all__ = [
     "PLANNING_CONFIG_SCHEMA_VERSION",
     "Blueprint",
     "ConfigValidationError",
+    "CreatorElectionResult",
+    "CycleAnalysis",
+    "CycleEdgeEvidence",
     "Epic",
+    "FileCreatorPlan",
     "FileProvenanceContext",
+    "FileToucher",
+    "NaEligibleEntity",
     "PlanningConfigOverridesSchema",
     "PlanningConfigResolver",
+    "RequiredDep",
     "Specification",
+    "StructuralCycle",
+    "StructuralCycleEdge",
     "Ticket",
     "ValidatorConfigSchema",
     "ValidatorConfigSnapshotSchema",

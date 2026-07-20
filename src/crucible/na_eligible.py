@@ -6,8 +6,8 @@ Why this is its own top-level module (the TS exposes it on a dedicated
 ``@specforge/validator/naEligible`` subpath): the primary justify scope,
 ``dependencies``, is NOT a rubric body field — it is a cross-cutting justifiable
 scope that the cross-validation checks read DIRECTLY off ``fieldDeclarations``
-(``dependency_graph.check_orphan_reference`` / ``check_island_ticket`` and
-``topology.check_topology_roots_exceed`` read ``decls["dependencies"]``). So
+(``dependency_graph.check_orphan_reference`` and ``check_island_ticket`` read
+``decls["dependencies"]`` via ``_has_dependencies_na_justification``). So
 eligibility is a SHARED allow-set — { the rubric ``naEligible`` fields per
 entity } ∪ { the cross-cutting ``dependencies`` (ticket) } — derived here from
 ``ALL_RUBRIC_ENTRIES`` (single source of truth, no drift).
