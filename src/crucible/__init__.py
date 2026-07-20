@@ -26,6 +26,15 @@ from .config import (
     load_partial_from_file,
     merge_config,
 )
+from .cross_validation.concurrent_modification import check_concurrent_modification
+from .cross_validation.creator_election import elect_file_creators
+from .cross_validation.cycle_analysis import analyze_cycle_edges
+from .cross_validation.file_provenance import (
+    FileProvenanceContext,
+    check_file_consistency,
+    check_file_provenance,
+    compute_grep_candidates,
+)
 from .models import Blueprint, Epic, Specification, Ticket
 from .na_eligible import (
     CROSS_CUTTING_NA_ELIGIBLE_SCOPES,
@@ -42,6 +51,7 @@ __all__ = [
     "Blueprint",
     "ConfigValidationError",
     "Epic",
+    "FileProvenanceContext",
     "PlanningConfigOverridesSchema",
     "PlanningConfigResolver",
     "Specification",
@@ -50,6 +60,12 @@ __all__ = [
     "ValidatorConfigSnapshotSchema",
     "ValidatorInputError",
     "__version__",
+    "analyze_cycle_edges",
+    "check_concurrent_modification",
+    "check_file_consistency",
+    "check_file_provenance",
+    "compute_grep_candidates",
+    "elect_file_creators",
     "is_na_eligible_scope",
     "load_defaults",
     "load_from_file",
