@@ -22,7 +22,10 @@ from ._common import build_active_scoring, build_guidance, build_meta
 
 
 def validate_ticket_expansion(
-    spec: dict[str, Any], active_entity_id: str | list[str] | None, config: ValidatorConfig
+    spec: dict[str, Any],
+    active_entity_id: str | list[str] | None,
+    config: ValidatorConfig,
+    _existing_files: frozenset[str] | None = None,
 ) -> ValidationResult:
     scope = resolve_ticket_scope(spec, active_entity_id)
     tickets = scope.tickets

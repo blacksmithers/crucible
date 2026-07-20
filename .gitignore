@@ -36,3 +36,17 @@ node_modules/
 # publishing runbook, and golden-generation scripts with local source paths)
 docs/
 tools/
+
+# Local-only: everything derived from the reference TS engine. The seeds,
+# configs, goldens and violation snapshots are generated from (or are inputs
+# to) the private @specforge/validator source, and the parity suites assert
+# byte-equivalence against them — they only run where that checkout exists.
+# Regenerate with tools/gen_*.mjs (SPECFORGE=/opt/source/specforge-validator).
+fixtures/
+tests/test_api.py
+tests/test_config.py
+tests/test_cross_validation.py
+tests/test_expansion_gate.py
+tests/test_scoring.py
+tests/test_structural.py
+tests/test_validate_differential.py

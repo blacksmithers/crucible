@@ -33,20 +33,23 @@ def validate_single(
     phase: SinglePhase,
     active_entity_id: str | list[str] | None,
     config: ValidatorConfig,
+    existing_files: frozenset[str] | None = None,
 ) -> ValidationResult:
     fn = _PHASES.get(phase)
     if fn is None:
         raise ValueError(f"Unknown phase: {phase}")
-    return fn(spec, active_entity_id, config)
+    return fn(spec, active_entity_id, config, existing_files)
 
 
 def validate_all(
     spec: dict[str, Any],
     active_entity_id: str | list[str] | None,
     config: ValidatorConfig,
+    existing_files: frozenset[str] | None = None,
 ) -> ValidationResultAll:
     by_phase = {
-        phase: fn(spec, active_entity_id, config) for phase, fn in _PHASES.items()
+        phase: fn(spec, active_entity_id, config, existing_files)
+        for phase, fn in _PHASES.items()
     }
     passed = all(r.passed for r in by_phase.values())
     return ValidationResultAll(

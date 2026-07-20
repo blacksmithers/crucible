@@ -49,12 +49,16 @@ _CONFIG_DEFAULTS: ValidatorConfig = {
             "topology-roots-exceed": _check(),
             "topology-leaves-exceed": _check(),
             "wave-size-exceed": _check(),
-            "wave-concurrent-modification": _check(),
-            "wave-deletion-after-modification": _check(),
-            "wave-deletion-after-creation": _check(),
+            "concurrent-modification": _check(),
             "file-conflict": _check(),
-            "files-to-be-referenced": _check(),
-            "blueprint-coverage": _check({"minTicketsPerBlueprint": 2}),
+            "file-provenance": _check(),
+            # MB.9.3 — blueprint-coverage migrated OUT of cross_validation: it is now a
+            # ticket_decomposition structural gate, called directly by
+            # validate_ticket_decomposition (not via run_cross_validation).
+            # `enabledPhases` no longer lists cross_validation, so run_cross_validation
+            # skips it. ('all' is inert here — the registry matches the literal phase,
+            # never 'all'.)
+            "blueprint-coverage": _check({"enabledPhases": ["all"], "minTicketsPerBlueprint": 2}),
         },
     },
     "guidance": {"topNPerEntity": {"default": 5, "min": 1, "max": 100}},

@@ -34,8 +34,6 @@ CompositePatternId = Literal[
     "foundation-gap",
     "tactical-gap",
     "conditional-gap",
-    "linkage-gap",
-    "integrity-gap",
 ]
 
 # Finding severity used by structural + cross-validation layers (result.ts).

@@ -23,7 +23,10 @@ from ._common import build_active_scoring, build_guidance, build_meta
 
 
 def validate_epic_expansion(
-    spec: dict[str, Any], active_entity_id: str | list[str] | None, config: ValidatorConfig
+    spec: dict[str, Any],
+    active_entity_id: str | list[str] | None,
+    config: ValidatorConfig,
+    _existing_files: frozenset[str] | None = None,
 ) -> ValidationResult:
     scoped_epics = resolve_epic_scope(spec, active_entity_id)
     structural = validate_structural(spec, config, "epic_expansion")

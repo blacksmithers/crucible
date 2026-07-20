@@ -27,10 +27,16 @@ from .config import (
     merge_config,
 )
 from .models import Blueprint, Epic, Specification, Ticket
+from .na_eligible import (
+    CROSS_CUTTING_NA_ELIGIBLE_SCOPES,
+    is_na_eligible_scope,
+    na_eligible_scopes_for,
+)
 from .structural import validate_structural
 
 __all__ = [
     "CONFIG_DEFAULTS",
+    "CROSS_CUTTING_NA_ELIGIBLE_SCOPES",
     "PLANNING_CONFIG_DOMAIN",
     "PLANNING_CONFIG_SCHEMA_VERSION",
     "Blueprint",
@@ -44,14 +50,16 @@ __all__ = [
     "ValidatorConfigSnapshotSchema",
     "ValidatorInputError",
     "__version__",
+    "is_na_eligible_scope",
     "load_defaults",
     "load_from_file",
     "load_partial_from_file",
     "merge_config",
     "models",
+    "na_eligible_scopes_for",
     "types",
     "validate",
     "validate_structural",
 ]
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"

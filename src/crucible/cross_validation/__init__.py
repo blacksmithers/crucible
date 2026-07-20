@@ -1,9 +1,12 @@
 """Cross-validation layer (port of ``@specforge/validator`` ``src/cross-validation``).
 
-Runs the 13-check registry (insertion order preserved), honoring each check's
+Runs the 11-check registry (insertion order preserved), honoring each check's
 ``enabled`` flag and ``enabledPhases``. Each check yields emissions (finding +
 guidance prose); the layer result carries findings, the guidance layer consumes
 the prose.
+
+MB.10.5 — checks receive a third ``ctx`` argument carrying the grep evidence
+(``existing_files``); only ``file-provenance`` reads it today.
 """
 
 from __future__ import annotations
@@ -16,6 +19,7 @@ from ..types.config import ValidatorConfig
 from ..types.phase import ValidationPhase
 from ..types.result import CrossValidationFinding, CrossValidationResult, SkippedCheck
 from .blueprint import check_blueprint_ticket_coverage
+from .concurrent_modification import check_concurrent_modification
 from .dependency_graph import (
     check_broken_reference,
     check_island_ticket,
@@ -23,34 +27,29 @@ from .dependency_graph import (
     detect_cycles,
 )
 from .emission import CVEmission
-from .files import check_file_consistency, check_files_to_be_referenced
-from .topology import check_topology_leaves_exceed, check_topology_roots_exceed
-from .waves import (
-    check_wave_concurrent_modification,
-    check_wave_deletion_after_creation,
-    check_wave_deletion_after_modification,
-    check_wave_size_exceed,
+from .file_provenance import (
+    FileProvenanceContext,
+    check_file_consistency,
+    check_file_provenance,
 )
+from .topology import check_topology_leaves_exceed, check_topology_roots_exceed
+from .waves import check_wave_size_exceed
 
-CheckFn = Callable[[dict[str, Any], ValidatorConfig], list[CVEmission]]
+CheckFn = Callable[[dict[str, Any], ValidatorConfig, FileProvenanceContext], list[CVEmission]]
 
 # Insertion order is the finding order — mirrors the TS CHECK_REGISTRY.
 CHECK_REGISTRY: dict[str, CheckFn] = {
-    "circular-dependency": lambda spec, _cfg: detect_cycles(spec),
-    "broken-reference": lambda spec, _cfg: check_broken_reference(spec),
-    "orphan-reference": check_orphan_reference,
-    "island-ticket": check_island_ticket,
-    "topology-roots-exceed": check_topology_roots_exceed,
-    "topology-leaves-exceed": check_topology_leaves_exceed,
-    "wave-size-exceed": check_wave_size_exceed,
-    "wave-concurrent-modification": lambda spec, _cfg: check_wave_concurrent_modification(spec),
-    "wave-deletion-after-modification": lambda spec, _cfg: check_wave_deletion_after_modification(
-        spec
-    ),
-    "wave-deletion-after-creation": lambda spec, _cfg: check_wave_deletion_after_creation(spec),
-    "file-conflict": lambda spec, _cfg: check_file_consistency(spec),
-    "files-to-be-referenced": lambda spec, _cfg: check_files_to_be_referenced(spec),
-    "blueprint-coverage": check_blueprint_ticket_coverage,
+    "circular-dependency": lambda spec, _cfg, _ctx: detect_cycles(spec),
+    "broken-reference": lambda spec, _cfg, _ctx: check_broken_reference(spec),
+    "orphan-reference": lambda spec, cfg, _ctx: check_orphan_reference(spec, cfg),
+    "island-ticket": lambda spec, cfg, _ctx: check_island_ticket(spec, cfg),
+    "topology-roots-exceed": lambda spec, cfg, _ctx: check_topology_roots_exceed(spec, cfg),
+    "topology-leaves-exceed": lambda spec, cfg, _ctx: check_topology_leaves_exceed(spec, cfg),
+    "wave-size-exceed": lambda spec, cfg, _ctx: check_wave_size_exceed(spec, cfg),
+    "concurrent-modification": lambda spec, _cfg, _ctx: check_concurrent_modification(spec),
+    "file-conflict": lambda spec, _cfg, _ctx: check_file_consistency(spec),
+    "file-provenance": check_file_provenance,
+    "blueprint-coverage": lambda spec, cfg, _ctx: check_blueprint_ticket_coverage(spec, cfg),
 }
 
 __all__ = ["CHECK_REGISTRY", "CrossValidationRunOutput", "run_cross_validation"]
@@ -66,8 +65,10 @@ def run_cross_validation(
     spec: dict[str, Any],
     config: ValidatorConfig,
     phase: ValidationPhase,
+    existing_files: frozenset[str] | None = None,
 ) -> CrossValidationRunOutput:
     checks_config = config["crossValidation"]["checks"]
+    ctx = FileProvenanceContext(existing_files=existing_files)
 
     emissions: list[CVEmission] = []
     findings: list[CrossValidationFinding] = []
@@ -84,7 +85,7 @@ def run_cross_validation(
                 SkippedCheck(name=check_name, reason=f"phase-not-enabled ({phase})")
             )
             continue
-        check_emissions = check_fn(spec, config)
+        check_emissions = check_fn(spec, config, ctx)
         emissions.extend(check_emissions)
         findings.extend(e.finding for e in check_emissions)
         ran_checks.append(check_name)

@@ -24,7 +24,10 @@ from ._common import build_active_scoring, build_guidance, build_meta, per_field
 
 
 def validate_planning_spec(
-    spec: dict[str, Any], active_entity_id: str | list[str] | None, config: ValidatorConfig
+    spec: dict[str, Any],
+    active_entity_id: str | list[str] | None,
+    config: ValidatorConfig,
+    _existing_files: frozenset[str] | None = None,
 ) -> ValidationResult:
     structural = validate_structural(spec, config, "planning_spec")
 

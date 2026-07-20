@@ -21,6 +21,11 @@ class ValidationContext(TypedDict, total=False):
     activeEntityId: str | list[str]
     config: ValidatorConfig
     returns: list[ReturnLayer]
+    # MB.10.5 grep evidence: the set of real-repo file paths, injected by the
+    # caller so the file-provenance check can resolve pre-existing (brownfield)
+    # files. ABSENT → strict spec-internal existence (``E = createdPaths``);
+    # PRESENT (even empty) → ``E = existingFiles ∪ createdPaths``.
+    existingFiles: frozenset[str] | set[str] | list[str]
 
 
 @dataclass(frozen=True)
@@ -28,3 +33,5 @@ class PhaseContext:
     phase: SinglePhase
     config: ValidatorConfig
     active_entity_id: str | list[str] | None = None
+    # MB.10.5 grep evidence forwarded from ``ValidationContext.existingFiles``.
+    existing_files: frozenset[str] | None = None

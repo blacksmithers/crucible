@@ -39,6 +39,12 @@ def _normalize_context(context: Mapping[str, Any] | None) -> dict[str, Any]:
         out["config"] = ctx["config"]
     if "returns" in ctx:
         out["returns"] = ctx["returns"]
+    # MB.10.5 — grep evidence. Tri-state: absent → strict spec-internal existence;
+    # present (even empty) → E = existingFiles ∪ createdPaths. Normalize to a
+    # frozenset while preserving the absent/present distinction.
+    raw_existing = ctx.get("existingFiles", ctx.get("existing_files"))
+    if raw_existing is not None:
+        out["existingFiles"] = frozenset(raw_existing)
     return out
 
 
@@ -74,10 +80,18 @@ def validate(
     phase = ctx.get("phase") or "all"
     spec_dict = to_spec_dict(spec)
 
+    existing_files = ctx.get("existingFiles")
+
     if phase == "all":
-        result = validate_all(spec_dict, ctx.get("activeEntityId"), ctx["config"])
+        result = validate_all(
+            spec_dict, ctx.get("activeEntityId"), ctx["config"], existing_files
+        )
         return _filter_all_returns(result, ctx.get("returns") or _DEFAULT_RETURNS_ALL)
 
     return validate_single(
-        spec_dict, cast(SinglePhase, phase), ctx.get("activeEntityId"), ctx["config"]
+        spec_dict,
+        cast(SinglePhase, phase),
+        ctx.get("activeEntityId"),
+        ctx["config"],
+        existing_files,
     )

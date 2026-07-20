@@ -4,6 +4,88 @@ All notable changes to `crucible` (`crucible-forge`) are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/); this project
 adheres to [Semantic Versioning](https://semver.org/).
 
+## 0.3.0
+
+Tracks the reference engine (`@specforge/validator`) from **`0.1.20`** through
+**`0.1.49`** (MB.9 → MB.13). All goldens were regenerated from the current TS
+`validate()` and the port is byte-equivalent across every phase.
+
+`planning_spec`, `epic_decomposition` and `epic_expansion` are unchanged — the
+whole of this release lands in `ticket_decomposition`, `ticket_expansion` and
+`cross_validation`.
+
+### Added
+
+- **`file-provenance` cross-validation check** (MB.10) — a single static
+  file-graph model replacing four separate checks. Four invariants over the
+  existence set `E = existingFiles ∪ createdPaths`: *consume-exists* (now also
+  covering `filesToBeDeleted`), *consume-ordered* (transitive dependency on an
+  in-spec creator; grep-provenanced paths are exempt), *create-fresh* (creating
+  a path that already exists in the repo), and *no-delete-of-spec-touched*.
+- **`concurrent-modification` cross-validation check** (MB.10) — two tickets
+  modifying the same path must be ordered by a dependency path. Replaces the
+  same-wave heuristic with mutual reachability in the DAG, so it is robust to
+  unrelated edge edits and also fires across waves.
+- **`ValidationContext.existingFiles`** — optional grep evidence, tri-state:
+  absent → strict spec-internal existence; present (even empty) → union with
+  `filesToBeCreated`. The engine remains filesystem-free; the caller injects it.
+- **`crucible.na_eligible`** (MB.11) — the shared N/A-eligibility allow-set:
+  `{ rubric naEligible fields } ∪ { cross-cutting scopes }`. Exposes
+  `na_eligible_scopes_for()` and `is_na_eligible_scope()`. Formalizes
+  `ticket.dependencies`, which the cross-validation checks read off
+  `fieldDeclarations` directly but which has no rubric entry.
+- **`cycle_analysis`** (MB.12) and **`creator_election`** (MB.13) — pure
+  analyzers returning structured values (never findings) for cycle-resolution
+  and shared-file provenance planning.
+- `compute_grep_candidates()` — the paths a caller should probe to supply
+  `existingFiles`.
+
+### Changed
+
+- **`blueprint-coverage` moved from `cross_validation` to `ticket_decomposition`**
+  (MB.9), where it is now a direct structural gate rather than a registry check.
+  Consequently `ticket.blueprintReferences` is no longer scored in
+  `ticket_expansion`, which rescales that phase's scores (a former `localScore`
+  of 80 now reads 78.95 — the rubric denominator shrank, the answer did not).
+- **Guidance is WHAT-only** (MB.11) — `orphan-reference`, `island-ticket` and
+  `topology-roots-exceed` state the structural fact and the remedies; the
+  invocation mechanics left the prose. The machine hint is `finding.operations`.
+  `topology-leaves-exceed` is deliberately untouched.
+- **`data/defaults.yml` synced with the reference engine.** This also corrects a
+  pre-existing drift the 0.2.0 sync missed: `epic.tickets` min was still `3` in
+  the packaged YAML while upstream lowered it to `2` (locked 2026-06-14).
+  `CONFIG_DEFAULTS` already carried `2`.
+
+### Removed
+
+- Cross-validation checks `files-to-be-referenced`,
+  `wave-concurrent-modification`, `wave-deletion-after-creation` and
+  `wave-deletion-after-modification` — subsumed by `file-provenance` and
+  `concurrent-modification`. The registry goes from 13 to 11 checks.
+- Composite guidance patterns `linkage-gap` and `integrity-gap` (MB.10.7), and
+  their two literals from `CompositePatternId`. They were double-locked dead —
+  phase-gated to `cross_validation`, which never calls `compose_findings` — and
+  they baked flow-invocation syntax into the validator. Removing them changes no
+  observable output.
+
+### Breaking
+
+- `OperationName` renames: `add_dependencies` → `create_dependencies`,
+  `remove_dependency` → `delete_dependencies`, `link_blueprint` →
+  `link_blueprint_to_tickets`, `unlink_blueprint` →
+  `unlink_blueprint_to_tickets`.
+- `CompositePatternId` no longer accepts `linkage-gap` / `integrity-gap`.
+- Finding categories `files-to-be-referenced` and `wave-*` no longer exist.
+- `ticket_expansion` scores change (see above).
+
+### Notes
+
+- The parity fixtures and the seven differential suites are now local-only: they
+  are generated from (or are inputs to) the private reference engine, so they
+  only run where that checkout exists. Regenerate with `tools/gen_*.mjs`.
+- `get_validator_version()` still returns `0.1.0` — the reference engine's own
+  `api/version.ts` has not been bumped.
+
 ## 0.2.0
 
 Tracks the reference engine (`@specforge/validator`) from the `0.1.0` port baseline

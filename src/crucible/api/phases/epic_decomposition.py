@@ -13,7 +13,10 @@ from ._common import build_meta
 
 
 def validate_epic_decomposition(
-    spec: dict[str, Any], _active_entity_id: str | list[str] | None, config: ValidatorConfig
+    spec: dict[str, Any],
+    _active_entity_id: str | list[str] | None,
+    config: ValidatorConfig,
+    _existing_files: frozenset[str] | None = None,
 ) -> ValidationResult:
     structural = validate_structural(spec, config, "epic_decomposition")
     ratio_findings = check_blueprint_epic_ratio(spec, config)
