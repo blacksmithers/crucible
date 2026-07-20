@@ -27,7 +27,15 @@ class GlobalScoreBreakdown:
 def _avg(xs: list[float]) -> float:
     if not xs:
         raise ValueError("avg([]) is undefined; caller must guard")
-    return sum(xs) / len(xs)
+    # NOT ``sum(xs)``: CPython >= 3.12 special-cases float sum() with Neumaier
+    # compensated summation, which is MORE accurate than the reference's
+    # ``xs.reduce((a, b) => a + b, 0)`` and therefore lands on a different double
+    # (e.g. 83.24617346938776 vs ...77). Parity requires reproducing the
+    # reference's naive left-to-right accumulation exactly.
+    total = 0.0
+    for x in xs:
+        total += x
+    return total / len(xs)
 
 
 def compute_global_score(

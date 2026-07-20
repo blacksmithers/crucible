@@ -53,6 +53,11 @@ def validate_all(
     }
     passed = all(r.passed for r in by_phase.values())
     return ValidationResultAll(
+        # Passed explicitly: ``to_json_dict`` serializes with ``exclude_unset=True``,
+        # so a field left at its default is omitted from the JSON. The TS emits
+        # ``phase: 'all'`` (dispatcher.ts), and no golden covers phase="all", so
+        # this went unnoticed until the differential fuzz.
+        phase="all",
         passed=passed,
         by_phase=by_phase,
         meta=ValidationResultAllMeta(

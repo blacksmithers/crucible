@@ -59,7 +59,12 @@ def _filter_all_returns(
             if layer in returns and value is not None:
                 kwargs[attr] = value
         new_by_phase[phase] = ValidationResult(**kwargs)
-    return ValidationResultAll(passed=result.passed, by_phase=new_by_phase, meta=result.meta)
+    # ``phase`` passed explicitly — see the note in ``dispatcher.validate_all``:
+    # ``to_json_dict`` uses ``exclude_unset=True``, so relying on the default
+    # would drop it from the JSON. This rebuild is the second place it is lost.
+    return ValidationResultAll(
+        phase="all", passed=result.passed, by_phase=new_by_phase, meta=result.meta
+    )
 
 
 def validate(

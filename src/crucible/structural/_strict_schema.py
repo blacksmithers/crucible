@@ -62,8 +62,17 @@ class ImplementationStepStrict(_Strict):
 
 
 class TestSpecificationStrict(_Strict):
-    testTypes: list[TestType] = Field(min_length=1)
-    qualityGates: list[NonEmptyStr] = Field(min_length=1)
+    # SHAPE-only: element types are validated here, but the CONTENT minimums
+    # (testTypes/qualityGates >= 1) are NOT — they are a ticket_expansion,
+    # verification-ticket-only RUBRIC concern
+    # (config:...arrayMinCounts.ticket.testSpecification.*). Encoding min_length
+    # here made the global format gate reject a present-but-empty
+    # testSpecification at ticket_decomposition (and on implementation tickets),
+    # which the rubric would never have flagged. Matches the reference, which
+    # relaxed this upstream before the 0.1.20 baseline; the port carried the
+    # pre-fix constraint until 0.3.0.
+    testTypes: list[TestType]
+    qualityGates: list[str]
     testCommands: list[str]
     coverageTarget: float | None = Field(default=None, ge=0, le=100)
 
