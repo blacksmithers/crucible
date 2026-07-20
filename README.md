@@ -68,7 +68,16 @@ result.to_json_dict()
 
 `spec` may be a `crucible.Specification` model **or** a plain `dict` (camelCase,
 the OpenSpec v1.1 shape). The `context` accepts the original keys
-(`phase`, `activeEntityId`, `config`, `returns`) or their snake_case forms.
+(`phase`, `activeEntityId`, `config`, `returns`, `existingFiles`) or their
+snake_case forms.
+
+`existingFiles` is optional grep evidence for the file-provenance check — the set
+of paths that already exist in the real repository. It is tri-state: **omit** it
+and existence is judged strictly against what the spec creates; **pass it** (even
+empty) and it is unioned with those paths, so a brownfield file no ticket creates
+stops being reported as missing. The engine never touches the filesystem itself —
+you supply the set (`crucible.compute_grep_candidates(spec)` tells you which
+paths are worth probing).
 
 ## The model
 
