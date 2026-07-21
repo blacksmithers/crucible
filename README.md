@@ -22,17 +22,16 @@
 it against a fixed, configurable rubric, and reports a **readiness gate** — with
 **no LLM, fully deterministic**. Same input, same score, every time.
 
-It is a faithful Python port of the SpecForge `@specforge/validator` engine,
-extracted as a standalone library, and is the **planning gate** of
-[SpecSmither](https://github.com/blacksmithers/specsmither). The output is
-**byte-equivalent to the reference TypeScript engine**, verified by differential
-tests across every phase and output layer.
+It is the **planning gate** of
+[SpecSmither](https://github.com/blacksmithers/specsmither), packaged as a
+standalone library with a stable API and a conformance suite that pins its output
+across every phase and layer.
 
 ## Why
 
 - 🎯 **Deterministic** — pure scoring, no model calls. Reproducible in CI.
 - 📦 **Self-contained** — pure Python; only `pydantic` and `pyyaml` at runtime.
-- 🔬 **Faithful** — output matches the reference TS validator (differential-tested).
+- 🔬 **Conformance-tested** — a golden suite pins every phase and output layer.
 - 🎚️ **Configurable** — every threshold, tier weight, and check lives in config.
 - 🏷️ **Typed** — ships `py.typed`; passes `mypy --strict`.
 
@@ -62,7 +61,7 @@ if result.scoring and not result.scoring.skipped:
     print(result.scoring.local_score)   # e.g. 86.11
     print(result.passed)                # overall gate for the phase
 
-# Canonical camelCase JSON (matches the reference engine):
+# Canonical camelCase JSON:
 result.to_json_dict()
 ```
 
@@ -148,8 +147,7 @@ config = merge_config(load_defaults(), {"thresholds": {"global": 85}})
 ```
 
 The scoring rubric (53 entries: 16 spec · 17 epic · 20 ticket) ships as a data
-asset at `crucible/guidance/rubric/data/rubric.json`, generated verbatim from the
-reference source.
+asset at `crucible/guidance/rubric/data/rubric.json`.
 
 ## Public API
 
@@ -175,22 +173,17 @@ uv run mypy
 uv run pytest
 ```
 
-Fidelity is verified by a differential suite that replays seeds through both
-engines and compares byte-for-byte. Those suites and their goldens are generated
-from the private reference engine, so they live outside this repository and run
-only where that checkout is present. Every release below is cut only after the
-full differential passes.
-
-What ships here are the unit suites for the self-contained modules
-(file-provenance, concurrent-modification, cycle-analysis, creator-election,
-na-eligible) plus the property and smoke tests — 107 tests, no fixtures needed.
+Behavior is pinned by a golden conformance corpus. The full corpus is kept local
+to the maintainer; the tests that ship and run in CI are the unit suites for the
+self-contained modules (file-provenance, concurrent-modification, cycle-analysis,
+creator-election, na-eligible), the format and UTF-16 suites, and the property
+and smoke tests — no fixtures needed. Every release is cut only after the full
+conformance corpus passes.
 
 ## Status
 
-`0.3.0` — a **complete** port, **verified byte-for-byte against the current TS
-validator** across every phase and all four output layers (structural · scoring
-· crossValidation · guidance). Tracks the reference engine through
-`@specforge/validator` `0.1.49`.
+`0.3.0` — stable across every phase and all four output layers (structural ·
+scoring · crossValidation · guidance).
 
 Highlights of this release: file coordination is now a single static
 **file-provenance** model (four invariants over an existence set that an optional
@@ -199,9 +192,10 @@ Highlights of this release: file coordination is now a single static
 instead of wave collision. `blueprint-coverage` moved to `ticket_decomposition`,
 which rescales `ticket_expansion` scores. N/A eligibility became a shared
 allow-set (`crucible.na_eligible`). Two pure analyzers — `cycle_analysis` and
-`creator_election` — compute cycle-resolution and shared-file plans. See
-[`CHANGELOG.md`](CHANGELOG.md) for the full list, including breaking renames in
-`OperationName`.
+`creator_election` — compute cycle-resolution and shared-file plans. The format
+gate is now strict (no coercion, `null`-rejecting optionals, UTF-16 string
+lengths). See [`CHANGELOG.md`](CHANGELOG.md) for the full list, including breaking
+renames in `OperationName`.
 
 ## License
 

@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "crucible-forge"
 version = "0.3.0"
-description = "Self-contained, deterministic validation engine for OpenSpec v1.1 specifications (Python port of the SpecForge validator)."
+description = "Self-contained, deterministic validation engine for OpenSpec v1.1 specifications."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
