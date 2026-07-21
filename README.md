@@ -67,8 +67,8 @@ result.to_json_dict()
 
 `spec` may be a `crucible.Specification` model **or** a plain `dict` (camelCase,
 the OpenSpec v1.1 shape). The `context` accepts the original keys
-(`phase`, `activeEntityId`, `config`, `returns`, `existingFiles`) or their
-snake_case forms.
+(`phase`, `activeEntityId`, `config`, `returns`, `existingFiles`, `language`) or
+their snake_case forms.
 
 `existingFiles` is optional grep evidence for the file-provenance check — the set
 of paths that already exist in the real repository. It is tri-state: **omit** it
@@ -77,6 +77,27 @@ empty) and it is unioned with those paths, so a brownfield file no ticket create
 stops being reported as missing. The engine never touches the filesystem itself —
 you supply the set (`crucible.compute_grep_candidates(spec)` tells you which
 paths are worth probing).
+
+## Guidance language (i18n)
+
+The `guidance` layer's prose can be emitted in another language via
+`context["language"]`. Default is `"en"`; `"pt-br"` (aliases `pt`, `pt_BR`)
+ships in the package:
+
+```python
+result = validate(spec, {
+    "phase": "planning_spec",
+    "returns": ["guidance"],
+    "language": "pt-br",
+})
+# → 'Especificação "Minha Spec" — fase planning_spec incompleta. ...'
+```
+
+Only guidance **prose** is translated — scores, finding `message`s, field
+paths, and operation names stay canonical, so machine consumers are unaffected.
+An unsupported tag raises `ValidatorInputError`. Translations are packaged JSON
+catalogs (`crucible/i18n/data/<lang>.json`) that overlay the canonical English;
+a missing key falls back to English rather than failing.
 
 ## The model
 

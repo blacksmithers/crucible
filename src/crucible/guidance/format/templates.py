@@ -1,12 +1,16 @@
 """Composite-pattern prose templates.
 
-These strings are the canonical guidance prose the engine emits for each pattern.
+The canonical guidance prose the engine emits for each pattern lives in the
+i18n catalog (``crucible.i18n.catalog_en``); these functions assemble the
+per-pattern substitutions and render the catalog template for the context's
+language.
 """
 
 from __future__ import annotations
 
 from typing import Any
 
+from ... import i18n
 from ...types.context import PhaseContext
 from ...types.finding import CompositeFinding
 
@@ -27,124 +31,112 @@ def _find_ticket(spec: dict[str, Any], tid: str) -> dict[str, Any] | None:
 
 
 def format_foundation_gap(
-    composite: CompositeFinding, _context: PhaseContext, spec: dict[str, Any]
+    composite: CompositeFinding, context: PhaseContext, spec: dict[str, Any]
 ) -> str:
+    lang = context.language
     missing_fields = "\n".join(f"  - {_leaf(f.field_path)}" for f in composite.grouped_findings)
 
     if composite.entity_type == "specification":
-        return (
-            f'Specification "{spec.get("title")}" — planning_spec phase incomplete.\n\n'
-            f"The following structural curriculum steps are not yet fulfilled:\n"
-            f"{missing_fields}\n\n"
-            "DECLARE these foundational fields together. They are interdependent: goals scope "
-            "what architecture must achieve, architecture constrains what scope can promise, "
-            "scope determines which requirements are in or out.\n\n"
-            "Operation available: action_planning_session({\n"
-            "  operation: { type: 'set_metadata', goals, architecture, requirements, scope, ... }\n"
-            "})"
+        return i18n.render(
+            i18n.text(lang, "guidance.foundationGap.specification"),
+            {"title": spec.get("title"), "missingFields": missing_fields},
         )
 
     if composite.entity_type == "epic":
         epic = _find_epic(spec, composite.entity_id)
         epic_title = epic["title"] if epic else composite.entity_id
-        return (
-            f'Epic "{epic_title}" — epic_expansion phase has critical gaps:\n'
-            f"{missing_fields}\n\n"
-            "DECLARE these together via a single update.\n\n"
-            "Operation available: action_planning_session({\n"
-            f"  operation: {{ type: 'update_epic', epicId: \"{composite.entity_id}\", "
-            "architecture, scope, objective, ... }\n"
-            "})"
+        return i18n.render(
+            i18n.text(lang, "guidance.foundationGap.epic"),
+            {
+                "title": epic_title,
+                "missingFields": missing_fields,
+                "entityId": composite.entity_id,
+            },
         )
 
     if composite.entity_type == "ticket":
         ticket = _find_ticket(spec, composite.entity_id)
         ticket_title = ticket["title"] if ticket else composite.entity_id
-        return (
-            f'Ticket "{ticket_title}" — ticket_expansion has critical gaps:\n'
-            f"{missing_fields}\n\n"
-            "DECLARE all together. Files determine scope, AC determines verifiability, steps "
-            "determine execution sequence, ticketType determines whether testSpecification is "
-            "required.\n\n"
-            "Operation available: action_planning_session({\n"
-            f"  operation: {{ type: 'update_ticket', ticketId: \"{composite.entity_id}\", ... }}\n"
-            "})"
+        return i18n.render(
+            i18n.text(lang, "guidance.foundationGap.ticket"),
+            {
+                "title": ticket_title,
+                "missingFields": missing_fields,
+                "entityId": composite.entity_id,
+            },
         )
 
-    return (
-        f"DECLARE: {composite.entity_id} has {len(composite.grouped_findings)} "
-        "missing critical fields."
+    return i18n.render(
+        i18n.text(lang, "guidance.foundationGap.fallback"),
+        {"entityId": composite.entity_id, "count": len(composite.grouped_findings)},
     )
 
 
 def format_tactical_gap(
-    composite: CompositeFinding, _context: PhaseContext, spec: dict[str, Any]
+    composite: CompositeFinding, context: PhaseContext, spec: dict[str, Any]
 ) -> str:
+    lang = context.language
     missing_fields = "\n".join(f"  - {_leaf(f.field_path)}" for f in composite.grouped_findings)
 
     if composite.entity_type == "ticket":
         ticket = _find_ticket(spec, composite.entity_id)
         ticket_title = ticket["title"] if ticket else composite.entity_id
-        return (
-            f'Ticket "{ticket_title}" has the following recommended fields incomplete:\n'
-            f"{missing_fields}\n\n"
-            "EVALUATE the behavior the declared files must produce, then DECLARE the missing "
-            "fields.\n\n"
-            "Operation available: action_planning_session({\n"
-            f"  operation: {{ type: 'update_ticket', ticketId: \"{composite.entity_id}\", ... }}\n"
-            "})"
+        return i18n.render(
+            i18n.text(lang, "guidance.tacticalGap.ticket"),
+            {
+                "title": ticket_title,
+                "missingFields": missing_fields,
+                "entityId": composite.entity_id,
+            },
         )
 
     if composite.entity_type == "epic":
         epic = _find_epic(spec, composite.entity_id)
         epic_title = epic["title"] if epic else composite.entity_id
-        return (
-            f'Epic "{epic_title}" has the following recommended fields incomplete:\n'
-            f"{missing_fields}\n\n"
-            "EVALUATE what is needed, then DECLARE these fields in a single update.\n\n"
-            "Operation available: action_planning_session({\n"
-            f"  operation: {{ type: 'update_epic', epicId: \"{composite.entity_id}\", ... }}\n"
-            "})"
+        return i18n.render(
+            i18n.text(lang, "guidance.tacticalGap.epic"),
+            {
+                "title": epic_title,
+                "missingFields": missing_fields,
+                "entityId": composite.entity_id,
+            },
         )
 
     entity_label = (
-        f'Specification "{spec.get("title")}"'
+        i18n.render(
+            i18n.text(lang, "guidance.tacticalGap.specLabel"), {"title": spec.get("title")}
+        )
         if composite.entity_type == "specification"
         else composite.entity_id
     )
-    return (
-        f"{entity_label} has recommended fields incomplete:\n"
-        f"{missing_fields}\n\n"
-        "EVALUATE and DECLARE the missing fields."
+    return i18n.render(
+        i18n.text(lang, "guidance.tacticalGap.fallback"),
+        {"entityLabel": entity_label, "missingFields": missing_fields},
     )
 
 
 def format_conditional_gap(
-    composite: CompositeFinding, _context: PhaseContext, spec: dict[str, Any]
+    composite: CompositeFinding, context: PhaseContext, spec: dict[str, Any]
 ) -> str:
+    lang = context.language
     ticket = _find_ticket(spec, composite.entity_id)
     ticket_title = ticket["title"] if ticket else composite.entity_id
     test_spec = ticket.get("testSpecification") if ticket else None
 
     missing: list[str] = []
     if not test_spec or not test_spec.get("testTypes"):
-        missing.append("  - testTypes empty (minimum 1)")
+        missing.append(i18n.text(lang, "guidance.conditionalGap.testTypes"))
     if not test_spec or not test_spec.get("qualityGates"):
-        missing.append("  - qualityGates empty (minimum 1)")
+        missing.append(i18n.text(lang, "guidance.conditionalGap.qualityGates"))
     if not test_spec or not test_spec.get("testCommands"):
-        missing.append("  - testCommands empty")
+        missing.append(i18n.text(lang, "guidance.conditionalGap.testCommands"))
     if not test_spec or test_spec.get("coverageTarget") is None:
-        missing.append("  - coverageTarget not set")
-    missing_str = "\n".join(missing) if missing else "  - testSpecification absent"
+        missing.append(i18n.text(lang, "guidance.conditionalGap.coverageTarget"))
+    missing_str = (
+        "\n".join(missing) if missing else i18n.text(lang, "guidance.conditionalGap.absent")
+    )
 
-    return (
-        f"Verification ticket \"{ticket_title}\" has ticketType='verification' but "
-        f"testSpecification is incomplete:\n"
-        f"{missing_str}\n\n"
-        "DECLARE the complete test specification covering what this verification must assert "
-        "and how.\n\n"
-        "Operation available: action_planning_session({\n"
-        f"  operation: {{ type: 'update_ticket', ticketId: \"{composite.entity_id}\", "
-        "testSpecification: { testTypes, qualityGates, testCommands, coverageTarget } }\n"
-        "})"
+    return i18n.render(
+        i18n.text(lang, "guidance.conditionalGap.frame"),
+        {"title": ticket_title, "missing": missing_str, "entityId": composite.entity_id},
     )

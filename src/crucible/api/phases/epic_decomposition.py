@@ -17,6 +17,7 @@ def validate_epic_decomposition(
     _active_entity_id: str | list[str] | None,
     config: ValidatorConfig,
     _existing_files: frozenset[str] | None = None,
+    language: str = "en",
 ) -> ValidationResult:
     structural = validate_structural(spec, config, "epic_decomposition")
     ratio_findings = check_blueprint_epic_ratio(spec, config)
@@ -38,6 +39,6 @@ def validate_epic_decomposition(
             ran_checks=["blueprint-epic-ratio"],
             skipped_checks=[],
         ),
-        guidance=build_epic_decomposition_guidance(spec),
+        guidance=build_epic_decomposition_guidance(spec, language),
         meta=build_meta(),
     )

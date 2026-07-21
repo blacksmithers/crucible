@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from ..i18n import SUPPORTED_LANGUAGES, normalize_language
+
 _VALID_PHASES = {
     "planning_spec",
     "epic_decomposition",
@@ -49,6 +51,15 @@ def validate_input(context: dict[str, Any]) -> None:
                     f"Invalid return layer '{r}'. Must be one of: "
                     f"{', '.join(sorted(_VALID_RETURNS))}"
                 )
+
+    language = context.get("language")
+    if language is not None and (
+        not isinstance(language, str) or normalize_language(language) is None
+    ):
+        raise ValidatorInputError(
+            f"Invalid language '{language}'. Must be one of: "
+            f"{', '.join(SUPPORTED_LANGUAGES)}"
+        )
 
     if not context.get("config"):
         raise ValidatorInputError("context.config is required")

@@ -4,13 +4,14 @@ from __future__ import annotations
 
 from typing import Any
 
+from .. import i18n
 from ..types.config import ValidatorConfig
 from ..types.result import CrossValidationFinding
 from .emission import CVEmission
 
 
 def check_blueprint_ticket_coverage(
-    spec: dict[str, Any], config: ValidatorConfig
+    spec: dict[str, Any], config: ValidatorConfig, language: str = "en"
 ) -> list[CVEmission]:
     all_tickets = [t for e in (spec.get("epics") or []) for t in (e.get("tickets") or [])]
     min_tickets = config["crossValidation"]["checks"]["blueprint-coverage"][
@@ -51,16 +52,14 @@ def check_blueprint_ticket_coverage(
                             "delete_blueprint",
                         ],
                     ),
-                    guidance=(
-                        f'Blueprint "{title}" is linked to {len(linked)} ticket{plural}; '
-                        f"configured minimum: {min_tickets}. Underused blueprints indicate that "
-                        "the architectural pattern was not propagated to implementation — either "
-                        "the blueprint is unnecessary, or tickets that should consume it are "
-                        "missing. Review the tickets and link the blueprint to more tickets that "
-                        "should follow it, consolidate tickets that should use the blueprint but "
-                        "do not declare it, or remove the blueprint if it has no practical use in "
-                        "the current spec. Blueprints exist to propagate architectural "
-                        "decisions — without propagation they are dead weight."
+                    guidance=i18n.render(
+                        i18n.text(language, "cv.blueprintCoverage"),
+                        {
+                            "title": title,
+                            "linkedCount": len(linked),
+                            "plural": plural,
+                            "minTickets": min_tickets,
+                        },
                     ),
                 )
             )

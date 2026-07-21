@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from .. import i18n
 from ..types.result import CrossValidationFinding
 from .emission import CVEmission
 from .file_provenance import build_transitive_deps
@@ -17,7 +18,9 @@ def _all_tickets(spec: dict[str, Any]) -> list[dict[str, Any]]:
     return [t for e in (spec.get("epics") or []) for t in (e.get("tickets") or [])]
 
 
-def check_concurrent_modification(spec: dict[str, Any]) -> list[CVEmission]:
+def check_concurrent_modification(
+    spec: dict[str, Any], language: str = "en"
+) -> list[CVEmission]:
     """Two tickets that modify the same file must be ORDERED by an explicit
     dependency path: one must be (transitively) reachable from the other in the
     dependency DAG. When a pair of same-file modifiers is MUTUALLY UNREACHABLE
@@ -71,7 +74,8 @@ def check_concurrent_modification(spec: dict[str, Any]) -> list[CVEmission]:
 
         sorted_ids = sorted(unordered)
         joined = ", ".join(sorted_ids)
-        quoted = " and ".join(f'"{t}"' for t in sorted_ids)
+        connector = i18n.text(language, "cv.concurrentModification.connector")
+        quoted = connector.join(f'"{t}"' for t in sorted_ids)
         emissions.append(
             CVEmission(
                 finding=CrossValidationFinding(
@@ -87,10 +91,9 @@ def check_concurrent_modification(spec: dict[str, Any]) -> list[CVEmission]:
                     operations=["update_ticket"],
                     context={"path": path, "ticketIds": sorted_ids},
                 ),
-                guidance=(
-                    f'Tickets {quoted} all modify "{path}", but no dependency path orders them '
-                    f"relative to each other in the dependency DAG — their edits to the same "
-                    f"file are unordered and mutually independent."
+                guidance=i18n.render(
+                    i18n.text(language, "cv.concurrentModification"),
+                    {"quoted": quoted, "path": path},
                 ),
             )
         )

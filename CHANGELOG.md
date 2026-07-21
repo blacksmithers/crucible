@@ -4,6 +4,26 @@ All notable changes to `crucible` (`crucible-forge`) are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/); this project
 adheres to [Semantic Versioning](https://semver.org/).
 
+## 0.4.0
+
+Guidance internationalization: the `guidance` layer's prose can now be emitted
+in Brazilian Portuguese. Default English output is byte-identical to 0.3.0 —
+scoring, structural, and cross-validation data layers are untouched.
+
+### Added
+
+- **Guidance internationalization (`context["language"]`)** — the `guidance`
+  layer's prose can now be emitted in Brazilian Portuguese via
+  `language: "pt-br"` (aliases `pt`, `pt_BR`; default `"en"`, unchanged
+  output). Covers every guidance source: the 53 rubric `curriculumPrompt`s and
+  28 `naWithoutReasonPrompt`s, individual-finding frames, composite-pattern
+  templates (foundation/tactical/conditional gap), the fixed decomposition
+  prompts, operation descriptions, and all cross-validation emission prose.
+  Scores, finding `message`s, field paths, and operation names stay canonical
+  English. Translations live in `crucible/i18n/data/<lang>.json` as an overlay
+  catalog with per-key English fallback; an unsupported tag raises
+  `ValidatorInputError`.
+
 ## 0.3.0
 
 This release reworks file coordination in the cross-validation layer, formalizes

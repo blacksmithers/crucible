@@ -30,6 +30,10 @@ class ValidationContext(TypedDict, total=False):
     activeEntityId: str | list[str]
     config: ValidatorConfig
     returns: list[ReturnLayer]
+    # Guidance language ("en" default; "pt-br"). Aliases such as "pt_BR"/"pt"
+    # are normalized by ``validate``. Only the guidance layer's prose is
+    # translated — findings, field paths, and operation names stay canonical.
+    language: str
     # Grep evidence: the set of real-repo file paths, injected by the
     # caller so the file-provenance check can resolve pre-existing (brownfield)
     # files. ABSENT → strict spec-internal existence (``E = createdPaths``);
@@ -42,3 +46,5 @@ class PhaseContext:
     phase: SinglePhase
     config: ValidatorConfig
     active_entity_id: str | list[str] | None = None
+    # Normalized guidance language (see ``crucible.i18n``).
+    language: str = "en"

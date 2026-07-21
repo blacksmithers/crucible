@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from .. import i18n
 from ..types.config import ValidatorConfig
 from ..types.result import CrossValidationFinding
 from .emission import CVEmission
@@ -27,7 +28,7 @@ def _has_dependencies_na_justification(ticket: dict[str, Any], config: Validator
     return bool(len(reason) >= config["naReason"]["minLength"])
 
 
-def detect_cycles(spec: dict[str, Any]) -> list[CVEmission]:
+def detect_cycles(spec: dict[str, Any], language: str = "en") -> list[CVEmission]:
     all_tickets = _all_tickets(spec)
     adj: dict[str, list[str]] = {
         t["id"]: [d["ticketId"] for d in (t.get("dependencies") or [])] for t in all_tickets
@@ -59,14 +60,9 @@ def detect_cycles(spec: dict[str, Any]) -> list[CVEmission]:
                                 primary_entity_id=primary,
                                 operations=["update_ticket"],
                             ),
-                            guidance=(
-                                f"Dependency cycle detected: {arrow}. Cycles break topological "
-                                "ordering and stall execution at runtime — no ticket in the cycle "
-                                "can start because each one waits on the other. Remove one of the "
-                                "dependencies in the cycle (typically the least critical) or "
-                                "restructure the work split to eliminate the circularity. If two "
-                                "tickets have a natural circular dependency, they may need to be "
-                                "consolidated into a single ticket."
+                            guidance=i18n.render(
+                                i18n.text(language, "cv.circularDependency"),
+                                {"arrow": arrow},
                             ),
                         )
                     )
@@ -83,7 +79,7 @@ def detect_cycles(spec: dict[str, Any]) -> list[CVEmission]:
     return emissions
 
 
-def check_broken_reference(spec: dict[str, Any]) -> list[CVEmission]:
+def check_broken_reference(spec: dict[str, Any], language: str = "en") -> list[CVEmission]:
     all_tickets = _all_tickets(spec)
     all_ids = {t["id"] for t in all_tickets}
     emissions: list[CVEmission] = []
@@ -107,20 +103,18 @@ def check_broken_reference(spec: dict[str, Any]) -> list[CVEmission]:
                             primary_entity_id=tid,
                             operations=["update_ticket", "create_ticket"],
                         ),
-                        guidance=(
-                            f'Ticket "{tid}" references "{dep_id}" in dependencies, but '
-                            f'"{dep_id}" does not exist in any epic of the spec. Broken '
-                            "references cause immediate failure at runtime when the lifecycle "
-                            "tries to resolve dependencies to compute execution order. Resolve by "
-                            "creating the missing ticket (if it's part of the real work) OR by "
-                            "removing the reference (if it was a typo or a renamed ticket)."
+                        guidance=i18n.render(
+                            i18n.text(language, "cv.brokenReference"),
+                            {"ticketId": tid, "depId": dep_id},
                         ),
                     )
                 )
     return emissions
 
 
-def check_orphan_reference(spec: dict[str, Any], config: ValidatorConfig) -> list[CVEmission]:
+def check_orphan_reference(
+    spec: dict[str, Any], config: ValidatorConfig, language: str = "en"
+) -> list[CVEmission]:
     all_tickets = _all_tickets(spec)
     if not all_tickets:
         return []
@@ -161,20 +155,17 @@ def check_orphan_reference(spec: dict[str, Any], config: ValidatorConfig) -> lis
                 # `finding.operations` (create_dependencies / justify) and the invocation
                 # prose is lifecycle-owned. No `fieldDeclarations` mechanic here
                 # (guidance-source boundary, point #1).
-                guidance=(
-                    f'Ticket "{tid}" declares no dependencies (no prior work listed), but other '
-                    "tickets depend on it. Unjustified roots indicate that preparatory work was "
-                    "implicitly assumed — there's likely setup, infrastructure, or modeling that "
-                    "precedes this ticket but wasn't articulated in the spec. Either add the "
-                    "tickets that precede this work as dependencies, or justify it as a "
-                    "foundational root if the ticket is genuinely the starting point."
+                guidance=i18n.render(
+                    i18n.text(language, "cv.orphanReference"), {"ticketId": tid}
                 ),
             )
         )
     return emissions
 
 
-def check_island_ticket(spec: dict[str, Any], config: ValidatorConfig) -> list[CVEmission]:
+def check_island_ticket(
+    spec: dict[str, Any], config: ValidatorConfig, language: str = "en"
+) -> list[CVEmission]:
     all_tickets = _all_tickets(spec)
     if not all_tickets:
         return []
@@ -211,14 +202,8 @@ def check_island_ticket(spec: dict[str, Any], config: ValidatorConfig) -> list[C
                 # which payload) is lifecycle-owned; the machine hint is
                 # `finding.operations` (create_dependencies / justify). No
                 # `fieldDeclarations` mechanic (point #1).
-                guidance=(
-                    f'Ticket "{tid}" has neither dependencies nor dependents — it is fully '
-                    "isolated from the execution graph. Isolated tickets break wave computation "
-                    "because there is no natural execution order, and may indicate work "
-                    "disconnected from the rest of the spec (likely a planning smell). Add a "
-                    "dependency pointing to a ticket that precedes this work, make another "
-                    "ticket depend on this one, or justify the isolation when the ticket is a "
-                    "genuinely standalone, intentionally isolated setup task."
+                guidance=i18n.render(
+                    i18n.text(language, "cv.islandTicket"), {"ticketId": tid}
                 ),
             )
         )

@@ -27,6 +27,7 @@ def validate_epic_expansion(
     active_entity_id: str | list[str] | None,
     config: ValidatorConfig,
     _existing_files: frozenset[str] | None = None,
+    language: str = "en",
 ) -> ValidationResult:
     scoped_epics = resolve_epic_scope(spec, active_entity_id)
     structural = validate_structural(spec, config, "epic_expansion")
@@ -87,7 +88,13 @@ def validate_epic_expansion(
     )
 
     guidance = build_guidance(
-        spec, PhaseContext(phase="epic_expansion", config=config, active_entity_id=active_entity_id)
+        spec,
+        PhaseContext(
+            phase="epic_expansion",
+            config=config,
+            active_entity_id=active_entity_id,
+            language=language,
+        ),
     )
 
     return ValidationResult(

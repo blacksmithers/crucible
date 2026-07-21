@@ -10,7 +10,10 @@ registry-resident but phase-gated out of it (it is called directly
 by ``validate_ticket_decomposition``) — see ``config/defaults.py``.
 
 Checks receive a third ``ctx`` argument carrying the grep evidence
-(``existing_files``); only ``file-provenance`` reads it today.
+(``existing_files``); only ``file-provenance`` reads it today. The fourth
+``language`` argument selects the guidance-prose catalog (``crucible.i18n``) —
+finding ``message``s stay canonical English (data layer), only the emission
+``guidance`` prose is translated.
 """
 
 from __future__ import annotations
@@ -39,21 +42,31 @@ from .file_provenance import (
 from .topology import check_topology_leaves_exceed, check_topology_roots_exceed
 from .waves import check_wave_size_exceed
 
-CheckFn = Callable[[dict[str, Any], ValidatorConfig, FileProvenanceContext], list[CVEmission]]
+CheckFn = Callable[
+    [dict[str, Any], ValidatorConfig, FileProvenanceContext, str], list[CVEmission]
+]
 
 # Insertion order is the finding order.
 CHECK_REGISTRY: dict[str, CheckFn] = {
-    "circular-dependency": lambda spec, _cfg, _ctx: detect_cycles(spec),
-    "broken-reference": lambda spec, _cfg, _ctx: check_broken_reference(spec),
-    "orphan-reference": lambda spec, cfg, _ctx: check_orphan_reference(spec, cfg),
-    "island-ticket": lambda spec, cfg, _ctx: check_island_ticket(spec, cfg),
-    "topology-roots-exceed": lambda spec, cfg, _ctx: check_topology_roots_exceed(spec, cfg),
-    "topology-leaves-exceed": lambda spec, cfg, _ctx: check_topology_leaves_exceed(spec, cfg),
-    "wave-size-exceed": lambda spec, cfg, _ctx: check_wave_size_exceed(spec, cfg),
-    "concurrent-modification": lambda spec, _cfg, _ctx: check_concurrent_modification(spec),
-    "file-conflict": lambda spec, _cfg, _ctx: check_file_consistency(spec),
-    "file-provenance": check_file_provenance,
-    "blueprint-coverage": lambda spec, cfg, _ctx: check_blueprint_ticket_coverage(spec, cfg),
+    "circular-dependency": lambda spec, _cfg, _ctx, lang: detect_cycles(spec, lang),
+    "broken-reference": lambda spec, _cfg, _ctx, lang: check_broken_reference(spec, lang),
+    "orphan-reference": lambda spec, cfg, _ctx, lang: check_orphan_reference(spec, cfg, lang),
+    "island-ticket": lambda spec, cfg, _ctx, lang: check_island_ticket(spec, cfg, lang),
+    "topology-roots-exceed": lambda spec, cfg, _ctx, lang: check_topology_roots_exceed(
+        spec, cfg, lang
+    ),
+    "topology-leaves-exceed": lambda spec, cfg, _ctx, lang: check_topology_leaves_exceed(
+        spec, cfg, lang
+    ),
+    "wave-size-exceed": lambda spec, cfg, _ctx, lang: check_wave_size_exceed(spec, cfg, lang),
+    "concurrent-modification": lambda spec, _cfg, _ctx, lang: check_concurrent_modification(
+        spec, lang
+    ),
+    "file-conflict": lambda spec, _cfg, _ctx, lang: check_file_consistency(spec, lang),
+    "file-provenance": lambda spec, cfg, ctx, lang: check_file_provenance(spec, cfg, ctx, lang),
+    "blueprint-coverage": lambda spec, cfg, _ctx, lang: check_blueprint_ticket_coverage(
+        spec, cfg, lang
+    ),
 }
 
 __all__ = ["CHECK_REGISTRY", "CrossValidationRunOutput", "run_cross_validation"]
@@ -70,6 +83,7 @@ def run_cross_validation(
     config: ValidatorConfig,
     phase: ValidationPhase,
     existing_files: frozenset[str] | None = None,
+    language: str = "en",
 ) -> CrossValidationRunOutput:
     checks_config = config["crossValidation"]["checks"]
     ctx = FileProvenanceContext(existing_files=existing_files)
@@ -89,7 +103,7 @@ def run_cross_validation(
                 SkippedCheck(name=check_name, reason=f"phase-not-enabled ({phase})")
             )
             continue
-        check_emissions = check_fn(spec, config, ctx)
+        check_emissions = check_fn(spec, config, ctx, language)
         emissions.extend(check_emissions)
         findings.extend(e.finding for e in check_emissions)
         ran_checks.append(check_name)

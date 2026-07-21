@@ -13,6 +13,7 @@ from __future__ import annotations
 import math
 from typing import Any
 
+from .. import i18n
 from ..engines.wave_calculator import compute_waves, tickets_by_wave
 from ..types.config import ValidatorConfig
 from ..types.result import CrossValidationFinding
@@ -39,7 +40,9 @@ def propose_wave_split(wave_tickets: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def check_wave_size_exceed(spec: dict[str, Any], config: ValidatorConfig) -> list[CVEmission]:
+def check_wave_size_exceed(
+    spec: dict[str, Any], config: ValidatorConfig, language: str = "en"
+) -> list[CVEmission]:
     waves = compute_waves(spec)
     by_wave = tickets_by_wave(waves)
     maximum = config["crossValidation"]["waves"]["maxTicketsPerWave"]
@@ -72,21 +75,18 @@ def check_wave_size_exceed(spec: dict[str, Any], config: ValidatorConfig) -> lis
                         "splitProposal": proposal,
                     },
                 ),
-                guidance=(
-                    f"Wave {wave_number} has {len(ticket_ids)} tickets — exceeds the configured "
-                    f"maximum ({maximum} per wave). Too much parallelism in the same wave "
-                    "indicates that dependencies between related tickets were not declared — some "
-                    "of these tickets likely depend on each other but it was not made explicit. "
-                    f"Simple split suggestion (arbitrary algorithm, humans should review): keep "
-                    f'[{base_join}] in the current wave, and add "{proposal["suggestedAnchor"]}" '
-                    f"to the dependencies of tickets [{inter_join}] to create an intermediate "
-                    f"wave. Result: wave {wave_number} with {len(proposal['baseWaveTicketIds'])} "
-                    f"tickets, intermediate wave with "
-                    f"{len(proposal['intermediateWaveTicketIds'])} tickets. Algorithm splits by "
-                    "alphabetic order with an arbitrary anchor — adjust to reflect real semantic "
-                    f"relationships between tickets when known. Alternatively, if {maximum}+ "
-                    "tickets really are independent (unlikely in practice), raise "
-                    "maxTicketsPerWave in the config."
+                guidance=i18n.render(
+                    i18n.text(language, "cv.waveSizeExceed"),
+                    {
+                        "waveNumber": wave_number,
+                        "ticketCount": len(ticket_ids),
+                        "maximum": maximum,
+                        "baseJoin": base_join,
+                        "suggestedAnchor": proposal["suggestedAnchor"],
+                        "interJoin": inter_join,
+                        "baseCount": len(proposal["baseWaveTicketIds"]),
+                        "intermediateCount": len(proposal["intermediateWaveTicketIds"]),
+                    },
                 ),
             )
         )

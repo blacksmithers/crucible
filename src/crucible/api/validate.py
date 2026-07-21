@@ -11,6 +11,7 @@ from typing import Any, cast
 
 from .._spec import SpecInput, to_spec_dict
 from ..config import load_defaults
+from ..i18n import DEFAULT_LANGUAGE, normalize_language
 from ..types.phase import ReturnLayer, SinglePhase
 from ..types.result import ValidationResult, ValidationResultAll
 from .dispatcher import validate_all, validate_single
@@ -39,6 +40,8 @@ def _normalize_context(context: Mapping[str, Any] | None) -> dict[str, Any]:
         out["config"] = ctx["config"]
     if "returns" in ctx:
         out["returns"] = ctx["returns"]
+    if "language" in ctx:
+        out["language"] = ctx["language"]
     # grep evidence. Tri-state: absent → strict spec-internal existence;
     # present (even empty) → E = existingFiles ∪ createdPaths. Normalize to a
     # frozenset while preserving the absent/present distinction.
@@ -86,10 +89,14 @@ def validate(
     spec_dict = to_spec_dict(spec)
 
     existing_files = ctx.get("existingFiles")
+    raw_language = ctx.get("language")
+    language = (
+        normalize_language(raw_language) or DEFAULT_LANGUAGE
+    ) if raw_language is not None else DEFAULT_LANGUAGE
 
     if phase == "all":
         result = validate_all(
-            spec_dict, ctx.get("activeEntityId"), ctx["config"], existing_files
+            spec_dict, ctx.get("activeEntityId"), ctx["config"], existing_files, language
         )
         return _filter_all_returns(result, ctx.get("returns") or _DEFAULT_RETURNS_ALL)
 
@@ -99,4 +106,5 @@ def validate(
         ctx.get("activeEntityId"),
         ctx["config"],
         existing_files,
+        language,
     )

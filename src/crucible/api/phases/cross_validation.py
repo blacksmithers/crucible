@@ -38,6 +38,7 @@ def validate_cross_validation(
     active_entity_id: str | list[str] | None,
     config: ValidatorConfig,
     existing_files: frozenset[str] | None = None,
+    language: str = "en",
 ) -> ValidationResult:
     warnings: list[str] = []
     if active_entity_id is not None:
@@ -47,7 +48,7 @@ def validate_cross_validation(
         )
 
     structural = validate_structural(spec, config, "cross_validation")
-    run = run_cross_validation(spec, config, "cross_validation", existing_files)
+    run = run_cross_validation(spec, config, "cross_validation", existing_files, language)
     cross_validation = run.result
 
     per_entity: dict[str, list[GuidanceEntry]] = {}

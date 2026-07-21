@@ -13,6 +13,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from .. import i18n
 from ..types.config import ValidatorConfig
 from ..types.result import CrossValidationFinding
 from .emission import CVEmission
@@ -135,6 +136,7 @@ def check_file_provenance(
     spec: dict[str, Any],
     config: ValidatorConfig,
     ctx: FileProvenanceContext | None = None,
+    language: str = "en",
 ) -> list[CVEmission]:
     """Unified file-provenance check — existence + ordering across the
     three consumer roles (``filesToBeReferenced``, ``filesToBeModified``,
@@ -198,10 +200,14 @@ def check_file_provenance(
                                 primary_entity_id=tid,
                                 operations=["create_ticket", "update_ticket"],
                             ),
-                            guidance=(
-                                f'Ticket "{tid}" {verb} "{path}" (in {role}), but no ticket '
-                                f'declares "{path}" in filesToBeCreated and it is not present '
-                                f"in the repository — the file has no provenance."
+                            guidance=i18n.render(
+                                i18n.text(language, "cv.fileProvenance.noProvenance"),
+                                {
+                                    "ticketId": tid,
+                                    "verb": i18n.text(language, f"cv.verb.{verb}"),
+                                    "path": path,
+                                    "role": role,
+                                },
                             ),
                         )
                     )
@@ -234,11 +240,16 @@ def check_file_provenance(
                                     primary_entity_id=tid,
                                     operations=["create_dependencies"],
                                 ),
-                                guidance=(
-                                    f'Ticket "{tid}" {verb} "{path}", which ticket '
-                                    f'"{creator}" creates, but "{tid}" has no transitive '
-                                    f'dependency on "{creator}" — the file exists, only the '
-                                    f"ordering edge between them is missing."
+                                guidance=i18n.render(
+                                    i18n.text(
+                                        language, "cv.fileProvenance.missingOrderingEdge"
+                                    ),
+                                    {
+                                        "ticketId": tid,
+                                        "verb": i18n.text(language, f"cv.verb.{verb}"),
+                                        "path": path,
+                                        "creator": creator,
+                                    },
                                 ),
                             )
                         )
@@ -263,10 +274,9 @@ def check_file_provenance(
                             primary_entity_id=tid,
                             operations=["update_ticket"],
                         ),
-                        guidance=(
-                            f'Ticket "{tid}" declares creating "{path}" (in filesToBeCreated), '
-                            f'but "{path}" already exists in the repository — this is a '
-                            f"modification of an existing file, not a fresh creation."
+                        guidance=i18n.render(
+                            i18n.text(language, "cv.fileProvenance.createExisting"),
+                            {"ticketId": tid, "path": path},
                         ),
                     )
                 )
@@ -294,11 +304,9 @@ def check_file_provenance(
                             primary_entity_id=tid,
                             operations=["update_ticket", "delete_ticket"],
                         ),
-                        guidance=(
-                            f'Ticket "{tid}" deletes "{path}" (in filesToBeDeleted), but '
-                            f'"{path}" is created or modified by another ticket in this '
-                            f"specification — the spec both produces/edits and deletes the "
-                            f"same file."
+                        guidance=i18n.render(
+                            i18n.text(language, "cv.fileProvenance.deleteSpecTouched"),
+                            {"ticketId": tid, "path": path},
                         ),
                     )
                 )
@@ -341,7 +349,7 @@ def compute_grep_candidates(spec: dict[str, Any]) -> list[str]:
     return sorted(candidates)
 
 
-def check_file_consistency(spec: dict[str, Any]) -> list[CVEmission]:
+def check_file_consistency(spec: dict[str, Any], language: str = "en") -> list[CVEmission]:
     """Single-creator check (invariante #4), folded under the file-provenance
     umbrella. Each created path
     must have exactly one creator ticket; two or more tickets declaring the same
@@ -376,9 +384,9 @@ def check_file_consistency(spec: dict[str, Any]) -> list[CVEmission]:
                         primary_entity_id=primary,
                         operations=["update_ticket"],
                     ),
-                    guidance=(
-                        f'File "{path}" is declared in filesToBeCreated of multiple tickets '
-                        f"[{list_str}], but a file can have only one creator."
+                    guidance=i18n.render(
+                        i18n.text(language, "cv.fileConflict.multipleCreators"),
+                        {"path": path, "ticketList": list_str},
                     ),
                 )
             )

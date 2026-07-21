@@ -19,6 +19,7 @@ def validate_ticket_decomposition(
     active_entity_id: str | list[str] | None,
     config: ValidatorConfig,
     _existing_files: frozenset[str] | None = None,
+    language: str = "en",
 ) -> ValidationResult:
     scoped_epics = resolve_epic_scope(spec, active_entity_id)
     structural = validate_structural(spec, config, "ticket_decomposition")
@@ -54,6 +55,6 @@ def validate_ticket_decomposition(
         "meta": build_meta(active_entity_id=active_entity_id),
     }
     if epic_id:
-        kwargs["guidance"] = build_ticket_decomposition_guidance(spec, epic_id)
+        kwargs["guidance"] = build_ticket_decomposition_guidance(spec, epic_id, language)
 
     return ValidationResult(**kwargs)

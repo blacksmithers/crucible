@@ -26,6 +26,7 @@ def validate_ticket_expansion(
     active_entity_id: str | list[str] | None,
     config: ValidatorConfig,
     _existing_files: frozenset[str] | None = None,
+    language: str = "en",
 ) -> ValidationResult:
     scope = resolve_ticket_scope(spec, active_entity_id)
     tickets = scope.tickets
@@ -84,7 +85,12 @@ def validate_ticket_expansion(
 
     guidance = build_guidance(
         spec,
-        PhaseContext(phase="ticket_expansion", config=config, active_entity_id=active_entity_id),
+        PhaseContext(
+            phase="ticket_expansion",
+            config=config,
+            active_entity_id=active_entity_id,
+            language=language,
+        ),
     )
 
     kwargs: dict[str, Any] = {

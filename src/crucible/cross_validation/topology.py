@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 from typing import Any
 
+from .. import i18n
 from ..types.config import ValidatorConfig
 from ..types.result import CrossValidationFinding
 from .emission import CVEmission
@@ -18,7 +19,9 @@ def max_allowed(total_tickets: int, ratio: float, cap: int) -> int:
     return min(math.ceil(total_tickets * ratio), cap)
 
 
-def check_topology_roots_exceed(spec: dict[str, Any], config: ValidatorConfig) -> list[CVEmission]:
+def check_topology_roots_exceed(
+    spec: dict[str, Any], config: ValidatorConfig, language: str = "en"
+) -> list[CVEmission]:
     all_tickets = _all_tickets(spec)
     total = len(all_tickets)
     if total == 0:
@@ -60,21 +63,23 @@ def check_topology_roots_exceed(spec: dict[str, Any], config: ValidatorConfig) -
             # WHAT only (structural fact + remedies). The "how" (which op, which
             # payload) is lifecycle-owned; the machine hint is `finding.operations`
             # (create_dependencies / justify). No `fieldDeclarations` mechanic (point #1).
-            guidance=(
-                f"Spec has {root_count} tickets without dependencies (roots), but the maximum "
-                f"allowed is {maximum} (computed: {formula}, ratio {ratio_pct}% capped at "
-                f"{root_cap}). Too many roots indicates that sequencing was under-declared — "
-                "several tickets can start in parallel, but this rarely reflects the reality of "
-                "implementation. Establish dependencies between related tickets to reflect the "
-                "real execution order, or justify the legitimately foundational roots. Real "
-                "foundational tickets (3–5 roots) are acceptable when justified; the excess is "
-                "almost always a lack of articulation."
+            guidance=i18n.render(
+                i18n.text(language, "cv.topologyRootsExceed"),
+                {
+                    "rootCount": root_count,
+                    "maximum": maximum,
+                    "formula": formula,
+                    "ratioPct": ratio_pct,
+                    "rootCap": root_cap,
+                },
             ),
         )
     ]
 
 
-def check_topology_leaves_exceed(spec: dict[str, Any], config: ValidatorConfig) -> list[CVEmission]:
+def check_topology_leaves_exceed(
+    spec: dict[str, Any], config: ValidatorConfig, language: str = "en"
+) -> list[CVEmission]:
     all_tickets = _all_tickets(spec)
     total = len(all_tickets)
     if total == 0:
@@ -112,14 +117,15 @@ def check_topology_leaves_exceed(spec: dict[str, Any], config: ValidatorConfig) 
                     "leafIds": sorted_leaf_ids,
                 },
             ),
-            guidance=(
-                f"Spec has {leaf_count} tickets with no dependents (leaves), but the maximum "
-                f"allowed is {maximum} (computed: {formula}, ratio {ratio_pct}% capped at "
-                f"{leaf_cap}). Too many leaves indicates that the set of terminal tickets does "
-                "not converge — some of them likely should feed into other tickets (e.g., "
-                "implementation tickets that should be consumed by verification or integration "
-                "tickets). Consider adding integration/verification tickets that depend on the "
-                "existing leaves, or consolidate tickets that produce similar outputs."
+            guidance=i18n.render(
+                i18n.text(language, "cv.topologyLeavesExceed"),
+                {
+                    "leafCount": leaf_count,
+                    "maximum": maximum,
+                    "formula": formula,
+                    "ratioPct": ratio_pct,
+                    "leafCap": leaf_cap,
+                },
             ),
         )
     ]

@@ -34,11 +34,12 @@ def validate_single(
     active_entity_id: str | list[str] | None,
     config: ValidatorConfig,
     existing_files: frozenset[str] | None = None,
+    language: str = "en",
 ) -> ValidationResult:
     fn = _PHASES.get(phase)
     if fn is None:
         raise ValueError(f"Unknown phase: {phase}")
-    return fn(spec, active_entity_id, config, existing_files)
+    return fn(spec, active_entity_id, config, existing_files, language)
 
 
 def validate_all(
@@ -46,9 +47,10 @@ def validate_all(
     active_entity_id: str | list[str] | None,
     config: ValidatorConfig,
     existing_files: frozenset[str] | None = None,
+    language: str = "en",
 ) -> ValidationResultAll:
     by_phase = {
-        phase: fn(spec, active_entity_id, config, existing_files)
+        phase: fn(spec, active_entity_id, config, existing_files, language)
         for phase, fn in _PHASES.items()
     }
     passed = all(r.passed for r in by_phase.values())

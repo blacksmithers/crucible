@@ -25,6 +25,7 @@ def validate_planning_spec(
     active_entity_id: str | list[str] | None,
     config: ValidatorConfig,
     _existing_files: frozenset[str] | None = None,
+    language: str = "en",
 ) -> ValidationResult:
     structural = validate_structural(spec, config, "planning_spec")
 
@@ -69,7 +70,13 @@ def validate_planning_spec(
     )
 
     guidance = build_guidance(
-        spec, PhaseContext(phase="planning_spec", config=config, active_entity_id=active_entity_id)
+        spec,
+        PhaseContext(
+            phase="planning_spec",
+            config=config,
+            active_entity_id=active_entity_id,
+            language=language,
+        ),
     )
 
     return ValidationResult(

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from ... import i18n
 from ...types.context import PhaseContext
 from ...types.finding import Finding
 from ...types.guidance import GuidanceMessage
@@ -93,27 +94,53 @@ def format_individual_finding(
     finding: Finding, context: PhaseContext, spec: dict[str, Any]
 ) -> GuidanceMessage:
     entry: RubricEntry | None = _ENTRY_BY_ID.get(finding.rubric_entry_id)
+    lang = context.language
     field_name = ".".join(finding.field_path.split(".")[1:])
     verb = finding.primary_verbs[0] if finding.primary_verbs else "DECLARE"
-    entity_type_cap = finding.entity_type[0].upper() + finding.entity_type[1:]
+    entity_type_cap = i18n.text(lang, f"guidance.entity.{finding.entity_type}")
 
     entity_label, entity = _resolve_entity(finding, spec)
     field_value = resolve_field_value(entity, finding.field_path) if entity else None
 
     if finding.na_without_reason:
-        na_prompt = (entry.na_without_reason_prompt if entry else None) or (
-            f"Either populate the field, or add naReason explaining why this field doesn't "
-            f"apply to this {entity_type_cap}."
+        na_prompt = (
+            (i18n.na_prompt(lang, entry.id) if entry else None)
+            or (entry.na_without_reason_prompt if entry else None)
+            or i18n.render(
+                i18n.text(lang, "guidance.individual.naFallback"),
+                {"entityType": entity_type_cap},
+            )
         )
-        message = (
-            f'{entity_type_cap} "{entity_label}" — field "{field_name}" is marked N/A but no '
-            f"naReason provided. {na_prompt}"
+        message = i18n.render(
+            i18n.text(lang, "guidance.individual.naFrame"),
+            {
+                "entityType": entity_type_cap,
+                "entityLabel": entity_label,
+                "fieldName": field_name,
+                "naPrompt": na_prompt,
+            },
         )
     else:
-        raw_prompt = (entry.curriculum_prompt if entry else None) or f'{verb} the "{field_name}" field.'
+        raw_prompt = (
+            (i18n.rubric_prompt(lang, entry.id) if entry else None)
+            or (entry.curriculum_prompt if entry else None)
+            or i18n.render(
+                i18n.text(lang, "guidance.individual.defaultPrompt"),
+                {"verb": verb, "fieldName": field_name},
+            )
+        )
         prompt = _substitute_placeholders(raw_prompt, finding, field_value, context, entity)
-        status_label = "incomplete" if finding.status == "partial" else "missing"
-        message = f'{entity_type_cap} "{entity_label}" — {status_label} "{field_name}". {prompt}'
+        status_key = "partial" if finding.status == "partial" else "missing"
+        message = i18n.render(
+            i18n.text(lang, "guidance.individual.frame"),
+            {
+                "entityType": entity_type_cap,
+                "entityLabel": entity_label,
+                "statusLabel": i18n.text(lang, f"guidance.status.{status_key}"),
+                "fieldName": field_name,
+                "prompt": prompt,
+            },
+        )
 
     return GuidanceMessage(
         pattern_id="individual",
