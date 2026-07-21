@@ -1,4 +1,4 @@
-"""Cascade floor/failure contracts (port of ``types/cascade.ts``)."""
+"""Cascade floor/failure contracts."""
 
 from __future__ import annotations
 

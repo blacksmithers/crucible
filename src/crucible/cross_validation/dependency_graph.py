@@ -1,7 +1,6 @@
 """Dependency-graph cross-validation checks (cycles, broken/orphan/island refs).
 
-Port of ``cross-validation/{circular-dependencies,broken-reference,
-orphan-reference,island-ticket}.ts`` — emissions (finding + guidance prose).
+Emissions (finding + guidance prose).
 """
 
 from __future__ import annotations
@@ -151,16 +150,24 @@ def check_orphan_reference(spec: dict[str, Any], config: ValidatorConfig) -> lis
                     ),
                     entity_ids=[tid],
                     primary_entity_id=tid,
-                    operations=["update_ticket", "create_ticket"],
+                    # the remedy is either add a dependency (create_dependencies)
+                    # or justify the root's `dependencies` N/A (the dedicated `justify` op).
+                    # Dropped the stale update_ticket/create_ticket N/A hint (justification
+                    # no longer rides update_*).
+                    operations=["create_dependencies", "justify"],
                 ),
+                # WHAT only (structural fact + the two remedies). The "how"
+                # (which op, which payload) is NOT the validator's job: the machine hint is
+                # `finding.operations` (create_dependencies / justify) and the invocation
+                # prose is lifecycle-owned. No `fieldDeclarations` mechanic here
+                # (guidance-source boundary, point #1).
                 guidance=(
                     f'Ticket "{tid}" declares no dependencies (no prior work listed), but other '
                     "tickets depend on it. Unjustified roots indicate that preparatory work was "
                     "implicitly assumed — there's likely setup, infrastructure, or modeling that "
-                    "precedes this ticket but wasn't articulated in the spec. Add tickets that "
-                    "precede this work in dependencies OR explicitly justify via "
-                    'fieldDeclarations.dependencies with reason "foundational ticket — no prior '
-                    'work" (or similar) if the ticket is genuinely the starting point.'
+                    "precedes this ticket but wasn't articulated in the spec. Either add the "
+                    "tickets that precede this work as dependencies, or justify it as a "
+                    "foundational root if the ticket is genuinely the starting point."
                 ),
             )
         )
@@ -195,17 +202,23 @@ def check_island_ticket(spec: dict[str, Any], config: ValidatorConfig) -> list[C
                     message=f'Ticket "{tid}" is isolated — no dependencies and no dependents',
                     entity_ids=[tid],
                     primary_entity_id=tid,
-                    operations=["update_ticket"],
+                    # remedy: add a dependency edge (create_dependencies) or
+                    # justify the isolation via the dedicated `justify` op. Dropped the
+                    # stale update_ticket N/A hint.
+                    operations=["create_dependencies", "justify"],
                 ),
+                # WHAT only (structural fact + remedies). The "how" (which op,
+                # which payload) is lifecycle-owned; the machine hint is
+                # `finding.operations` (create_dependencies / justify). No
+                # `fieldDeclarations` mechanic (point #1).
                 guidance=(
                     f'Ticket "{tid}" has neither dependencies nor dependents — it is fully '
                     "isolated from the execution graph. Isolated tickets break wave computation "
                     "because there is no natural execution order, and may indicate work "
-                    "disconnected from the rest of the spec (likely a planning smell). Add "
-                    "dependencies pointing to a ticket that precedes this work OR make another "
-                    "ticket depend on this one OR justify the isolation via "
-                    "fieldDeclarations.dependencies with an explicit reason (e.g., \"standalone "
-                    'setup ticket, intentionally isolated from dependency graph").'
+                    "disconnected from the rest of the spec (likely a planning smell). Add a "
+                    "dependency pointing to a ticket that precedes this work, make another "
+                    "ticket depend on this one, or justify the isolation when the ticket is a "
+                    "genuinely standalone, intentionally isolated setup task."
                 ),
             )
         )

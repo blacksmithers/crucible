@@ -1,4 +1,4 @@
-"""Composite-finding composition (port of ``guidance/composer/index.ts``)."""
+"""Composite-finding composition."""
 
 from __future__ import annotations
 
@@ -10,8 +10,6 @@ from ...types.finding import CompositeFinding, Finding
 from .patterns import (
     detect_conditional_gap,
     detect_foundation_gap,
-    detect_integrity_gap,
-    detect_linkage_gap,
     detect_tactical_gap,
 )
 
@@ -23,12 +21,16 @@ _PATTERNS_BY_PHASE: dict[str, list[PatternFn]] = {
     "epic_expansion": [detect_foundation_gap, detect_tactical_gap],
     "ticket_decomposition": [],
     "ticket_expansion": [detect_foundation_gap, detect_tactical_gap, detect_conditional_gap],
+    # The linkage-gap / integrity-gap composer patterns were deleted
+    # (clean break): double-locked dead (phase-gated to cross_validation, but
+    # validate_cross_validation never calls compose_findings), and they baked
+    # flow-invocation syntax into the engine, which the guidance-source
+    # boundary forbids. The file-graph findings now live in the cross-validation
+    # checks (file-provenance / concurrent-modification) as structural findings.
     "cross_validation": [
         detect_foundation_gap,
         detect_tactical_gap,
         detect_conditional_gap,
-        detect_linkage_gap,
-        detect_integrity_gap,
     ],
 }
 

@@ -1,4 +1,4 @@
-"""Computation engines (port of ``@specforge/validator`` ``src/engines``)."""
+"""Computation engines."""
 
 from __future__ import annotations
 

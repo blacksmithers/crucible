@@ -1,4 +1,4 @@
-"""Field/entity resolution for the guidance engine (port of ``value-resolver.ts``)."""
+"""Field/entity resolution for the guidance engine."""
 
 from __future__ import annotations
 

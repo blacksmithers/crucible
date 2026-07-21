@@ -1,4 +1,4 @@
-"""N/A field declarations (port of ``scoring/field-declarations.ts``)."""
+"""N/A field declarations."""
 
 from __future__ import annotations
 

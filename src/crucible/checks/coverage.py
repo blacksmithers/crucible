@@ -1,4 +1,4 @@
-"""Requirement / NFR coverage checks (port of ``checks/coverage.ts``)."""
+"""Requirement / NFR coverage checks."""
 
 from __future__ import annotations
 

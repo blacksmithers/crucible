@@ -1,4 +1,4 @@
-"""Rubric finding generation (port of ``guidance/engine/index.ts`` ``executeRubric``)."""
+"""Rubric finding generation."""
 
 from __future__ import annotations
 

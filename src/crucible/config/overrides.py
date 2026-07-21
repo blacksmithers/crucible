@@ -1,6 +1,6 @@
-"""Partial-config override validation (port of ``config/overrides-schema.ts``).
+"""Partial-config override validation.
 
-A project override is a sparse ``DeepPartial<ValidatorConfig>``: the user may
+A project override is a sparse, deeply-partial ``ValidatorConfig``: the user may
 set just one threshold without supplying the rest. Cross-field refinements
 (weights summing to 1.0, etc.) are **not** enforced on a partial — they only
 become meaningful after the override is deep-merged over the defaults
@@ -25,7 +25,7 @@ def validate_overrides(partial: dict[str, Any]) -> dict[str, Any]:
 
 
 class _PlanningConfigOverridesSchema:
-    """Zod-like wrapper exposing ``.parse`` for API parity."""
+    """A wrapper exposing ``.parse()``."""
 
     def parse(self, partial: dict[str, Any]) -> dict[str, Any]:
         return validate_overrides(partial)

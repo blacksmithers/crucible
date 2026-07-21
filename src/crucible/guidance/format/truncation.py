@@ -1,4 +1,4 @@
-"""Per-entity guidance truncation (port of ``guidance/format/truncation.ts``)."""
+"""Per-entity guidance truncation."""
 
 from __future__ import annotations
 

@@ -22,17 +22,16 @@
 it against a fixed, configurable rubric, and reports a **readiness gate** — with
 **no LLM, fully deterministic**. Same input, same score, every time.
 
-It is a faithful Python port of the SpecForge `@specforge/validator` engine,
-extracted as a standalone library, and is the **planning gate** of
-[SpecSmither](https://github.com/blacksmithers/specsmither). The output is
-**byte-equivalent to the reference TypeScript engine**, verified by differential
-tests across every phase and output layer.
+It is the **planning gate** of
+[SpecSmither](https://github.com/blacksmithers/specsmither), packaged as a
+standalone library with a stable API and a conformance suite that pins its output
+across every phase and layer.
 
 ## Why
 
 - 🎯 **Deterministic** — pure scoring, no model calls. Reproducible in CI.
 - 📦 **Self-contained** — pure Python; only `pydantic` and `pyyaml` at runtime.
-- 🔬 **Faithful** — output matches the reference TS validator (differential-tested).
+- 🔬 **Conformance-tested** — a golden suite pins every phase and output layer.
 - 🎚️ **Configurable** — every threshold, tier weight, and check lives in config.
 - 🏷️ **Typed** — ships `py.typed`; passes `mypy --strict`.
 
@@ -62,13 +61,22 @@ if result.scoring and not result.scoring.skipped:
     print(result.scoring.local_score)   # e.g. 86.11
     print(result.passed)                # overall gate for the phase
 
-# Canonical camelCase JSON (matches the reference engine):
+# Canonical camelCase JSON:
 result.to_json_dict()
 ```
 
 `spec` may be a `crucible.Specification` model **or** a plain `dict` (camelCase,
 the OpenSpec v1.1 shape). The `context` accepts the original keys
-(`phase`, `activeEntityId`, `config`, `returns`) or their snake_case forms.
+(`phase`, `activeEntityId`, `config`, `returns`, `existingFiles`) or their
+snake_case forms.
+
+`existingFiles` is optional grep evidence for the file-provenance check — the set
+of paths that already exist in the real repository. It is tri-state: **omit** it
+and existence is judged strictly against what the spec creates; **pass it** (even
+empty) and it is unioned with those paths, so a brownfield file no ticket creates
+stops being reported as missing. The engine never touches the filesystem itself —
+you supply the set (`crucible.compute_grep_candidates(spec)` tells you which
+paths are worth probing).
 
 ## The model
 
@@ -139,8 +147,7 @@ config = merge_config(load_defaults(), {"thresholds": {"global": 85}})
 ```
 
 The scoring rubric (53 entries: 16 spec · 17 epic · 20 ticket) ships as a data
-asset at `crucible/guidance/rubric/data/rubric.json`, generated verbatim from the
-reference source.
+asset at `crucible/guidance/rubric/data/rubric.json`.
 
 ## Public API
 
@@ -163,22 +170,32 @@ from crucible import (
 uv sync --all-extras --dev
 uv run ruff check src tests
 uv run mypy
-uv run pytest                 # 125 tests, incl. differential vs the TS engine
+uv run pytest
 ```
 
-Fidelity is verified against committed golden output captured from the reference
-engine, so CI needs no extra tooling.
+Behavior is pinned by a golden conformance corpus. The full corpus is kept local
+to the maintainer; the tests that ship and run in CI are the unit suites for the
+self-contained modules (file-provenance, concurrent-modification, cycle-analysis,
+creator-election, na-eligible), the format and UTF-16 suites, and the property
+and smoke tests — no fixtures needed. Every release is cut only after the full
+conformance corpus passes.
 
 ## Status
 
-`0.2.0` — a **complete** port, **verified byte-for-byte against the current TS
-validator** across every phase and all four output layers (structural · scoring
-· crossValidation · guidance). Tracks the reference engine through `@specforge/validator`
-`0.1.20`: the epic/ticket **expansion gate is ALL-PASS** (every touched entity must
-clear its threshold — a strong entity no longer masks a weak one; the mean is still
-reported), entity-count findings embed the `(epicId: …)` in their message, and the
-decomposition guidance advances via `complete_planning_session`. See
-[`CHANGELOG.md`](CHANGELOG.md).
+`0.3.0` — stable across every phase and all four output layers (structural ·
+scoring · crossValidation · guidance).
+
+Highlights of this release: file coordination is now a single static
+**file-provenance** model (four invariants over an existence set that an optional
+`existingFiles` context supplies — the engine stays filesystem-free), and
+**concurrent-modification** orders same-file writers by dependency reachability
+instead of wave collision. `blueprint-coverage` moved to `ticket_decomposition`,
+which rescales `ticket_expansion` scores. N/A eligibility became a shared
+allow-set (`crucible.na_eligible`). Two pure analyzers — `cycle_analysis` and
+`creator_election` — compute cycle-resolution and shared-file plans. The format
+gate is now strict (no coercion, `null`-rejecting optionals, UTF-16 string
+lengths). See [`CHANGELOG.md`](CHANGELOG.md) for the full list, including breaking
+renames in `OperationName`.
 
 ## License
 

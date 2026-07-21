@@ -1,7 +1,7 @@
-"""Public ``validate`` entry point (port of ``api/validate.ts``).
+"""Public ``validate`` entry point.
 
 All four output layers (structural, scoring, crossValidation, guidance) are
-assembled per phase, matching the reference engine.
+assembled per phase.
 """
 
 from __future__ import annotations
@@ -39,6 +39,12 @@ def _normalize_context(context: Mapping[str, Any] | None) -> dict[str, Any]:
         out["config"] = ctx["config"]
     if "returns" in ctx:
         out["returns"] = ctx["returns"]
+    # grep evidence. Tri-state: absent → strict spec-internal existence;
+    # present (even empty) → E = existingFiles ∪ createdPaths. Normalize to a
+    # frozenset while preserving the absent/present distinction.
+    raw_existing = ctx.get("existingFiles", ctx.get("existing_files"))
+    if raw_existing is not None:
+        out["existingFiles"] = frozenset(raw_existing)
     return out
 
 
@@ -53,7 +59,12 @@ def _filter_all_returns(
             if layer in returns and value is not None:
                 kwargs[attr] = value
         new_by_phase[phase] = ValidationResult(**kwargs)
-    return ValidationResultAll(passed=result.passed, by_phase=new_by_phase, meta=result.meta)
+    # ``phase`` passed explicitly — see the note in ``dispatcher.validate_all``:
+    # ``to_json_dict`` uses ``exclude_unset=True``, so relying on the default
+    # would drop it from the JSON. This rebuild is the second place it is lost.
+    return ValidationResultAll(
+        phase="all", passed=result.passed, by_phase=new_by_phase, meta=result.meta
+    )
 
 
 def validate(
@@ -74,10 +85,18 @@ def validate(
     phase = ctx.get("phase") or "all"
     spec_dict = to_spec_dict(spec)
 
+    existing_files = ctx.get("existingFiles")
+
     if phase == "all":
-        result = validate_all(spec_dict, ctx.get("activeEntityId"), ctx["config"])
+        result = validate_all(
+            spec_dict, ctx.get("activeEntityId"), ctx["config"], existing_files
+        )
         return _filter_all_returns(result, ctx.get("returns") or _DEFAULT_RETURNS_ALL)
 
     return validate_single(
-        spec_dict, cast(SinglePhase, phase), ctx.get("activeEntityId"), ctx["config"]
+        spec_dict,
+        cast(SinglePhase, phase),
+        ctx.get("activeEntityId"),
+        ctx["config"],
+        existing_files,
     )

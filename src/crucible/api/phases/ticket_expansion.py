@@ -1,4 +1,4 @@
-"""ticket_expansion phase (port of ``api/phases/ticket-expansion.ts``)."""
+"""ticket_expansion phase."""
 
 from __future__ import annotations
 
@@ -22,7 +22,10 @@ from ._common import build_active_scoring, build_guidance, build_meta
 
 
 def validate_ticket_expansion(
-    spec: dict[str, Any], active_entity_id: str | list[str] | None, config: ValidatorConfig
+    spec: dict[str, Any],
+    active_entity_id: str | list[str] | None,
+    config: ValidatorConfig,
+    _existing_files: frozenset[str] | None = None,
 ) -> ValidationResult:
     scope = resolve_ticket_scope(spec, active_entity_id)
     tickets = scope.tickets
@@ -52,7 +55,7 @@ def validate_ticket_expansion(
     )
 
     threshold = config["thresholds"]["ticket"]
-    # ME.15.3 — the local gate is ALL-PASS, not the average: EVERY scored ticket must
+    # the local gate is ALL-PASS, not the average: EVERY scored ticket must
     # clear the threshold. An average lets a strong ticket mask a weak one, so a phase
     # could "pass" on the mean while a ticket sits below threshold. ``avg_local`` is
     # still reported as the phase mean; only the pass/fail decision changed.

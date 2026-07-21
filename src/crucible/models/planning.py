@@ -1,4 +1,4 @@
-"""Planning sub-entities (port of ``spec-types/schema/planning/*.ts``)."""
+"""Planning sub-entities."""
 
 from __future__ import annotations
 

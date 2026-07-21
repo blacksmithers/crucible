@@ -1,4 +1,4 @@
-"""Entity scope resolution (port of ``api/scope-resolver.ts``)."""
+"""Entity scope resolution."""
 
 from __future__ import annotations
 

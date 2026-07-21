@@ -1,4 +1,4 @@
-"""Validator configuration (port of ``@specforge/validator`` ``src/config``)."""
+"""Validator configuration."""
 
 from __future__ import annotations
 

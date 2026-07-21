@@ -1,4 +1,4 @@
-"""Schema version resolution (port of ``structural/version-resolver.ts``)."""
+"""Schema version resolution."""
 
 from __future__ import annotations
 

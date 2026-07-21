@@ -1,4 +1,4 @@
-"""Internal finding contracts (port of ``types/finding.ts``).
+"""Internal finding contracts.
 
 Intermediate values produced by the scoring/guidance pipeline; composed into
 the public ``GuidanceResult`` entries. Internal → dataclasses.

@@ -1,4 +1,4 @@
-"""Operation descriptions (port of ``guidance/format/operations-vocabulary.ts``)."""
+"""Operation descriptions."""
 
 from __future__ import annotations
 
@@ -12,13 +12,13 @@ OPERATION_DESCRIPTIONS: dict[str, str] = {
     "create_ticket": "Create a new ticket (minimal: epicId + title)",
     "update_ticket": "Update ticket fields (acceptanceCriteria, implementationSteps, ...)",
     "delete_ticket": "Delete a ticket",
-    "add_dependencies": "Declare ticket dependencies in batch (up to 5000 pairs)",
-    "remove_dependency": "Remove a single dependency link",
+    "create_dependencies": "Declare ticket dependencies in batch (up to 5000 pairs)",
+    "delete_dependencies": "Remove dependency links",
     "create_blueprint": "Create a new blueprint (title, content, category, coverageType)",
     "update_blueprint": "Update blueprint fields (coverageType, content, ...)",
     "delete_blueprint": "Delete a blueprint",
-    "link_blueprint": "Link a blueprint to a specific ticket",
-    "unlink_blueprint": "Remove a blueprint link from a ticket",
+    "link_blueprint_to_tickets": "Link a blueprint to one or more tickets",
+    "unlink_blueprint_to_tickets": "Remove a blueprint link from one or more tickets",
     "get_ticket": "Read a ticket for exploration mid-session",
     "get_status": "Get a snapshot of spec/epic/ticket status",
     "gps": "Full X-ray of the specification",

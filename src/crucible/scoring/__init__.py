@@ -1,4 +1,4 @@
-"""Scoring layer (port of ``@specforge/validator`` ``src/scoring``)."""
+"""Scoring layer."""
 
 from __future__ import annotations
 

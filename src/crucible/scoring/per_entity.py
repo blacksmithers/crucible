@@ -1,4 +1,4 @@
-"""Per-entity scoring (port of ``scoring/per-entity.ts``)."""
+"""Per-entity scoring."""
 
 from __future__ import annotations
 
@@ -23,8 +23,15 @@ def compute_entity_score(
 ) -> EntityScoreResult:
     per_field = compute_per_field(entity, applicable_entries, config)
 
-    total_earned = sum(f.earned for f in per_field.values())
-    total_possible = sum(f.possible for f in per_field.values())
+    # Naive left-to-right accumulation, NOT ``sum()``: the score accumulates
+    # ``earned``/``possible`` field by field in a loop, and CPython >= 3.12 gives
+    # float ``sum()`` Neumaier compensation, which lands on a different double.
+    # See the same note in ``scoring/global_._avg``.
+    total_earned = 0.0
+    total_possible = 0.0
+    for f in per_field.values():
+        total_earned += f.earned
+        total_possible += f.possible
 
     local_score = 100.0 if total_possible == 0 else (total_earned / total_possible) * 100
 

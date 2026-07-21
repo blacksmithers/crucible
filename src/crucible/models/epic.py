@@ -1,4 +1,4 @@
-"""Epic entity (port of ``spec-types/schema/epic.ts``)."""
+"""Epic entity."""
 
 from __future__ import annotations
 

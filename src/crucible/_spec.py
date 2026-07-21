@@ -1,7 +1,7 @@
 """Spec input normalization.
 
-The engine works on a camelCase ``dict`` (mirroring the TS value-resolver and
-the JSON seeds). ``validate()`` and ``validate_structural()`` accept either a
+The engine works on a camelCase ``dict`` (matching the value resolver and the
+JSON seeds). ``validate()`` and ``validate_structural()`` accept either a
 :class:`crucible.models.Specification` or a plain mapping; both normalize here.
 """
 

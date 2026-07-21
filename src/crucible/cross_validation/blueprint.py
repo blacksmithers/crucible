@@ -1,4 +1,4 @@
-"""Blueprint-coverage cross-validation check (emissions; port of ``blueprint-ticket-coverage.ts``)."""
+"""Blueprint-coverage cross-validation check (emissions)."""
 
 from __future__ import annotations
 
@@ -43,7 +43,13 @@ def check_blueprint_ticket_coverage(
                         ),
                         entity_ids=entity_ids,
                         primary_entity_id=blueprint["id"],
-                        operations=["update_ticket", "update_blueprint", "delete_blueprint"],
+                        # link_blueprint_to_tickets is the sole writer of
+                        # ticket.blueprintReferences; update_ticket no longer writes it.
+                        operations=[
+                            "link_blueprint_to_tickets",
+                            "update_blueprint",
+                            "delete_blueprint",
+                        ],
                     ),
                     guidance=(
                         f'Blueprint "{title}" is linked to {len(linked)} ticket{plural}; '

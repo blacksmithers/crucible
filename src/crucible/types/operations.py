@@ -1,4 +1,4 @@
-"""Planning operation names (port of ``types/operations.ts``)."""
+"""Planning operation names."""
 
 from __future__ import annotations
 
@@ -12,13 +12,13 @@ OperationName = Literal[
     "create_ticket",
     "update_ticket",
     "delete_ticket",
-    "add_dependencies",
-    "remove_dependency",
+    "create_dependencies",
+    "delete_dependencies",
     "create_blueprint",
     "update_blueprint",
     "delete_blueprint",
-    "link_blueprint",
-    "unlink_blueprint",
+    "link_blueprint_to_tickets",
+    "unlink_blueprint_to_tickets",
     "get_ticket",
     "get_status",
     "gps",

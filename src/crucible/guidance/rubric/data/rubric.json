@@ -1317,7 +1317,7 @@
   {
     "id": "ticket.blueprintReferences.v1",
     "fieldPath": "ticket.blueprintReferences",
-    "curriculumPhase": "ticket_expansion",
+    "curriculumPhase": "ticket_decomposition",
     "curriculumStep": 14,
     "tier": "recommended",
     "structuralChecks": [
@@ -1331,9 +1331,9 @@
     "primaryVerbs": [
       "DECLARE"
     ],
-    "curriculumPrompt": "Declare at least {minCount} blueprint reference(s) (currently {actualCount}) — the architectural patterns this ticket follows. Linking blueprints propagates design decisions into implementation.",
+    "curriculumPrompt": "Link at least {minCount} blueprint reference(s) (currently {actualCount}) — the architectural patterns this ticket follows. Linking blueprints propagates design decisions into implementation.",
     "availableOperations": [
-      "update_ticket"
+      "link_blueprint_to_tickets"
     ]
   },
   {

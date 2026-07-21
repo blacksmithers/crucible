@@ -1,4 +1,4 @@
-"""Phase classification helpers (port of ``api/phase-classification.ts``)."""
+"""Phase classification helpers."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Phase-specific gate checks (port of ``@specforge/validator`` ``src/checks``)."""
+"""Phase-specific gate checks."""
 
 from __future__ import annotations
 

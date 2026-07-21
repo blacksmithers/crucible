@@ -61,29 +61,28 @@ crossValidation:
     wave-size-exceed:
       enabled: true
       enabledPhases: [cross_validation, all]
-    wave-concurrent-modification:
-      enabled: true
-      enabledPhases: [cross_validation, all]
-    wave-deletion-after-modification:
-      enabled: true
-      enabledPhases: [cross_validation, all]
-    wave-deletion-after-creation:
+    concurrent-modification:
       enabled: true
       enabledPhases: [cross_validation, all]
     file-conflict:
       enabled: true
       enabledPhases: [cross_validation, all]
-    files-to-be-referenced:
+    file-provenance:
       enabled: true
       enabledPhases: [cross_validation, all]
+    # blueprint-coverage migrated OUT of cross_validation: it is now a
+    # ticket_decomposition structural gate, called directly by
+    # validate_ticket_decomposition (not via run_cross_validation). `enabledPhases`
+    # no longer lists cross_validation, so run_cross_validation skips it. ('all' is
+    # inert here — the registry matches the literal phase, never 'all'.)
     blueprint-coverage:
       enabled: true
-      enabledPhases: [cross_validation, all]
+      enabledPhases: [all]
       minTicketsPerBlueprint: 2
 
 # Guidance output
 guidance:
-  # ME.10.7 — `max` widened to 100 (the curated UI control writes only `.default`).
+  # `max` widened to 100 (the curated UI control writes only `.default`).
   topNPerEntity:
     default: 5
     min: 1
@@ -99,57 +98,57 @@ scoring:
 # Configurable structural thresholds — the human's lever. Adjust at your own risk.
 # Structure: entity (specification/epic/ticket) → field → {default, min, max}
 structuralRequirements:
-  enforceTypes: true        # M4.9. Default true. Set false for untyped projects.
+  enforceTypes: true        # Default true. Set false for untyped projects.
   arrayMinCounts:
     specification:
       goals: { default: 3, min: 1, max: 20 }
       requirements: { default: 3, min: 1, max: 30 }
       acceptanceCriteria: { default: 1, min: 1, max: 50 }
       nonFunctionalRequirements: { default: 1, min: 1, max: 30 }
-      guardrails: { default: 2, min: 1, max: 20 }         # ME.0-3 T-V.8
+      guardrails: { default: 2, min: 1, max: 20 }
       techStack: { default: 1, min: 1, max: 30 }
       folderStructures: { default: 1, min: 1, max: 10 }
-      sharedPatterns: { default: 1, min: 1, max: 20 }     # ME.0-3 T-V.1
-      # ME.0-3 T-V.10 — composite scope decomposed; nested form widens
+      sharedPatterns: { default: 1, min: 1, max: 20 }
+      # composite scope decomposed; nested form widens
       # beyond the 2-level shape and validates via the B2 schema union.
       scope:
         inScope: { default: 3, min: 1, max: 20 }
         outOfScope: { default: 1, min: 1, max: 20 }
         assumptions: { default: 1, min: 1, max: 20 }
         externalDependencies: { default: 1, min: 1, max: 20 }
-      epics: { default: 2, min: 0, max: 50 }              # M4.16
+      epics: { default: 2, min: 0, max: 50 }
     epic:
       goals: { default: 1, min: 1, max: 10 }
       acceptanceCriteria: { default: 1, min: 1, max: 20 }
       validationCommands: { default: 1, min: 1, max: 20 }
       apiContracts: { default: 1, min: 1, max: 20 }
       sharedPatterns: { default: 1, min: 1, max: 20 }
-      fileStructures: { default: 1, min: 1, max: 20 }     # M4.17
-      # ME.0-3 T-V.11 — composite scope decomposed at the epic level.
+      fileStructures: { default: 1, min: 1, max: 20 }
+      # composite scope decomposed at the epic level.
       scope:
         inScope: { default: 3, min: 1, max: 20 }
         outOfScope: { default: 1, min: 1, max: 20 }
         assumptions: { default: 1, min: 1, max: 20 }
         externalDependencies: { default: 1, min: 1, max: 20 }
-      tickets: { default: 3, min: 0, max: 50 }            # M4.16
+      tickets: { default: 2, min: 0, max: 50 }            # min lowered to 2 (locked 2026-06-14) — kept in sync with the built-in defaults
     ticket:
       guardrails: { default: 1, min: 1, max: 20 }
       codeReferences: { default: 1, min: 1, max: 20 }
       typeReferences: { default: 1, min: 1, max: 20 }
-      blueprintReferences: { default: 1, min: 1, max: 20 }   # M8.5 — validated at ticket_expansion (naEligible)
-      # ME.0-3 T-V.12 — testSpecification decomposed; coverageTarget uses
-      # the rubric-inline `range` param (T-V.13), not this config block.
+      blueprintReferences: { default: 1, min: 1, max: 20 }   # structural relation owned by ticket_decomposition; coverage gated there via link_blueprint_to_tickets
+      # testSpecification decomposed; coverageTarget uses
+      # the rubric-inline `range` param, not this config block.
       testSpecification:
         testTypes: { default: 1, min: 1, max: 10 }
         qualityGates: { default: 1, min: 1, max: 20 }
         testCommands: { default: 1, min: 1, max: 10 }
-  # M4.16: configurable maximum counts for entity containers.
+  # configurable maximum counts for entity containers.
   arrayMaxCounts:
     specification:
       epics: { default: 50, min: 1, max: 1000 }
     epic:
       tickets: { default: 50, min: 1, max: 1000 }
-  # M4.16: phase scoping for entity-count checks. Without an entry, the
+  # phase scoping for entity-count checks. Without an entry, the
   # check skips entirely (fail-closed — explicit > implicit).
   arrayCountPhases:
     specification:
@@ -162,10 +161,10 @@ structuralRequirements:
       background: { default: 50, min: 20, max: 2000 }
     epic:
       architecture: { default: 200, min: 50, max: 5000 }
-      objective: { default: 100, min: 20, max: 1000 }    # ME.0-3 T-V.7
+      objective: { default: 100, min: 20, max: 1000 }
       description: { default: 50, min: 20, max: 1000 }
     ticket:
-      description: { default: 50, min: 10, max: 500 }    # ME.0-3 T-V.7
+      description: { default: 50, min: 10, max: 500 }
   itemMinLengths:
     specification:
       goals: { default: 20, min: 5, max: 500 }
@@ -194,5 +193,5 @@ structuralRequirements:
     ticket:
       codeSnippets: { small: 1, medium: 2, large: 3, xlarge: 4 }
       typeSnippets: { small: 1, medium: 1, large: 2, xlarge: 2 }
-      acceptanceCriteria: { small: 2, medium: 3, large: 5, xlarge: 7 }  # ME.0-3 T-V.8
+      acceptanceCriteria: { small: 2, medium: 3, large: 5, xlarge: 7 }
       implementationSteps: { small: 2, medium: 4, large: 6, xlarge: 10 }

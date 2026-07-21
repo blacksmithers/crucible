@@ -1,4 +1,4 @@
-"""Topology-bound cross-validation checks (port of ``topology-{roots,leaves}-exceed.ts``)."""
+"""Topology-bound cross-validation checks."""
 
 from __future__ import annotations
 
@@ -44,7 +44,12 @@ def check_topology_roots_exceed(spec: dict[str, Any], config: ValidatorConfig) -
                 message=f"{root_count} root tickets exceed maximum {maximum} ({total} total)",
                 entity_ids=sorted_root_ids,
                 primary_entity_id=sorted_root_ids[0],
-                operations=["update_ticket"],
+                # remedy: establish dependencies (create_dependencies) or justify
+                # the legitimate roots' `dependencies` N/A via the dedicated `justify` op.
+                # Dropped the stale update_ticket N/A hint. (NOT applied to
+                # topology-leaves-exceed — its remedy is "add integration/verification
+                # tickets / consolidate", not a justification.)
+                operations=["create_dependencies", "justify"],
                 context={
                     "rootCount": root_count,
                     "totalTickets": total,
@@ -52,14 +57,16 @@ def check_topology_roots_exceed(spec: dict[str, Any], config: ValidatorConfig) -
                     "rootIds": sorted_root_ids,
                 },
             ),
+            # WHAT only (structural fact + remedies). The "how" (which op, which
+            # payload) is lifecycle-owned; the machine hint is `finding.operations`
+            # (create_dependencies / justify). No `fieldDeclarations` mechanic (point #1).
             guidance=(
                 f"Spec has {root_count} tickets without dependencies (roots), but the maximum "
                 f"allowed is {maximum} (computed: {formula}, ratio {ratio_pct}% capped at "
                 f"{root_cap}). Too many roots indicates that sequencing was under-declared — "
                 "several tickets can start in parallel, but this rarely reflects the reality of "
                 "implementation. Establish dependencies between related tickets to reflect the "
-                "real execution order, or justify legitimate roots via "
-                "fieldDeclarations.dependencies with an explicit reason for each. Real "
+                "real execution order, or justify the legitimately foundational roots. Real "
                 "foundational tickets (3–5 roots) are acceptable when justified; the excess is "
                 "almost always a lack of articulation."
             ),

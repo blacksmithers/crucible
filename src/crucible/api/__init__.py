@@ -1,4 +1,4 @@
-"""Validator API layer (port of ``@specforge/validator`` ``src/api``)."""
+"""Validator API layer."""
 
 from __future__ import annotations
 

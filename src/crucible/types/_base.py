@@ -1,13 +1,13 @@
 """Shared Pydantic base for validator *output* contracts.
 
 Output models use snake_case attributes with auto camelCase aliases. They are
-serialized for the differential harness via::
+serialized to the canonical camelCase JSON via::
 
     model.model_dump(mode="json", by_alias=True, exclude_unset=True)
 
-``exclude_unset`` is the key to fidelity: it mirrors ``JSON.stringify`` in the
-TS engine, which **omits ``undefined``** (fields the engine never set) but
-**keeps ``null``** (fields the engine explicitly assigned ``None``).
+``exclude_unset`` is the key to the JSON serialization contract: it **omits**
+fields the engine never set but **keeps ``null``** for fields the engine
+explicitly assigned ``None``.
 """
 
 from __future__ import annotations
@@ -26,5 +26,5 @@ class CamelModel(BaseModel):
     )
 
     def to_json_dict(self) -> dict[str, Any]:
-        """Canonical camelCase JSON dict (TS ``JSON.stringify`` semantics)."""
+        """Canonical camelCase JSON dict (JSON serialization semantics)."""
         return self.model_dump(mode="json", by_alias=True, exclude_unset=True)

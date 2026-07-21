@@ -1,7 +1,7 @@
-"""OpenSpec v1.1 enums (port of ``@specforge/spec-types`` enums).
+"""OpenSpec v1.1 enums.
 
-Values are verbatim string literals so they round-trip identically to the
-TypeScript schema and the JSON seeds.
+Values are exact string literals so they round-trip identically to the on-disk
+JSON representation.
 """
 
 from __future__ import annotations

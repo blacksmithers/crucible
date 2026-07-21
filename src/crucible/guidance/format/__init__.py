@@ -1,4 +1,4 @@
-"""Guidance formatting (port of ``guidance/format/index.ts``)."""
+"""Guidance formatting."""
 
 from __future__ import annotations
 
@@ -11,18 +11,16 @@ from .individual_formatter import format_individual_finding
 from .templates import (
     format_conditional_gap,
     format_foundation_gap,
-    format_integrity_gap,
-    format_linkage_gap,
     format_tactical_gap,
 )
 from .truncation import apply_truncation
 
+# The linkage-gap / integrity-gap templates were deleted (clean break); see
+# composer/__init__.py.
 _TEMPLATE_BY_PATTERN = {
     "foundation-gap": format_foundation_gap,
     "tactical-gap": format_tactical_gap,
     "conditional-gap": format_conditional_gap,
-    "linkage-gap": format_linkage_gap,
-    "integrity-gap": format_integrity_gap,
 }
 
 __all__ = ["format_guidance"]

@@ -1,4 +1,4 @@
-"""Context input validation (port of ``api/input-validation.ts``)."""
+"""Context input validation."""
 
 from __future__ import annotations
 

@@ -1,7 +1,7 @@
-"""Presence checks (port of ``structural/presence.ts``).
+"""Presence checks.
 
-Operates on the normalized camelCase spec dict (mirrors how the TS engine reads
-the object). ``None`` epics/tickets are treated as empty.
+Operates on the normalized camelCase spec dict. ``None`` epics/tickets are
+treated as empty.
 """
 
 from __future__ import annotations

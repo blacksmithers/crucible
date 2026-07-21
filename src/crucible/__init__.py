@@ -1,10 +1,11 @@
 """crucible — deterministic validation engine for OpenSpec v1.1 specifications.
 
-Faithful Python port of the SpecForge ``@specforge/validator`` engine.
+A self-contained, deterministic validation engine for OpenSpec v1.1
+specifications.
 
 ``validate(spec, context)`` is the single entry point. All four return layers
 (``structural``, ``scoring``, ``crossValidation``, ``guidance``) are complete
-and verified byte-for-byte against the reference engine.
+and produce stable, reproducible output.
 """
 
 from __future__ import annotations
@@ -26,32 +27,78 @@ from .config import (
     load_partial_from_file,
     merge_config,
 )
+from .cross_validation.concurrent_modification import check_concurrent_modification
+from .cross_validation.creator_election import (
+    CreatorElectionResult,
+    FileCreatorPlan,
+    FileToucher,
+    RequiredDep,
+    elect_file_creators,
+)
+from .cross_validation.cycle_analysis import (
+    CycleAnalysis,
+    CycleEdgeEvidence,
+    StructuralCycle,
+    StructuralCycleEdge,
+    analyze_cycle_edges,
+)
+from .cross_validation.file_provenance import (
+    FileProvenanceContext,
+    check_file_consistency,
+    check_file_provenance,
+    compute_grep_candidates,
+)
 from .models import Blueprint, Epic, Specification, Ticket
+from .na_eligible import (
+    CROSS_CUTTING_NA_ELIGIBLE_SCOPES,
+    NaEligibleEntity,
+    is_na_eligible_scope,
+    na_eligible_scopes_for,
+)
 from .structural import validate_structural
 
 __all__ = [
     "CONFIG_DEFAULTS",
+    "CROSS_CUTTING_NA_ELIGIBLE_SCOPES",
     "PLANNING_CONFIG_DOMAIN",
     "PLANNING_CONFIG_SCHEMA_VERSION",
     "Blueprint",
     "ConfigValidationError",
+    "CreatorElectionResult",
+    "CycleAnalysis",
+    "CycleEdgeEvidence",
     "Epic",
+    "FileCreatorPlan",
+    "FileProvenanceContext",
+    "FileToucher",
+    "NaEligibleEntity",
     "PlanningConfigOverridesSchema",
     "PlanningConfigResolver",
+    "RequiredDep",
     "Specification",
+    "StructuralCycle",
+    "StructuralCycleEdge",
     "Ticket",
     "ValidatorConfigSchema",
     "ValidatorConfigSnapshotSchema",
     "ValidatorInputError",
     "__version__",
+    "analyze_cycle_edges",
+    "check_concurrent_modification",
+    "check_file_consistency",
+    "check_file_provenance",
+    "compute_grep_candidates",
+    "elect_file_creators",
+    "is_na_eligible_scope",
     "load_defaults",
     "load_from_file",
     "load_partial_from_file",
     "merge_config",
     "models",
+    "na_eligible_scopes_for",
     "types",
     "validate",
     "validate_structural",
 ]
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"

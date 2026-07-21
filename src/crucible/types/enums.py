@@ -8,10 +8,10 @@ from __future__ import annotations
 
 from typing import Literal
 
-# Tier classification for a rubric entry (result.ts).
+# Tier classification for a rubric entry.
 Tier = Literal["critical", "recommended", "enrichment", "contextual"]
 
-# Imperative action verbs a rubric entry suggests (rubric.ts).
+# Imperative action verbs a rubric entry suggests.
 ActionVerb = Literal[
     "EXPLORE",
     "EVALUATE",
@@ -23,20 +23,18 @@ ActionVerb = Literal[
     "DECOMPOSE",
 ]
 
-# Per-field fulfilment status (finding.ts).
+# Per-field fulfilment status.
 FindingStatus = Literal["missing", "partial", "fulfilled"]
 
 # Entity a finding/guidance message is about.
 EntityType = Literal["specification", "epic", "ticket"]
 
-# Composite guidance grouping patterns (finding.ts).
+# Composite guidance grouping patterns.
 CompositePatternId = Literal[
     "foundation-gap",
     "tactical-gap",
     "conditional-gap",
-    "linkage-gap",
-    "integrity-gap",
 ]
 
-# Finding severity used by structural + cross-validation layers (result.ts).
+# Finding severity used by structural + cross-validation layers.
 Severity = Literal["error", "warning"]
