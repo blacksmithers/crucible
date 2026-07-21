@@ -1,4 +1,4 @@
-"""Validator type contracts (port of ``@specforge/validator`` ``src/types``)."""
+"""Validator type contracts."""
 
 from __future__ import annotations
 

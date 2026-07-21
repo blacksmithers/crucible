@@ -1,4 +1,4 @@
-"""Operation descriptions (port of ``guidance/format/operations-vocabulary.ts``)."""
+"""Operation descriptions."""
 
 from __future__ import annotations
 

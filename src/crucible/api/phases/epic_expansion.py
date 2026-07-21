@@ -1,4 +1,4 @@
-"""epic_expansion phase (port of ``api/phases/epic-expansion.ts``)."""
+"""epic_expansion phase."""
 
 from __future__ import annotations
 
@@ -55,7 +55,7 @@ def validate_epic_expansion(
     )
 
     threshold = config["thresholds"]["epic"]
-    # ME.15.3 — ALL-PASS local gate (not the average): EVERY scored epic must clear the
+    # ALL-PASS local gate (not the average): EVERY scored epic must clear the
     # threshold. ``avg_local`` is still reported as the phase mean; only the pass/fail
     # decision changed so a strong epic can no longer mask a weak one.
     local_pass = True if not scores else all(s >= threshold for s in scores)

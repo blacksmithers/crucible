@@ -1,11 +1,9 @@
-"""Cycle-resolution ANALYZER (MB.12.1) — pure, structured, finding-free.
-
-Port of ``cross-validation/cycle-analysis.ts``.
+"""Cycle-resolution ANALYZER — pure, structured, finding-free.
 
 When the ``create_dependencies`` batch pre-check denies with ``cycle_detected``,
 the bare "remove the offending edge" guidance names no specific edge and gives
 no basis for the decision. This analyzer turns each cyclic edge into an EVIDENCE
-packet the lifecycle deny (MB.12.2) renders so the agent can JUDGE which
+packet the lifecycle deny renders so the agent can JUDGE which
 dependency is real — INDICATIVE, never auto-cutting.
 
 For each edge ``from → to`` on a detected cycle (``from REQUIRES to``), it
@@ -16,7 +14,7 @@ computes:
   single-valued PROVIDER is ``to``. Provider(f) = ``file_to_creator[f]`` = the
   in-spec CREATOR (``filesToBeCreated``), or — for a brownfield file no ticket
   creates — the FIRST ticket that modifies it (the standin). This is exactly
-  MB.10's consume-ordered invariant (#2), reused (via
+  the consume-ordered invariant (#2), reused (via
   :func:`~crucible.cross_validation.file_provenance.build_file_provenance_maps`)
   — no new rule.
 - **epic**  — are ``from`` and ``to`` in the SAME epic or DIFFERENT epics?
@@ -28,13 +26,13 @@ computes:
   else ``ambiguous``.
 
 The input is a validator-native structural edge-list, NOT lifecycle's
-``DetectedCycle``: the lifecycle caller (MB.12.2) maps ``batch.cycles`` (whose
+``DetectedCycle``: the lifecycle caller maps ``batch.cycles`` (whose
 ``cyclePath`` is already ``{fromTicketId,toTicketId}[]``) into
 :class:`StructuralCycle`. It is PURE — no I/O, no formatting, no findings.
 
 The analyzer emits ONLY file + epic + order evidence. It does NOT emit the
 intra-batch-vs-persisted tag (its input carries no batch/persisted
-distinction) — that tag is computed lifecycle-side (MB.12.2) and merged onto
+distinction) — that tag is computed lifecycle-side and merged onto
 each per-edge packet.
 """
 
@@ -152,7 +150,7 @@ def analyze_cycle_edges(
         consumer = ticket_by_id.get(consumer_id)
         if consumer is None:
             return []
-        # Insertion-ordered de-duplication (the TS `new Set([...refs, ...mods])`).
+        # Insertion-ordered de-duplication of the referenced ∪ modified paths.
         consumed: dict[str, None] = dict.fromkeys(
             [
                 *(consumer.get("filesToBeReferenced") or []),

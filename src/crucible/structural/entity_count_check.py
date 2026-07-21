@@ -1,8 +1,8 @@
-"""Entity-count checks (port of ``structural/entity-count-check.ts``).
+"""Entity-count checks.
 
 Phase-scoped min/max count gates for ``specification.epics`` and
-``epic.tickets``. Guidance strings are copied verbatim from the TS source
-(Portuguese), as they appear in the golden snapshots.
+``epic.tickets``. The guidance strings are authored in Portuguese, matching the
+golden snapshots.
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ from ..types.result import StructuralFinding
 
 
 def _context(**kwargs: Any) -> dict[str, Any]:
-    # Mirror JSON.stringify: drop keys whose value is None (TS undefined).
+    # Drop keys whose value is None (omitted from the serialized context).
     return {k: v for k, v in kwargs.items() if v is not None}
 
 

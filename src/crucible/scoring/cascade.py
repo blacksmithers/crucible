@@ -1,4 +1,4 @@
-"""Cascade floors + gate (port of ``scoring/cascade.ts``)."""
+"""Cascade floors + gate."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from ..types.phase import ValidationPhase
 
 
 def _js_round(x: float) -> float:
-    # Mirror JS Math.round (round half toward +Infinity).
+    # Round half toward +Infinity.
     return math.floor(x + 0.5)
 
 
@@ -20,7 +20,7 @@ def _round2(n: float) -> float:
 
 
 def _num(n: float) -> str:
-    # Mirror JS Number->string in template literals (no trailing ".0").
+    # Number-to-string for message interpolation (no trailing ".0").
     if isinstance(n, int) or float(n).is_integer():
         return str(int(n))
     return repr(n)

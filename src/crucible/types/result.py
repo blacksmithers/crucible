@@ -1,4 +1,4 @@
-"""Validation result contracts (port of ``types/result.ts``).
+"""Validation result contracts.
 
 These are the public, serialized output shapes. Optional layer fields appear
 only when requested via ``returns``. The discriminated ``ScoringResult`` keeps
@@ -28,7 +28,7 @@ class StructuralFinding(CamelModel):
     severity: Severity
     field: str
     message: str
-    # M4.16 optional rich shape (entity-count check populates these).
+    # Optional rich shape (entity-count check populates these).
     guidance: str | None = None
     operations: list[str] | None = None
     context: dict[str, Any] | None = None
@@ -88,7 +88,7 @@ class ScoringResultSkipped(CamelModel):
 
     @model_serializer
     def _serialize(self) -> dict[str, Any]:
-        # Fixed shape with explicit nulls kept (mirrors the TS skipped record),
+        # Fixed shape with explicit nulls kept for the skipped record,
         # emitted in full even when nested under a parent dumped exclude_unset.
         return {
             "skipped": True,

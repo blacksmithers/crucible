@@ -1,4 +1,4 @@
-"""Ticket entity (port of ``spec-types/schema/ticket.ts``)."""
+"""Ticket entity."""
 
 from __future__ import annotations
 

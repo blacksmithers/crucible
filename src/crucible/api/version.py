@@ -1,4 +1,4 @@
-"""Validator version (port of ``api/version.ts``)."""
+"""Validator version."""
 
 from __future__ import annotations
 

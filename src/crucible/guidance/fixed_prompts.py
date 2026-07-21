@@ -1,4 +1,4 @@
-"""Fixed decomposition-phase prompts (port of ``guidance/fixed-prompts.ts``)."""
+"""Fixed decomposition-phase prompts."""
 
 from __future__ import annotations
 

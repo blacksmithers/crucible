@@ -1,4 +1,4 @@
-"""Cross-validation layer (port of ``@specforge/validator`` ``src/cross-validation``).
+"""Cross-validation layer.
 
 Runs the 11-entry registry (insertion order preserved), honoring each check's
 ``enabled`` flag and ``enabledPhases``. Each check yields emissions (finding +
@@ -6,10 +6,10 @@ guidance prose); the layer result carries findings, the guidance layer consumes
 the prose.
 
 At most 10 run in ``cross_validation``: ``blueprint-coverage`` is
-registry-resident but phase-gated out of it since MB.9.3 (it is called directly
+registry-resident but phase-gated out of it (it is called directly
 by ``validate_ticket_decomposition``) — see ``config/defaults.py``.
 
-MB.10.5 — checks receive a third ``ctx`` argument carrying the grep evidence
+Checks receive a third ``ctx`` argument carrying the grep evidence
 (``existing_files``); only ``file-provenance`` reads it today.
 """
 
@@ -41,7 +41,7 @@ from .waves import check_wave_size_exceed
 
 CheckFn = Callable[[dict[str, Any], ValidatorConfig, FileProvenanceContext], list[CVEmission]]
 
-# Insertion order is the finding order — mirrors the TS CHECK_REGISTRY.
+# Insertion order is the finding order.
 CHECK_REGISTRY: dict[str, CheckFn] = {
     "circular-dependency": lambda spec, _cfg, _ctx: detect_cycles(spec),
     "broken-reference": lambda spec, _cfg, _ctx: check_broken_reference(spec),

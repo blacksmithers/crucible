@@ -1,4 +1,4 @@
-"""ticket_decomposition phase (port of ``api/phases/ticket-decomposition.ts``)."""
+"""ticket_decomposition phase."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ def validate_ticket_decomposition(
     scoped_epics = resolve_epic_scope(spec, active_entity_id)
     structural = validate_structural(spec, config, "ticket_decomposition")
     ratio_findings = check_impl_verification_ratio(spec, scoped_epics, config)
-    # MB.9.3 — blueprint↔ticket coverage is a decomposition-phase structural gate now
+    # blueprint↔ticket coverage is a decomposition-phase structural gate now
     # (reparented out of cross_validation): tickets are born here + the agent has global
     # task context, so it links each ticket-coverage blueprint to >= minTicketsPerBlueprint
     # tickets via link_blueprint_to_tickets. Called DIRECTLY (mirroring

@@ -1,4 +1,4 @@
-"""Guidance formatting (port of ``guidance/format/index.ts``)."""
+"""Guidance formatting."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from .templates import (
 )
 from .truncation import apply_truncation
 
-# MB.10.7 — linkage-gap / integrity-gap templates deleted (clean break); see
+# The linkage-gap / integrity-gap templates were deleted (clean break); see
 # composer/__init__.py.
 _TEMPLATE_BY_PATTERN = {
     "foundation-gap": format_foundation_gap,

@@ -1,7 +1,4 @@
-"""planning_spec phase (port of ``api/phases/planning-spec.ts``).
-
-Guidance layer deferred (C7) — ``guidance`` is left unset.
-"""
+"""planning_spec phase."""
 
 from __future__ import annotations
 

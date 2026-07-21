@@ -1,4 +1,4 @@
-"""Auxiliary OpenSpec sub-entities (port of ``spec-types/schema/auxiliary.ts``)."""
+"""Auxiliary OpenSpec sub-entities."""
 
 from __future__ import annotations
 

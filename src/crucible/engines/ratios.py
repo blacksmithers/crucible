@@ -1,4 +1,4 @@
-"""Ratio engines (port of ``engines/{blueprint-epic-ratio,impl-verification-ratio}.ts``)."""
+"""Ratio engines."""
 
 from __future__ import annotations
 

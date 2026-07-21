@@ -1,10 +1,9 @@
-"""Built-in default validator config (verbatim port of ``config/defaults.ts``).
+"""Built-in default validator config.
 
-Mirrors the TS ``HARDCODED_DEFAULTS`` literal exactly — including the single
-point where it intentionally diverges from the shipped ``defaults.yml``: the
-``arrayMaxCounts`` caps (15 here vs 50 in the YAML, for ``specification.epics``
-and ``epic.tickets``). ``epic.tickets``/``guardrails`` minimums used to diverge
-too; upstream resynced those, and 0.3.0 follows. Exposed
+The built-in literal intentionally diverges from the shipped ``defaults.yml``
+at a single point: the ``arrayMaxCounts`` caps (15 here vs 50 in the YAML, for
+``specification.epics`` and ``epic.tickets``). ``epic.tickets``/``guardrails``
+minimums used to diverge too; those were resynced, and 0.3.0 follows. Exposed
 here as ``CONFIG_DEFAULTS``: the fallback used by
 :func:`crucible.config.load.load_defaults` when the packaged YAML is unreadable.
 """
@@ -54,7 +53,7 @@ _CONFIG_DEFAULTS: ValidatorConfig = {
             "concurrent-modification": _check(),
             "file-conflict": _check(),
             "file-provenance": _check(),
-            # MB.9.3 — blueprint-coverage migrated OUT of cross_validation: it is now a
+            # blueprint-coverage migrated OUT of cross_validation: it is now a
             # ticket_decomposition structural gate, called directly by
             # validate_ticket_decomposition (not via run_cross_validation).
             # `enabledPhases` no longer lists cross_validation, so run_cross_validation
@@ -186,6 +185,6 @@ def config_defaults() -> ValidatorConfig:
     return deepcopy(_CONFIG_DEFAULTS)
 
 
-# Public constant (the TS engine's ``HARDCODED_DEFAULTS``). Treated as
+# Public constant holding the built-in defaults. Treated as
 # read-only; use :func:`config_defaults` when a mutable copy is needed.
 CONFIG_DEFAULTS: ValidatorConfig = _CONFIG_DEFAULTS

@@ -1,4 +1,4 @@
-"""Rubric applicability (port of ``guidance/engine/applicability.ts``).
+"""Rubric applicability.
 
 Operates on the normalized camelCase entity dict.
 """

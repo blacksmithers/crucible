@@ -1,7 +1,5 @@
 """Creator-election ANALYZER (pure, structured value — no findings, no prose).
 
-Port of ``cross-validation/creator-election.ts`` (MB.13.1).
-
 When the cross_validation gate denies with the file-provenance blocker set, the
 bare per-line findings ("modifies X but no ticket creates it") leave the actor
 patching one file at a time and rediscovering the rest — the provenance ↔
@@ -19,18 +17,18 @@ Reuses the two existing primitives wholesale (no new invariant, a new synthesis)
 - :func:`~.dependency_graph.detect_cycles` — the acyclicity check, run on a
   SYNTHETIC spec whose ``ticket.dependencies`` = the candidate union
   (``detect_cycles`` takes a spec and derives edges from ``dependencies``, not an
-  edge-list). In crucible it returns ``list[CVEmission]``, so acyclicity is
-  ``len(detect_cycles(...)) == 0`` — mirroring the TS ``.length === 0``.
+  edge-list). It returns ``list[CVEmission]``, so acyclicity is
+  ``len(detect_cycles(...)) == 0``.
 
 ⚠ ``build_file_provenance_maps`` tracks created/modified only — NOT
 ``filesToBeReferenced``. So the per-file touch map here computes the
 ``references`` role itself: a file REFERENCED (but never created) with no grep
 backing is ALSO an orphan.
 
-⚠ DETERMINISM: the TS iterates ``Map``s in INSERTION order and that order is
-observable in the output (toucher order within equal ranks, candidate order
-before the final by-file sort). The Python port therefore uses ``dict`` — never
-``set`` — for the toucher/role maps.
+⚠ DETERMINISM: the toucher/role maps are iterated in INSERTION order and that
+order is observable in the output (toucher order within equal ranks, candidate
+order before the final by-file sort). They are therefore ``dict`` — never
+``set``.
 
 PURE — no I/O, no formatting; RETURNS a structured value rather than emitting a
 finding (the finding seam flattens to ``{category, message}`` and would drop the
@@ -143,7 +141,7 @@ ROLE_PRECEDENCE: dict[ToucherRole, int] = {
 
 # Sentinel for an ABSENT `epic.order` / `ticket.order` (both optional): sort
 # after every defined order, then the ticket-id tie-break makes the rank TOTAL.
-# (The TS uses `Number.MAX_SAFE_INTEGER`; only its RELATIVE position matters.)
+# (Only its RELATIVE position matters, not the concrete magnitude.)
 ORDER_ABSENT = sys.maxsize
 
 
@@ -152,8 +150,8 @@ def _all_tickets(spec: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def _order_or_absent(order: Any) -> int:
-    """``order ?? ORDER_ABSENT`` — ``None`` (absent) sorts last; ``0`` is a
-    legitimate order and must NOT be coerced (the TS ``??`` is null-ish only)."""
+    """``None`` (absent) sorts last via ``ORDER_ABSENT``; ``0`` is a legitimate
+    order and must NOT be coerced — only ``None`` counts as absent."""
     return ORDER_ABSENT if order is None else int(order)
 
 
@@ -189,8 +187,8 @@ def elect_file_creators(
             ticket_by_id[ticket["id"]] = ticket
 
     def epic_order_of(ticket: dict[str, Any]) -> Any:
-        """`epicOrderById.get(ticket.epicId)` — ``None`` both for an unknown epic
-        and for a known epic with no ``order`` (the TS collapses the same way)."""
+        """The ticket's epic order — ``None`` both for an unknown epic and for a
+        known epic with no ``order``."""
         epic_id = ticket.get("epicId")
         if not isinstance(epic_id, str):
             return None
@@ -218,8 +216,7 @@ def elect_file_creators(
         roles = file_touchers.setdefault(file, {})
         existing = roles.get(ticket_id)
         if existing is None or ROLE_PRECEDENCE[role] < ROLE_PRECEDENCE[existing]:
-            # Re-assigning an existing key keeps its original position, as the
-            # TS `Map.set` does.
+            # Re-assigning an existing key keeps its original insertion position.
             roles[ticket_id] = role
 
     for ticket in all_tickets:

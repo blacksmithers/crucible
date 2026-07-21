@@ -1,4 +1,4 @@
-"""Topology penalties (port of ``scoring/topology.ts``)."""
+"""Topology penalties."""
 
 from __future__ import annotations
 

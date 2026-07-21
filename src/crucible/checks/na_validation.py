@@ -1,4 +1,4 @@
-"""N/A declaration checks (port of ``checks/na-validation.ts``).
+"""N/A declaration checks.
 
 Emitted as cross-validation findings by the per-entity phases (planning_spec,
 epic_expansion, ticket_expansion). Operates on the normalized entity dict.

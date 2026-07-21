@@ -1,4 +1,4 @@
-"""Named quality checks (port of ``scoring/quality-checks/*``).
+"""Named quality checks.
 
 Each check takes the resolved field value and returns whether it passes. The
 "has list of objects with non-empty fields" checks are vacuously true on an

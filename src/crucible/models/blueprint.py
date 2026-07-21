@@ -1,4 +1,4 @@
-"""Blueprint entity (port of ``spec-types/schema/blueprint.ts``)."""
+"""Blueprint entity."""
 
 from __future__ import annotations
 

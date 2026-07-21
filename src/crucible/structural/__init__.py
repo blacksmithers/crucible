@@ -1,4 +1,4 @@
-"""Structural validation layer (port of ``@specforge/validator`` ``src/structural``)."""
+"""Structural validation layer."""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ def validate_structural(
     """Run structural-only validation against an OpenSpec v1.1 spec.
 
     Always runs presence, format, and duplicate-order checks. Pass ``config``
-    and ``phase`` to enable phase-aware entity-count checks (M4.16).
+    and ``phase`` to enable phase-aware entity-count checks.
     """
     spec_dict = to_spec_dict(spec)
 

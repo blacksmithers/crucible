@@ -1,7 +1,6 @@
 """Dependency-graph cross-validation checks (cycles, broken/orphan/island refs).
 
-Port of ``cross-validation/{circular-dependencies,broken-reference,
-orphan-reference,island-ticket}.ts`` — emissions (finding + guidance prose).
+Emissions (finding + guidance prose).
 """
 
 from __future__ import annotations
@@ -151,13 +150,13 @@ def check_orphan_reference(spec: dict[str, Any], config: ValidatorConfig) -> lis
                     ),
                     entity_ids=[tid],
                     primary_entity_id=tid,
-                    # MB.11.1 — the remedy is either add a dependency (create_dependencies)
+                    # the remedy is either add a dependency (create_dependencies)
                     # or justify the root's `dependencies` N/A (the dedicated `justify` op).
                     # Dropped the stale update_ticket/create_ticket N/A hint (justification
                     # no longer rides update_*).
                     operations=["create_dependencies", "justify"],
                 ),
-                # MB.11.3 — WHAT only (structural fact + the two remedies). The "how"
+                # WHAT only (structural fact + the two remedies). The "how"
                 # (which op, which payload) is NOT the validator's job: the machine hint is
                 # `finding.operations` (create_dependencies / justify) and the invocation
                 # prose is lifecycle-owned. No `fieldDeclarations` mechanic here
@@ -203,12 +202,12 @@ def check_island_ticket(spec: dict[str, Any], config: ValidatorConfig) -> list[C
                     message=f'Ticket "{tid}" is isolated — no dependencies and no dependents',
                     entity_ids=[tid],
                     primary_entity_id=tid,
-                    # MB.11.1 — remedy: add a dependency edge (create_dependencies) or
+                    # remedy: add a dependency edge (create_dependencies) or
                     # justify the isolation via the dedicated `justify` op. Dropped the
                     # stale update_ticket N/A hint.
                     operations=["create_dependencies", "justify"],
                 ),
-                # MB.11.3 — WHAT only (structural fact + remedies). The "how" (which op,
+                # WHAT only (structural fact + remedies). The "how" (which op,
                 # which payload) is lifecycle-owned; the machine hint is
                 # `finding.operations` (create_dependencies / justify). No
                 # `fieldDeclarations` mechanic (point #1).

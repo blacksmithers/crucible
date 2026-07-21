@@ -53,8 +53,8 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
-# RUF001/2/3: ambiguous-unicode — guidance prose is ported verbatim and
-# intentionally contains × – → ≥ etc.; preserving them is required for fidelity.
+# RUF001/2/3: ambiguous-unicode — the guidance prose intentionally contains
+# × – → ≥ etc.; preserving them exactly is required.
 ignore = ["E501", "RUF001", "RUF002", "RUF003"]
 
 [tool.mypy]

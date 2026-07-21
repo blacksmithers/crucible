@@ -1,9 +1,9 @@
-"""Schema-format checks (port of ``structural/format.ts``).
+"""Schema-format checks.
 
 Runs the strict OpenSpec schema and maps Pydantic validation errors to the
-Zod-style ``{fieldPath, reason}`` shape, reproducing the messages and path
-formatting the TS engine emits. Mirrors the two skip rules: missing required
-fields (handled by presence) and ``too_small`` on ``architecture``/``scope``.
+``{fieldPath, reason}`` shape, producing the messages and path formatting the
+format gate emits. Two skip rules apply: missing required fields (handled by
+presence) and ``too_small`` on ``architecture``/``scope``.
 """
 
 from __future__ import annotations
@@ -33,8 +33,8 @@ def _path_to_string(path: tuple[Any, ...]) -> str:
 
 
 def _received(value: Any) -> str:
-    """The Zod ``getParsedType`` token for an input value (used in the
-    ``Expected X, received Y`` invalid_type message)."""
+    """The type token for an input value (used in the ``Expected X, received Y``
+    invalid_type message)."""
     if value is None:
         return "null"
     if isinstance(value, bool):
@@ -50,7 +50,7 @@ def _received(value: Any) -> str:
     return "unknown"
 
 
-# Pydantic strict type-mismatch error -> the Zod-expected type token.
+# Pydantic strict type-mismatch error -> the expected type token.
 _INVALID_TYPE_EXPECTED = {
     "string_type": "string",
     "int_type": "number",
@@ -62,14 +62,14 @@ _INVALID_TYPE_EXPECTED = {
 
 
 def _invalid_type_reason(err: ErrorDetails) -> str | None:
-    """Reproduce Zod's ``Expected {expected}, received {received}`` for a strict
+    """Build the ``Expected {expected}, received {received}`` message for a strict
     type mismatch (a coerced-away value or an explicit null on an optional)."""
     etype = err["type"]
     expected = _INVALID_TYPE_EXPECTED.get(etype)
     if expected is None:
         return None
     value = err.get("input")
-    # z.number().int() given a non-integer number reports the integer refinement:
+    # An integer field given a non-integer number reports the integer refinement:
     # "Expected integer, received float".
     if etype == "int_type" and isinstance(value, float) and not isinstance(value, bool):
         return "Expected integer, received float"
@@ -77,10 +77,10 @@ def _invalid_type_reason(err: ErrorDetails) -> str | None:
 
 
 def _enum_reason(err: ErrorDetails) -> str:
-    """Reproduce Zod's ``Invalid enum value. Expected a | b, received 'x'``.
+    """Build the ``Invalid enum value. Expected a | b, received 'x'`` message.
 
     Pydantic's ``ctx['expected']`` pre-formats the options as ``'a', 'b' or 'c'``;
-    the quoted tokens are extracted and rejoined with Zod's ``' | '`` separator.
+    the quoted tokens are extracted and rejoined with the ``' | '`` separator.
     """
     ctx = err.get("ctx") or {}
     options = re.findall(r"'[^']*'", str(ctx.get("expected", "")))

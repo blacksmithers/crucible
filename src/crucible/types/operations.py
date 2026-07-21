@@ -1,4 +1,4 @@
-"""Planning operation names (port of ``types/operations.ts``)."""
+"""Planning operation names."""
 
 from __future__ import annotations
 

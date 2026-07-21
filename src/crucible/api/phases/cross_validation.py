@@ -1,4 +1,4 @@
-"""cross_validation phase (port of ``api/phases/cross-validation.ts``)."""
+"""cross_validation phase."""
 
 from __future__ import annotations
 

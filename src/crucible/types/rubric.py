@@ -1,4 +1,4 @@
-"""Rubric entry + structural check contracts (port of ``types/rubric.ts``).
+"""Rubric entry + structural check contracts.
 
 These are static, internal config data (the 53 rubric entries are authored in
 ``crucible/guidance/rubric/``) and never serialized to output, so they are

@@ -1,7 +1,6 @@
 """Concurrent-modification cross-validation check (emissions).
 
-Port of ``cross-validation/concurrent-modification.ts`` — invariante #6
-(MB.10.4), rewritten OFF the wave engine onto dependency reachability.
+Invariante #6 — built on dependency reachability rather than the wave engine.
 Supersedes the wave-literal ``wave-concurrent-modification``.
 """
 

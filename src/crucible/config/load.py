@@ -1,4 +1,4 @@
-"""Config loading (port of ``config/load.ts``)."""
+"""Config loading."""
 
 from __future__ import annotations
 

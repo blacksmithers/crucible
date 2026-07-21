@@ -1,4 +1,4 @@
-"""Structural-check evaluation for findings (port of ``engine/structural-checks.ts``).
+"""Structural-check evaluation for findings.
 
 Unlike the scoring layer's boolean ``run_structural_checks``, this returns a
 *status* (fulfilled / missing / partial) plus per-item offenders and threshold

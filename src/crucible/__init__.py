@@ -1,10 +1,11 @@
 """crucible — deterministic validation engine for OpenSpec v1.1 specifications.
 
-Faithful Python port of the SpecForge ``@specforge/validator`` engine.
+A self-contained, deterministic validation engine for OpenSpec v1.1
+specifications.
 
 ``validate(spec, context)`` is the single entry point. All four return layers
 (``structural``, ``scoring``, ``crossValidation``, ``guidance``) are complete
-and verified byte-for-byte against the reference engine.
+and produce stable, reproducible output.
 """
 
 from __future__ import annotations

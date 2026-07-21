@@ -1,4 +1,4 @@
-"""Per-spec config snapshot validation (port of ``config/snapshot-schema.ts``).
+"""Per-spec config snapshot validation.
 
 A frozen per-spec snapshot is a FULL resolved config, so it validates against
 the complete schema, refinements and all — a partial is rejected.

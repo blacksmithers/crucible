@@ -1,7 +1,7 @@
-"""Entity scope + response detail (port of ``types/scope.ts``).
+"""Entity scope + response detail.
 
 Internal helper types for the API scope resolver (not part of the public
-``types`` index in the TS source).
+``types`` index).
 """
 
 from __future__ import annotations

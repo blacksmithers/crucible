@@ -1,4 +1,4 @@
-"""Specification entity (port of ``spec-types/schema/specification.ts``)."""
+"""Specification entity."""
 
 from __future__ import annotations
 

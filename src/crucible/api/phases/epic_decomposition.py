@@ -1,4 +1,4 @@
-"""epic_decomposition phase (port of ``api/phases/epic-decomposition.ts``)."""
+"""epic_decomposition phase."""
 
 from __future__ import annotations
 

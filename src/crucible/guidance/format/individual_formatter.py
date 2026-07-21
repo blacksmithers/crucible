@@ -1,4 +1,4 @@
-"""Individual-finding prose (port of ``guidance/format/individual-formatter.ts``)."""
+"""Individual-finding prose."""
 
 from __future__ import annotations
 

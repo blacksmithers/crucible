@@ -1,4 +1,4 @@
-"""Per-field scoring (port of ``scoring/per-field.ts``)."""
+"""Per-field scoring."""
 
 from __future__ import annotations
 
@@ -119,7 +119,7 @@ def compute_per_field(
         possible = tier_weight(entry.tier, config)
 
         if not is_config_applicable(entry, config):
-            # Bug-for-bug: config-disabled type checks earn full points.
+            # Quirk: config-disabled type checks earn full points.
             result[entry.id] = PerFieldResult(possible, possible, entry.tier)
             continue
 

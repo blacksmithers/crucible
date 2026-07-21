@@ -1,4 +1,4 @@
-"""Phase dispatch (port of ``api/dispatcher.ts``)."""
+"""Phase dispatch."""
 
 from __future__ import annotations
 
@@ -54,9 +54,9 @@ def validate_all(
     passed = all(r.passed for r in by_phase.values())
     return ValidationResultAll(
         # Passed explicitly: ``to_json_dict`` serializes with ``exclude_unset=True``,
-        # so a field left at its default is omitted from the JSON. The TS emits
-        # ``phase: 'all'`` (dispatcher.ts), and no golden covers phase="all", so
-        # this went unnoticed until the differential fuzz.
+        # so a field left at its default is omitted from the JSON. The result JSON
+        # must carry ``phase: 'all'``, so it is set explicitly rather than relying
+        # on the default.
         phase="all",
         passed=passed,
         by_phase=by_phase,

@@ -1,4 +1,4 @@
-"""Planning config resolver (port of ``config/resolver.ts``).
+"""Planning config resolver.
 
 Resolves an effective config by deep-merging project overrides / per-spec
 snapshots over the hardcoded defaults. The backing store is abstracted as

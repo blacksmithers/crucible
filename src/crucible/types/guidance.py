@@ -1,4 +1,4 @@
-"""Guidance layer output contracts (port of ``types/guidance.ts``)."""
+"""Guidance layer output contracts."""
 
 from __future__ import annotations
 

@@ -1,35 +1,36 @@
-"""Strict OpenSpec v1.1 schema for ``check_format`` (mirror of the Zod schemas).
+"""Strict OpenSpec v1.1 schema for ``check_format``.
 
 Unlike :mod:`crucible.models` (lenient input structures), these models carry the
-**constraints** from ``@specforge/spec-types`` (min array lengths, min string
-lengths, enums, ranges, numeric types) so that validating a spec reproduces the
-same set of schema violations the TS ``SpecificationSchema.safeParse`` produces.
+**constraints** of the format gate (min array lengths, min string lengths,
+enums, ranges, numeric types) so that validating a spec surfaces the full set of
+schema violations.
 
 Fields are camelCase (matching the JSON seeds) so Pydantic error ``loc`` paths
-line up with the Zod issue paths. ``extra="ignore"`` mirrors Zod's default
-unknown-key stripping. Field order mirrors the TS schemas so multi-error
-ordering matches.
+line up with the field paths reported to callers. ``extra="ignore"`` strips
+unknown keys. Field order is significant: it fixes the order in which multiple
+errors are reported.
 
-Faithful-port notes on Zod semantics (all reproduced here):
+The format gate does not coerce (all rules enforced here):
 
-* ``z.string()`` / ``z.number()`` / ``z.number().int()`` do NOT coerce — a
-  numeric string, a boolean, or ``null`` is rejected, not converted. Pydantic's
-  default (lax) mode coerces all of these, which flipped ``passed`` false→true.
-  So scalars are ``Strict``-annotated (:data:`_Str` / :data:`_Int` / :data:`_Num`).
-* ``.optional()`` accepts a MISSING key but REJECTS an explicit ``null``;
-  ``.nullish()`` accepts both. Rendering every optional as ``X | None`` erased
-  that distinction (``null`` passed where the reference fails). Here a
-  ``.optional()`` field is a non-``None`` type with ``Field(default=None)`` — the
+* A string / number / integer field does NOT coerce — a numeric string, a
+  boolean, or ``null`` is rejected where a number/string is required, not
+  converted. Pydantic's default (lax) mode coerces all of these, which would
+  flip ``passed`` false→true. So scalars are ``Strict``-annotated
+  (:data:`_Str` / :data:`_Int` / :data:`_Num`).
+* An optional field accepts a MISSING key but REJECTS an explicit ``null``; a
+  nullish field accepts both. Rendering every optional as ``X | None`` would
+  erase that distinction (``null`` would pass where it must fail). Here an
+  optional field is a non-``None`` type with ``Field(default=None)`` — the
   default covers "absent", and an explicit ``null`` fails type validation. Only
-  the three genuine ``.nullish()`` fields (``coverageTarget``, blueprint-ref
+  the three genuine nullish fields (``coverageTarget``, blueprint-ref
   ``context``/``section``) keep ``| None``.
-* Zod ``.min(n)`` on a string counts UTF-16 code units; :func:`_zstr` measures
-  the same way (see :mod:`crucible._utf16`).
+* A minimum-length rule on a string counts UTF-16 code units;
+  :func:`_min_len_check` measures the same way (see :mod:`crucible._utf16`).
 
-One documented micro-divergence remains: a float that is integer-valued
-(JSON ``2.0``) satisfies ``z.number().int()`` in JS — ``Number.isInteger(2.0)``
-is true — but Pydantic strict ``int`` rejects it. Real producers emit ``2`` for
-integer fields, never ``2.0``, so this is inert in practice.
+One documented micro-divergence remains: an integer field accepts only integer
+literals; a float like ``2.0`` is rejected, even though it is integer-valued.
+Real producers emit ``2`` for integer fields, never ``2.0``, so this is inert in
+practice.
 """
 
 from __future__ import annotations
@@ -59,10 +60,11 @@ from ..models.enums import (
     TicketType,
 )
 
-# --- Zod-faithful scalar types -------------------------------------------------
-# Strict (no coercion): a numeric string / boolean / null is rejected, matching
-# z.string() / z.number() / z.number().int(). `_Num` is a float that still accepts
-# an int (as z.number() does), because Pydantic's float keeps that one lax rule.
+# --- Strict scalar types -------------------------------------------------------
+# Strict (no coercion): a numeric string / boolean / null is rejected where a
+# string / number / integer is required. `_Num` is a float that still accepts an
+# int (a number field allows both), because Pydantic's float keeps that one lax
+# rule.
 _Str = Annotated[str, Strict()]
 _Int = Annotated[int, Strict()]
 _Num = Annotated[float, Strict()]
@@ -81,15 +83,16 @@ def _min_len_check(min_length: int) -> AfterValidator:
     return AfterValidator(check)
 
 
-# z.string().min(N), UTF-16 counted. Declared as Annotated literals (not via a
-# helper call) so they read as type aliases to the checker. min-1 never diverges
-# from code points, but stays on the same mechanism for consistency; min-20 is
-# the only string length that can UTF-16-diverge (an N/A reason of astral chars).
+# Minimum-length string (N UTF-16 code units). Declared as Annotated literals
+# (not via a helper call) so they read as type aliases to the checker. min-1
+# never diverges from code points, but stays on the same mechanism for
+# consistency; min-20 is the only string length that can UTF-16-diverge (an N/A
+# reason of astral chars).
 NonEmptyStr = Annotated[str, Strict(), _min_len_check(1)]
 _Reason = Annotated[str, Strict(), _min_len_check(20)]
 
 
-# `.optional()` sentinel: a non-None-typed field with `default=None`. Absent →
+# Optional-field sentinel: a non-None-typed field with `default=None`. Absent →
 # default (unread); explicit null → rejected by the type. A FRESH FieldInfo per
 # field (Pydantic v2 mutates FieldInfo during model build, so never share one).
 # Both helpers return Any, so the non-Optional annotation type-checks.
@@ -128,12 +131,12 @@ class ImplementationStepStrict(_Strict):
 class TestSpecificationStrict(_Strict):
     # SHAPE-only: element types are validated here, but the CONTENT minimums
     # (testTypes/qualityGates >= 1) are NOT — they are a ticket_expansion,
-    # verification-ticket-only RUBRIC concern. Relaxed upstream before the 0.1.20
-    # baseline; the port carried the pre-fix constraint until 0.3.0.
+    # verification-ticket-only RUBRIC concern. This constraint was relaxed in
+    # 0.3.0; earlier versions enforced the pre-fix minimum.
     testTypes: list[TestType]
     qualityGates: list[_Str]
     testCommands: list[_Str]
-    # z.number().min(0).max(100).nullish() — null accepted.
+    # Number in [0, 100], nullish — an explicit null is accepted.
     coverageTarget: _Num | None = Field(default=None, ge=0, le=100)
 
 
@@ -167,8 +170,8 @@ class TypeSnippetStrict(_Strict):
 
 class BlueprintReferenceStrict(_Strict):
     blueprintId: _Str
-    # z.string().nullish() — null accepted (MB.9: link_blueprint_to_tickets sets
-    # only blueprintId; AppSync returns context/section as null).
+    # Nullish string — null accepted (link_blueprint_to_tickets sets only
+    # blueprintId; the persistence layer returns context/section as null).
     context: _Str | None = None
     section: _Str | None = None
 

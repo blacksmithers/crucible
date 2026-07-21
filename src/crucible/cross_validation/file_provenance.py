@@ -1,6 +1,6 @@
 """Unified file-provenance cross-validation checks (emissions).
 
-Port of ``cross-validation/file-provenance.ts`` — the four static invariants
+The four static invariants
 (#1 consume-exists, #2 consume-ordered, #3 create-fresh, #5 no-delete-of-
 spec-touched) under the ``file-provenance`` category, plus the folded
 single-creator check (#4), which keeps its own ``file-conflict`` category and
@@ -25,7 +25,7 @@ def _all_tickets(spec: dict[str, Any]) -> list[dict[str, Any]]:
 @dataclass(frozen=True)
 class FileProvenanceContext:
     """Optional context threaded from the phase context: the real-repo file set
-    (grep evidence) supplied by the MCP-local double-call (MB.10.5).
+    (grep evidence) supplied by the MCP-local double-call.
 
     ``existing_files`` semantics (TRI-STATE):
 
@@ -48,8 +48,8 @@ def build_transitive_deps(
     reachable FROM ``ticket_id`` by following its ``dependencies`` edges (i.e.
     everything it transitively requires). Memoised via ``cache``.
 
-    Public so the concurrent-modification reachability check (MB.10.4,
-    invariante #6) reuses the SAME primitive as invariante #2 (consume-ordered)
+    Public so the concurrent-modification reachability check (invariante #6)
+    reuses the SAME primitive as invariante #2 (consume-ordered)
     rather than re-deriving it.
     """
     if ticket_id in cache:
@@ -73,7 +73,7 @@ def build_transitive_deps(
 # The three roles that CONSUME a file. `ordered` marks the roles that also
 # require a transitive dependency on the file's in-spec creator (invariante #2).
 # `filesToBeDeleted` only needs the file to exist (invariante #1); its extra
-# static rule (#5 — no-delete-of-spec-touched, MB.10.3) is applied separately
+# static rule (#5 — no-delete-of-spec-touched) is applied separately
 # below (deleted ∈ createdPaths ∪ modifiedPaths).
 CONSUMER_ROLES: tuple[tuple[str, str, bool], ...] = (
     ("filesToBeReferenced", "references", True),
@@ -86,13 +86,13 @@ CONSUMER_ROLES: tuple[tuple[str, str, bool], ...] = (
 class FileProvenanceMaps:
     """The single-valued file→provider maps the file-provenance model is built
     on, factored out of :func:`check_file_provenance` so the cycle-resolution
-    analyzer (MB.12.1) and the creator election (MB.13.2) reuse the EXACT
+    analyzer and the creator election reuse the EXACT
     provenance rule instead of re-deriving it (no drift):
 
     - ``file_to_creator`` (invariante #2 — single-valued): a path's provider is
       its in-spec CREATOR (``filesToBeCreated``, unconditional — creation always
       wins), or — for a path no ticket creates — the FIRST ticket that MODIFIES
-      it (the brownfield standin). Iteration order is ``epics.flatMap(tickets)``,
+      it (the brownfield standin). Iteration order is epics flattened over their tickets,
       the same order the checks use, so "first modifier" is stable.
     - ``created_paths`` / ``modified_paths`` — the create/modify path sets
       (#3/#5).
@@ -136,7 +136,7 @@ def check_file_provenance(
     config: ValidatorConfig,
     ctx: FileProvenanceContext | None = None,
 ) -> list[CVEmission]:
-    """Unified file-provenance check (MB.10.1) — existence + ordering across the
+    """Unified file-provenance check — existence + ordering across the
     three consumer roles (``filesToBeReferenced``, ``filesToBeModified``,
     ``filesToBeDeleted``), superseding the referenced-only
     ``check_files_to_be_referenced``.
@@ -154,7 +154,7 @@ def check_file_provenance(
     all_tickets = _all_tickets(spec)
     adj: dict[str, list[str]] = {}
     # Single-valued provenance maps (invariante #2/#3/#5), factored to a shared
-    # helper so the cycle-resolution analyzer (MB.12.1) reuses the SAME rule.
+    # helper so the cycle-resolution analyzer reuses the SAME rule.
     # created_paths/modified_paths = every path the spec itself creates or edits.
     maps = build_file_provenance_maps(spec)
     file_to_creator = maps.file_to_creator
@@ -243,7 +243,7 @@ def check_file_provenance(
                             )
                         )
 
-        # invariante #3 — create-fresh (MB.10.2). A `filesToBeCreated` path that
+        # invariante #3 — create-fresh. A `filesToBeCreated` path that
         # ALREADY exists in the real repo is a modify mislabelled as create. Only
         # decidable with grep evidence: no-op when `existing_files` is ABSENT, a
         # real finding when grep confirms the path is present.
@@ -271,7 +271,7 @@ def check_file_provenance(
                     )
                 )
 
-        # invariante #5 — no-delete-of-spec-touched (MB.10.3). A `filesToBeDeleted`
+        # invariante #5 — no-delete-of-spec-touched. A `filesToBeDeleted`
         # path that the spec itself creates or modifies (∈ created_paths ∪
         # modified_paths) is contradictory: deleting a file the plan produces or
         # edits is wasted work. Fully STATIC — no wave timeline (this supersedes
@@ -307,7 +307,7 @@ def check_file_provenance(
 
 
 def compute_grep_candidates(spec: dict[str, Any]) -> list[str]:
-    """MB.10.5 — the grep candidate paths the CPS pass-1 asks the MCP-local to
+    """The grep candidate paths the CPS pass-1 asks the MCP-local to
     probe. The union of BOTH candidate sets the file-provenance model needs
     real-repo evidence for:
 
@@ -343,7 +343,7 @@ def compute_grep_candidates(spec: dict[str, Any]) -> list[str]:
 
 def check_file_consistency(spec: dict[str, Any]) -> list[CVEmission]:
     """Single-creator check (invariante #4), folded under the file-provenance
-    umbrella (MB.10.2 — previously ``file-consistency.ts``). Each created path
+    umbrella. Each created path
     must have exactly one creator ticket; two or more tickets declaring the same
     path in ``filesToBeCreated`` is a merge conflict. Static — grep-independent.
 

@@ -1,9 +1,8 @@
-"""MB.11.1 — the shared N/A-eligibility allow-set (port of ``na-eligible.ts``).
+"""The shared N/A-eligibility allow-set.
 
 The eligibility SOURCE a ``justify`` operation validates a ``scope`` against.
 
-Why this is its own top-level module (the TS exposes it on a dedicated
-``@specforge/validator/naEligible`` subpath): the primary justify scope,
+Why this is its own top-level module: the primary justify scope,
 ``dependencies``, is NOT a rubric body field — it is a cross-cutting justifiable
 scope that the cross-validation checks read DIRECTLY off ``fieldDeclarations``
 (``dependency_graph.check_orphan_reference`` and ``check_island_ticket`` read

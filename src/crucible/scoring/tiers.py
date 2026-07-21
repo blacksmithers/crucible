@@ -1,4 +1,4 @@
-"""Tier weights (port of ``scoring/tiers.ts``)."""
+"""Tier weights."""
 
 from __future__ import annotations
 

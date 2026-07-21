@@ -1,4 +1,4 @@
-"""Composite-pattern detectors (port of ``guidance/composer/patterns/*``)."""
+"""Composite-pattern detectors."""
 
 from __future__ import annotations
 

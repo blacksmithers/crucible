@@ -1,8 +1,6 @@
 """Wave-coordination cross-validation checks (emissions).
 
-Port of ``cross-validation/wave-size-exceed.ts``.
-
-MB.10.4 — the wave-concurrent-modification and wave-deletion-after-{creation,
+The wave-concurrent-modification and wave-deletion-after-{creation,
 modification} checks were replaced by the static file-graph model: see
 ``concurrent_modification.py`` (dependency-reachability, not same-wave) and
 ``file_provenance.py`` invariant #5 (no-delete-of-spec-touched). ``wave-size-

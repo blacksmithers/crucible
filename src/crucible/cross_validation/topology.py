@@ -1,4 +1,4 @@
-"""Topology-bound cross-validation checks (port of ``topology-{roots,leaves}-exceed.ts``)."""
+"""Topology-bound cross-validation checks."""
 
 from __future__ import annotations
 
@@ -44,7 +44,7 @@ def check_topology_roots_exceed(spec: dict[str, Any], config: ValidatorConfig) -
                 message=f"{root_count} root tickets exceed maximum {maximum} ({total} total)",
                 entity_ids=sorted_root_ids,
                 primary_entity_id=sorted_root_ids[0],
-                # MB.11.1 — remedy: establish dependencies (create_dependencies) or justify
+                # remedy: establish dependencies (create_dependencies) or justify
                 # the legitimate roots' `dependencies` N/A via the dedicated `justify` op.
                 # Dropped the stale update_ticket N/A hint. (NOT applied to
                 # topology-leaves-exceed — its remedy is "add integration/verification
@@ -57,7 +57,7 @@ def check_topology_roots_exceed(spec: dict[str, Any], config: ValidatorConfig) -
                     "rootIds": sorted_root_ids,
                 },
             ),
-            # MB.11.3 — WHAT only (structural fact + remedies). The "how" (which op, which
+            # WHAT only (structural fact + remedies). The "how" (which op, which
             # payload) is lifecycle-owned; the machine hint is `finding.operations`
             # (create_dependencies / justify). No `fieldDeclarations` mechanic (point #1).
             guidance=(

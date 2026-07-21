@@ -1,4 +1,4 @@
-"""Config deep-merge (port of ``config/merge.ts``)."""
+"""Config deep-merge."""
 
 from __future__ import annotations
 

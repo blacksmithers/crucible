@@ -1,9 +1,9 @@
-"""Config validation + default injection (port of ``config/schema.ts``).
+"""Config validation + default injection.
 
-The TS source uses Zod. Here we keep the runtime config as a plain ``dict`` and
-reproduce the two behaviors that affect output: (1) ``.default()`` injection for
-omitted optional fields, and (2) refinement checks that raise on invalid input.
-Validation never mutates values beyond injecting the documented defaults.
+The runtime config is kept as a plain ``dict``. Validation reproduces the two
+behaviors that affect output: (1) default injection for omitted optional
+fields, and (2) refinement checks that raise on invalid input. Validation
+never mutates values beyond injecting the documented defaults.
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ _THRESHOLD_SECTIONS = (
 
 
 class ConfigValidationError(ValueError):
-    """Raised when a config fails schema validation (mirrors a Zod parse error)."""
+    """Raised when a config fails schema validation."""
 
 
 def _is_threshold_entry(value: Any) -> bool:
@@ -35,7 +35,7 @@ def _is_threshold_entry(value: Any) -> bool:
 
 
 def apply_defaults(cfg: ValidatorConfig) -> ValidatorConfig:
-    """Inject the optional-field defaults the Zod schema would supply."""
+    """Inject the optional-field defaults the schema supplies."""
     sr = cfg.get("structuralRequirements")
     if isinstance(sr, dict):
         sr.setdefault("enforceTypes", True)
@@ -90,14 +90,14 @@ def _validate_refinements(cfg: ValidatorConfig) -> None:
 
 
 def validate_config(raw: ValidatorConfig) -> ValidatorConfig:
-    """Parse + validate a full config (mirror of ``ValidatorConfigSchema.parse``)."""
+    """Parse + validate a full config (backs ``ValidatorConfigSchema.parse``)."""
     cfg = apply_defaults(deepcopy(raw))
     _validate_refinements(cfg)
     return cfg
 
 
 class _ValidatorConfigSchema:
-    """Zod-like wrapper exposing ``.parse`` for API parity with the TS source."""
+    """A wrapper exposing ``.parse()``."""
 
     def parse(self, raw: ValidatorConfig) -> ValidatorConfig:
         return validate_config(raw)

@@ -1,8 +1,7 @@
-"""The 53-entry rubric (port of ``guidance/rubric/{specification,epic,ticket}.ts``).
+"""The 53-entry rubric.
 
-The entries are loaded from a packaged ``rubric.json`` generated verbatim from
-the TS source (see ``tools/dump_rubric.mjs``) — pure data, guaranteeing the 53
-entries match the reference engine exactly.
+The entries are loaded from a packaged ``rubric.json`` — pure data, keeping the
+53 entries fixed and consistent across every run.
 """
 
 from __future__ import annotations

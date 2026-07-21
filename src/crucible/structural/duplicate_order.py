@@ -1,4 +1,4 @@
-"""Duplicate-order checks (port of ``structural/duplicate-order.ts``)."""
+"""Duplicate-order checks."""
 
 from __future__ import annotations
 

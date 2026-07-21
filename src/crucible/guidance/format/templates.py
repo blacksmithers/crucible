@@ -1,6 +1,6 @@
-"""Composite-pattern prose templates (port of ``guidance/format/templates/*``).
+"""Composite-pattern prose templates.
 
-Strings are verbatim from the TS source.
+These strings are the canonical guidance prose the engine emits for each pattern.
 """
 
 from __future__ import annotations

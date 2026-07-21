@@ -1,4 +1,4 @@
-"""Threshold resolution (port of ``guidance/engine/resolver.ts``).
+"""Threshold resolution.
 
 Resolves a structural check's numeric threshold from its ``config:<dot.path>``
 source (static entry → ``.default``; complexity-driven → per-complexity bucket)
@@ -47,7 +47,7 @@ def _resolve_complexity_driven(
     if not isinstance(value, dict):
         raise ValueError(f'complexityDrivenMinCounts path not found: "{path}"')
     # Schema requires complexity on Ticket; fall back to 'medium' for entities
-    # that bypassed validation (mirrors the TS resolver).
+    # that bypassed validation.
     complexity = (entity or {}).get("complexity") or "medium"
     driven = value.get(complexity)
     if not isinstance(driven, (int, float)) or isinstance(driven, bool):

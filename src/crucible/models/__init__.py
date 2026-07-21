@@ -1,4 +1,4 @@
-"""OpenSpec v1.1 entity models (Python port of ``@specforge/spec-types``)."""
+"""OpenSpec v1.1 entity models."""
 
 from __future__ import annotations
 

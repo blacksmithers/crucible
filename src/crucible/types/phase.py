@@ -1,4 +1,4 @@
-"""Lifecycle phases and output layers (port of ``types/phase.ts``)."""
+"""Lifecycle phases and output layers."""
 
 from __future__ import annotations
 

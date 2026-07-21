@@ -1,7 +1,7 @@
-"""Public ``validate`` entry point (port of ``api/validate.ts``).
+"""Public ``validate`` entry point.
 
 All four output layers (structural, scoring, crossValidation, guidance) are
-assembled per phase, matching the reference engine.
+assembled per phase.
 """
 
 from __future__ import annotations
@@ -39,7 +39,7 @@ def _normalize_context(context: Mapping[str, Any] | None) -> dict[str, Any]:
         out["config"] = ctx["config"]
     if "returns" in ctx:
         out["returns"] = ctx["returns"]
-    # MB.10.5 — grep evidence. Tri-state: absent → strict spec-internal existence;
+    # grep evidence. Tri-state: absent → strict spec-internal existence;
     # present (even empty) → E = existingFiles ∪ createdPaths. Normalize to a
     # frozenset while preserving the absent/present distinction.
     raw_existing = ctx.get("existingFiles", ctx.get("existing_files"))
