@@ -10,9 +10,12 @@ Tracks the reference engine (`@specforge/validator`) from **`0.1.20`** through
 **`0.1.49`** (MB.9 → MB.13). All goldens were regenerated from the current TS
 `validate()` and the port is byte-equivalent across every phase.
 
-`planning_spec`, `epic_decomposition` and `epic_expansion` are unchanged — the
-whole of this release lands in `ticket_decomposition`, `ticket_expansion` and
-`cross_validation`.
+The sync itself lands only in `ticket_decomposition`, `ticket_expansion` and
+`cross_validation` — `planning_spec`, `epic_decomposition` and `epic_expansion`
+are untouched by it. Separately, a cross-language differential fuzz audit run for
+this release surfaced a set of **pre-existing** parity defects (present since
+`0.2.0` or earlier, in code the eight fixed goldens never exercised); they are
+fixed here too and are listed under **Fixed**.
 
 ### Added
 
@@ -70,6 +73,61 @@ whole of this release lands in `ticket_decomposition`, `ticket_expansion` and
   they baked flow-invocation syntax into the validator. Removing them changes no
   observable output.
 
+### Fixed
+
+All of the following are **pre-existing** divergences — none is a regression of
+the `0.1.49` sync. They were caught by the differential fuzz audit, not by the
+goldens, and each is verified byte-for-byte against the reference.
+
+- **`validate(spec, {phase: "all"})` omitted the top-level `phase: "all"`** from
+  the JSON. The field existed on the model with a default, but `to_json_dict`
+  serializes with `exclude_unset=True` and neither construction site passed it.
+  It diverged in every phase-`"all"` run, including the smallest input, and went
+  unseen for two releases because no golden covered phase `"all"`. Fixed at both
+  sites; phase `"all"` is now a differential case, pinning the `ValidationResultAll`
+  shape.
+- **Averages diverged in the last ULP.** Score means used `sum()/len()`, and
+  CPython ≥ 3.12 gives float `sum()` Neumaier compensated summation — *more*
+  accurate than the reference's `reduce((a, b) => a + b, 0)`, and therefore a
+  different double (e.g. the cross-validation seed averaged to `…76` in Python,
+  `…77` in JS). Being more accurate is still being different, and it can flip a
+  cascade-gate decision. Replaced with naive left-to-right accumulation in
+  `scoring/global_._avg` and `scoring/per_entity`.
+- **The format gate was too lenient — it accepted specs the reference rejects,**
+  flipping `passed` false→true. The strict schema (`_strict_schema`) now mirrors
+  `@specforge/spec-types` field by field:
+  - No coercion. Scalars are strict, so a numeric string, a boolean, or an
+    explicit `null` is rejected — matching `z.string()` / `z.number()` /
+    `z.number().int()`, which never coerce.
+  - `.optional()` rejects an explicit `null` (accepts only a missing key); the
+    three genuine `.nullish()` fields (`coverageTarget`, blueprint-ref
+    `context`/`section`) still accept `null`. Rendering every optional as
+    `X | None` had erased that distinction.
+  - Restored numeric bounds that had been dropped (`order` / `estimatedMinutes`
+    nonnegative, `ticketNumber` positive, the `EpicTargets` / acceptance-criterion
+    / implementation-step minimums) and dropped fields (code/type-snippet `order`,
+    ticket/blueprint `tags`); string-array elements are strict, so a non-string
+    element is rejected rather than coerced.
+  - `TestSpecification` no longer enforces `testTypes`/`qualityGates` ≥ 1 — a
+    shape-only relaxation upstream made before the `0.1.20` baseline that the
+    `0.2.0` sync should have carried. The port had been rejecting an
+    empty-but-present `testSpecification` at `ticket_decomposition`.
+  - Error messages now reproduce Zod's exact wording — `Expected {type}, received
+    {type}` for type mismatches (including `null`) and `Invalid enum value.
+    Expected a | b, received 'x'` for enum mismatches — so parity is on the
+    message, not just pass/fail.
+- **String lengths are measured in UTF-16 code units**, the unit the reference
+  uses (JS `String.length`), not Python code points. They agree on the BMP and
+  diverge on astral characters (emoji): a description of emoji near a rubric
+  minimum scored differently, and an N/A `reason` of emoji cleared `min(20)` in
+  JS but not in Python. Applied in scoring (`per_field`), guidance
+  (`structural-checks`) and the schema (`crucible._utf16.utf16_len`).
+
+One micro-divergence is left, documented in `_strict_schema`: a float that is
+integer-valued (JSON `2.0`) satisfies `z.number().int()` in JS but Pydantic
+strict `int` rejects it. Real producers emit `2`, never `2.0`, for integer
+fields, so it is inert in practice.
+
 ### Breaking
 
 - `OperationName` renames: `add_dependencies` → `create_dependencies`,
@@ -90,12 +148,20 @@ whole of this release lands in `ticket_decomposition`, `ticket_expansion` and
   / `files-to-be-referenced` → `concurrent-modification` / `file-provenance`, and
   set `blueprint-coverage.enabledPhases` to `[all]`.
 - `ticket_expansion` scores change (see above).
+- **Format validation is strict** (see **Fixed**). A spec that only passed under
+  `0.2.0` because of the old lax coercion or `null`-tolerance — a numeric string
+  for a number, an explicit `null` on an optional, a negative `order` — is now
+  flagged, exactly as the reference flags it. This is a bug fix toward parity, but
+  it can turn a previously-`passed` spec into a failing one.
 
 ### Notes
 
-- The parity fixtures and the seven differential suites are now local-only: they
-  are generated from (or are inputs to) the private reference engine, so they
-  only run where that checkout exists. Regenerate with `tools/gen_*.mjs`.
+- The parity fixtures and the differential suites are local-only: they are
+  generated from (or are inputs to) the private reference engine, so they only
+  run where that checkout exists. Regenerate with `tools/gen_*.mjs`. What ships
+  and runs in public CI are the unit suites for the self-contained modules
+  (file-provenance, concurrent-modification, cycle-analysis, creator-election,
+  na-eligible), the format/UTF-16 parity suites, and the property and smoke tests.
 - `get_validator_version()` still returns `0.1.0` — the reference engine's own
   `api/version.ts` has not been bumped.
 
