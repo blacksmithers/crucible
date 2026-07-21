@@ -33,3 +33,37 @@ jobs:
           path: dist/
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    # Cut the GitHub Release only after PyPI publish succeeds, so a failed
+    # publish never leaves an orphan release. Notes come from CHANGELOG.md; the
+    # same sdist + wheel that went to PyPI are attached.
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Extract release notes from CHANGELOG
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="$version" '
+            $0 ~ "^## " v "([ ]|$)" { f = 1; next }
+            /^## / && f { f = 0 }
+            f
+          ' CHANGELOG.md > RELEASE_NOTES.md
+          if [ ! -s RELEASE_NOTES.md ]; then
+            echo "Release ${GITHUB_REF_NAME}." > RELEASE_NOTES.md
+          fi
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --title "crucible ${GITHUB_REF_NAME#v}" \
+            --notes-file RELEASE_NOTES.md \
+            --verify-tag --latest
