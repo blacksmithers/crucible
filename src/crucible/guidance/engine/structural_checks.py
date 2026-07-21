@@ -11,6 +11,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Any
 
+from ..._utf16 import utf16_len
 from ...scoring.quality_checks import QUALITY_CHECKS, check_range
 from ...types.config import ValidatorConfig
 from ...types.enums import FindingStatus
@@ -81,9 +82,9 @@ def evaluate_structural_checks(
     if item_length_check is not None and isinstance(value, list):
         minimum = resolve_threshold(item_length_check, config, entity)
         offenders = [
-            PerItemFinding(idx, len(item), int(minimum))
+            PerItemFinding(idx, utf16_len(item), int(minimum))
             for idx, item in enumerate(value)
-            if isinstance(item, str) and len(item) < minimum
+            if isinstance(item, str) and utf16_len(item) < minimum
         ]
         if offenders:
             return StructuralEvaluationResult(status="partial", per_item_findings=offenders)
@@ -97,7 +98,7 @@ def evaluate_structural_checks(
             minimum = resolve_threshold(check, config, entity)
             for idx, item in enumerate(value):
                 field_val = item.get(sub_field) if isinstance(item, dict) else None
-                actual = len(field_val) if isinstance(field_val, str) else 0
+                actual = utf16_len(field_val) if isinstance(field_val, str) else 0
                 if actual < minimum:
                     offenders.append(PerItemFinding(idx, actual, int(minimum)))
         if offenders:
@@ -106,7 +107,7 @@ def evaluate_structural_checks(
     # Step 3: whole-field minLength.
     if field_length_check is not None:
         minimum = resolve_threshold(field_length_check, config, entity)
-        actual = len(value) if isinstance(value, str) else 0
+        actual = utf16_len(value) if isinstance(value, str) else 0
         if actual < minimum:
             return StructuralEvaluationResult(
                 status="missing",

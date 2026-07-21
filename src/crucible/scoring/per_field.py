@@ -6,6 +6,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
+from .._utf16 import utf16_len
 from ..guidance.engine.applicability import is_applicable, is_config_applicable
 from ..guidance.engine.resolver import resolve_threshold
 from ..types.config import ValidatorConfig
@@ -66,7 +67,7 @@ def _run_structural_checks(
     # Item minLength (only meaningful on a list).
     if item_length_check is not None and isinstance(value, list):
         minimum = resolve_threshold(item_length_check, config, entity)
-        if any(isinstance(item, str) and len(item) < minimum for item in value):
+        if any(isinstance(item, str) and utf16_len(item) < minimum for item in value):
             return False
 
     # Array item object-field minLength.
@@ -76,13 +77,13 @@ def _run_structural_checks(
             minimum = resolve_threshold(check, config, entity)
             for item in value:
                 v = item.get(sub_field) if isinstance(item, dict) else None
-                if not isinstance(v, str) or len(v) < minimum:
+                if not isinstance(v, str) or utf16_len(v) < minimum:
                     return False
 
     # Field minLength.
     if field_length_check is not None:
         minimum = resolve_threshold(field_length_check, config, entity)
-        if not isinstance(value, str) or len(value) < minimum:
+        if not isinstance(value, str) or utf16_len(value) < minimum:
             return False
 
     # Other checks.
